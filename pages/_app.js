@@ -1,5 +1,14 @@
-import '"@/"styles/globals.css'
+import "../styles/globals.css";
+// import Layout from '../components/Layout'
+// import Loader from "../components/utils/Loader";
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps }) {
+  return (
+    <>
+      {/* <Loader /> */}
+      <Component {...pageProps} />
+    </>
+  );
 }
+
+export default (MyApp);
