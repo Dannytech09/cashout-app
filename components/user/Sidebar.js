@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 import classNames from "classnames";
 import CollapseBtn from "../heroIcons/CollapseBtn";
 import Logo from "../heroIcons/Logo";
@@ -90,6 +90,24 @@ const Sidebar = () => {
       }
     );
   };
+ 
+  // useEffect(() => {
+  //   // Add event listener to the document object
+  //   document.addEventListener('mousedown', handleClickOutside);
+
+  //   // Remove event listener when the component unmounts
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, []);
+
+  // function handleClickOutside(event) {
+  //   if (sideNavRef.current && !sideNavRef.current.contains(event.target)) {
+  //     onClickOutside && onClickOutside();
+  //     // Clicked outside the side navigation bar, close it
+  //     // Implement your close side navigation bar logic here
+  //   }
+  // }
 
   return (
     <>
@@ -130,7 +148,10 @@ const Sidebar = () => {
                         "text-md flex font-medium text-text-light"
                       )}
                     >
-                      <div className="fill-blue-900 stroke-blue-600" style={{ width: "2.5rem" }}>
+                      <div
+                        className="fill-blue-900 stroke-blue-600"
+                        style={{ width: "2.5rem" }}
+                      >
                         <Icon />
                       </div>
                       <span
