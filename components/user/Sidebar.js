@@ -68,8 +68,8 @@ const Sidebar = () => {
     }
   );
 
-  const logoutHandler = () => {
-    AuthService.logout();
+  const logoutHandler = async () => {
+    await AuthService.logout();
     router.push("/login");
   };
 
@@ -112,10 +112,13 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className="flex fixed z-50 border-red-2 p-2 h-10 w-10 bg-red-500"
+        className="flex absolute z-50 border-red-2 p-2 h-10 w-10 bg-red-500"
         onClick={handleSideBarToggle}
       >
+        <div>
+
         <CollapseBtn />
+        </div>
       </div>
       <div
         className={wrapperClasses}
@@ -124,7 +127,7 @@ const Sidebar = () => {
         <div className="flex flex-col">
           {/* Logo Container */}
           <div className="flex item-center justify-between relative">
-            <div className="flex items-center pl-1 gap-4 ">
+            <div className="flex items-center pl-1 gap-4 w-auto h-auto ">
               <Logo />
               <span
                 className={classNames("mt-1 text-sm font-medium text-text", {
@@ -196,4 +199,5 @@ const Sidebar = () => {
   );
 };
 
-export default withAuth(Sidebar);
+export default withAuth(Sidebar); 
+

@@ -1,15 +1,25 @@
-import React from "react";
+import { useState } from 'react';
 import Link from 'next/link';
+import MenuBar from '@/components/heroIcons/MenuBar';
+import classNames from "classnames";
+import styles from "@/styles/NavBar.module.css"
+import HomeHeader from "@/components/homePage/Home-Header"
 
 const Hero = () => {
   return (
+    <div>
+      <div className='sm:z-80'>
+      <HomeHeader/>
+      </div>
     <div className="select-none flex items-center justify-center h-screen mb-12 bg-fixed bg-center bg-cover">
-      <img className="opacity-50 h-screen w-screen bg-fixed bg-center bg-cover" src="/hero.jpg" alt="" srcSet="" />
+      <div>
+      <img className="opacity-80 lg:mt-[-20ch] xl:mt-[-10ch] md:mt-[20ch] sm:h-[50ch] sm:mt-[-10ch] w-screen bg-fixed bg-center bg-cover" src="/hero.jpg" alt="" srcSet="" />
       {/* Overlay */}
-      <div className="absolute top-0 left-0 bottom-0 bg-black/70 z-[2]" />
+      <div className="absolute w-full h-[100ch] top-20 left-0 bottom-0 bg-black/70 sm:z-[2]" />
+      </div>
       <div className="items-center text-center justify-center absolute top-1px left-0 bottom p-5 text-white z-[2]">
-        <h2 className="text-4xl text-white  font-bold">Welcome to Cashout App</h2>
-        <p className="py-5 px-5 text-xl text-blue-300 text--900 font-extrabold">
+        <h2 className="text-4xl sm:text-xl text-white font-bold">Welcome to Cashout Plug</h2>
+        <p className="py-5 px-5 text-xl sm:text-lg text-blue-300 text--900 font-extrabold">
           A technological platform that offers solutions to daily needs using the most
           efficient means and product availability at discounted prices without compromising quality.
         </p>
@@ -23,6 +33,7 @@ const Hero = () => {
         </div>      
         
       </div>
+    </div>
     </div>
     
   );

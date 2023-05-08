@@ -111,3 +111,165 @@ export default function Login() {
     </div>
   );
 }
+
+
+
+ const submitHandler = async ({ email, password }) => {
+    try {
+      const response = await axios.post("http://localhost:4000/api/v1/auth/login", {
+        email,
+        password,
+      });
+  
+      if (response?.data?.token) {
+        // set the token cookie with a max age of 30 days
+        setCookie(null, "token", response.data.token, {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        });
+  
+        // set the user cookie with a max age of 30 days
+        setCookie(null, "user", JSON.stringify(response.data.user), {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        });
+  
+        // redirect to dashboard
+        router.push("/user/dashboard");
+      } else {
+        // invalid credentials
+        return {
+          props: {
+            message: "Invalid email or password",
+          },
+        };
+      }
+    } catch (error) {
+      // server error
+      console.error(error);
+      return {
+        props: {
+          message: "Something went wrong, please try again later",
+        },
+      };
+    }
+  };
+
+
+
+
+
+   const submitHandler = ({ email, password }) => {
+    if (typeof window !== "undefined") {
+
+      if (email && password) {
+        AuthService.signInAdmin(email, password)
+          .then((response) => {
+            if (response?.data.token && response?.data?.user.isAdmin === true) {
+            router.push("/admin/dashboard");
+            } else {
+              router.push("/admin/login");
+            }
+          })
+          .catch((error) => {
+            if (
+              error.response?.status === 401 ||
+              error.response?.status === 500
+            ) {
+              alert("Invalid Email and Password !");
+              router.reload("/login");
+            } else {
+              alert("Something went Wrong! If problem persist please check your network..");
+            }
+          });
+      }
+    }
+  };
+      
+  //       // set the token cookie with a max age of 30 days
+  //       setCookie(null, "token", response.data.token, {
+  //         maxAge: 30 * 24 * 60 * 60,
+  //         path: "/",
+  //       });
+
+  //       // set the user cookie with a max age of 30 days
+  //       setCookie(null, "user", JSON.stringify(response.data.user), {
+  //         maxAge: 30 * 24 * 60 * 60,
+  //         path: "/",
+  //       });
+
+  //       // redirect to dashboard
+  //       router.push("/admin/dashboard");
+  //     } else {
+  //       // invalid credentials
+  //       return {
+  //         props: {
+  //           message: "Invalid email or password",
+  //         },
+  //       };
+  //     }
+  //   } catch (error) {
+  //     // server error
+  //     console.error(error);
+  //     return {
+  //       props: {
+  //         message: "Something went wrong, please try again later",
+  //       },
+  //     };
+  //   }
+  // };
+
+  
+//   const submitHandler = async ({ email, password }) => {
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:4000/api/v1/auth/login",
+//         {
+//           email,
+//           password,
+//         }
+//       );
+//       if (response?.data?.token) {
+//         AuthService.signIn(email, password);
+//         // set the token cookie with a max age of 30 days
+//         setCookie(null, "token", response.data.token, {
+//           maxAge: 30 * 24 * 60 * 60,
+//           path: "/",
+//         });
+//         // set the user cookie with a max age of 30 days
+//         setCookie(null, "user", JSON.stringify(response.data.user), {
+//           maxAge: 30 * 24 * 60 * 60,
+//           path: "/",
+//         });
+//         setLoading(true)
+//         // redirect to dashboard
+//         router.push("/user/dashboard");
+//         setLoading(false)
+//       } else {
+//         // invalid credentials
+//         return {
+//           props: {
+//             message: "Invalid email or password",
+//           },
+//         };
+//       }
+//     } catch (error) {
+//       // server error
+//       console.error(error);
+//       return {
+//         props: {
+//           message: "Something went wrong, please try again later",
+//         },
+//       };
+//     }
+//     setLoading(false)
+//   };
+
+//   if (loading) {
+//     return <p>Loading...</p>;
+//   } else if (message) {
+//     return <p>{message}</p>;
+//   } else {
+//     return <p>Content loaded successfully.</p>;
+//   }
+// }

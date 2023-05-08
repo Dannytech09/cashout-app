@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import AuthService from "../../services/auth.Service";
-
 
 export default function Login() {
   useAuthGuard();
@@ -21,13 +20,17 @@ export default function Login() {
 
   const router = useRouter();
 
-  const submitHandler = ({ email, password }) => {
+  const submitHandler = async ({ email, password }) => {
     if (typeof window !== "undefined") {
 
       if (email && password) {
-        AuthService.signIn(email, password)
-          .then(() => {
+        await AuthService.signInAdmin(email, password)
+          .then((response) => {
+            if (response?.data.token && response?.data?.user.isAdmin === true) {
             router.push("/admin/dashboard");
+            } else {
+              router.push("/admin/login");
+            }
           })
           .catch((error) => {
             if (
@@ -35,7 +38,7 @@ export default function Login() {
               error.response?.status === 500
             ) {
               alert("Invalid Email and Password !");
-              router.reload("/login");
+              router.reload("/admin/login");
             } else {
               alert("Something went Wrong! If problem persist please check your network..");
             }
@@ -49,9 +52,7 @@ export default function Login() {
       onSubmit={handleSubmit(submitHandler)}
       className="select-none text-xs sm:text-sm justify-center md:text-sm lg:justify-center lg:text-sm flex flex-col gap-4 sm:gap-6 items-center h-screen"
     >
-      <h1 className="sm:text-3xl mb-2 font-sans text-3xl">
-        ADMIN LOGIN PAGE
-      </h1>
+      <h1 className="sm:text-3xl mb-2 font-sans text-3xl">ADMIN LOGIN PAGE</h1>
       <p className="text-red-600">
         This Page is Restricted and only the Admin Have Access
       </p>

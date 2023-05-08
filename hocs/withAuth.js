@@ -5,10 +5,12 @@
 const withAuth = (WrappedComponent) => {
    return class extends React.Component {
      static async getInitialProps(ctx) {
-       const pageProps =
-         WrappedComponent.getInitialProps &&
+       const pageProps =  {
+        example: "This is an example value",
+      };
+      const wrappedProps = WrappedComponent.getInitialProps &&
          (await WrappedComponent.getInitialProps(ctx));
-       return { ...pageProps };
+       return { ...pageProps, ...wrappedProps};
      }
 
      componentDidMount() {

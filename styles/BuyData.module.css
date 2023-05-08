@@ -7,7 +7,7 @@
 
 .btn {
     width: 30rem;
-    color: firebrick;
+    color: #ed4544;
     text-align: center;
     justify-content: center;
     padding: 1rem;
@@ -22,3 +22,16 @@
     margin-top: -1rem;
     box-sizing: border-box;
 }
+
+.errorMessage {
+    color: red;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    padding: 1rem;
+    border: 2px solid;
+    border: #000f;
+    width: 30rem;
+    margin:auto;
+    margin-bottom: .5rem;
+    background-color: #000f;
+  }

@@ -5,12 +5,14 @@ import { useForm } from "react-hook-form";
 import AuthService from "../services/auth.Service";
 import { FaRegEye } from "react-icons/fa";
 import useAuthGuard from "../hooks/useAuthGuard";
-// import Loading from "../components/utils/Loader";
+import axios from "axios";
 
 const Login = () => {
   useAuthGuard();
 
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   // show password logic
   const showPassword = () => {
@@ -31,31 +33,39 @@ const Login = () => {
 
   const router = useRouter();
 
-  const submitHandler = ({ email, password }) => {
-    if (typeof window !== "undefined") {
-      if (email && password) {
-        AuthService.signIn(email, password)
-          .then(() => {
-            router.push("/user/dashboard");
-          })
-          .catch((error) => {
-            if (
-              error.response?.status === 401 ||
-              error.response?.status === 500
-            ) {
-              alert("Invalid Email and Password !");
-              router.reload("/login");
-            } else {
-              alert(
-                "Something went Wrong! If problem persist please check your network.."
-              );
-            }
-          });
+  const submitHandler = async ({ email, password }) => {
+    setLoading(true);
+    try {
+      const response = await axios.post("http://localhost:4000/api/v1/auth/login", {
+        email,
+        password,
+      });
+      if (response?.data?.token && typeof window !== 'undefined') {
+        await AuthService.signIn(email, password);
+        // redirect to dashboard
+        router.push("/user/dashboard");
+      } else {
+         // server error
+        setMessage("Something went wrong, please try again later");
       }
+    } catch (error) {
+      // invalid credentials
+      console.error(error);
+      setMessage("Invalid email or password");
     }
+    setLoading(false);
   };
 
+
+
   return (
+    <div>
+       {loading ? (
+        <p>Loading...</p>
+      ) : message ? (
+        <p>{message}</p>
+      ) : null}
+   
     <form
       onSubmit={handleSubmit(submitHandler)}
       className="select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-screen"
@@ -127,6 +137,7 @@ const Login = () => {
         </div>
       </div>
     </form>
+    </div>
   );
 };
 

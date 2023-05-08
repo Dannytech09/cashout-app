@@ -701,3 +701,17 @@ const API_URL = "http://localhost:4000/purchase/63227db594843737c0769c98";
     </>
   );
 }
+
+const fetch = async () => {
+    await DataServices.getAllDataInfo()
+      .then((res) => {
+        setDataInfos(res.data.networkData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetch();
+  }, []);

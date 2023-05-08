@@ -1,8 +1,9 @@
-import Image from 'next/image'
+import Image from 'next/image';
+import styles from '../../styles/SideBar.module.css'
 
 const Logo = () => {
   return (
-  <Image src="/cashout-img.png" alt="logo" width="30" height="50"/>
+  <Image className={styles.logoImg} src="/cashout-img.png" alt="logo" width="30" height="50"/>
   )
 }
 

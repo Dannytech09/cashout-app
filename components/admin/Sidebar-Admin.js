@@ -54,6 +54,12 @@ const menuItems = [
     icon: FundWalletIcon,
     link: "/admin/upgrade",
   },
+  {
+    id: 10,
+    label: "Data component",
+    icon: FundWalletIcon,
+    link: "/admin/dataComponent",
+  },
 ];
 
 const SidebarAdmin = () => {

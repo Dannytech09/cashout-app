@@ -1,4 +1,3 @@
-import axios from "axios";
 import Link from "next/link";
 import UserService from "../../services/user.service";
 import React, { useState, useEffect } from "react";
@@ -64,7 +63,7 @@ function GetAllUsers() {
           </Link>
         </div>
       </div>
-      {/* <Users users={users} /> */}
+      <Users users={users} />
       {/* <currentPost currentPosts={currentPosts} />
         <Pagination 
         postsPerPage={postsPerPage}

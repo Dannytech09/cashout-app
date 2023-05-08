@@ -4,7 +4,7 @@ Modal.setAppElement('#__next');
 
 const customStyles = {
   content : {
-    top                   : '50%',
+    top                   : '10%',
     left                  : '50%',
     right                 : 'auto',
     bottom                : 'auto',
@@ -20,9 +20,13 @@ const ConfirmDataModal = ({ network, dataVol, phoneNumber, modalIsOpen, onReques
   return (
     <Modal appElement={typeof window !== 'undefined' ? document.getElementById('__next') : null}
     isOpen={modalIsOpen} onRequestClose={onRequestClose} style={customStyles}>
-      <h2>You are about to purchase {dataVol} {network} to {phoneNumber}</h2>
-      <button onClick={onConfirm}>Confirm</button>
-      <button onClick={onRequestClose}>Cancel</button>
+    <div className='p-6'>
+      <h2 className='text-1xl'>You are about to purchase {dataVol} {network} to {phoneNumber}</h2>
+      <div className='text-center mt-10 flex justify-around'>
+      <button className='text-green-600 font-bold' onClick={onConfirm}>Confirm</button>
+      <button className='text-red-600 font-bold' onClick={onRequestClose}>Cancel</button>
+      </div>
+      </div>
       {children}
     </Modal>
   );
