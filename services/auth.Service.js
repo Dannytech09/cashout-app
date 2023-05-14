@@ -2,11 +2,10 @@ import axios from "axios";
 import { setUserSession, removeUserSession } from "../Utils/Common";
 import authHeader from "./auth-Header";
 // import { setCookie } from "nookies";
-import { destroyCookie } from 'nookies';
+import { destroyCookie } from "nookies";
 import API_BASE_URL from "@/apiConfig";
 
-const BASE_URL = `${API_BASE_URL}/api/v1/auth/`
-
+const BASE_URL = `${API_BASE_URL}/api/v1/auth`;
 
 // Register Auth
 const signUp = (
@@ -17,18 +16,20 @@ const signUp = (
   email,
   password
 ) => {
-  return axios.post(`${BASE_URL}/register`, {
-    firstName,
-    lastName,
-    phoneNumber,
-    username,
-    email,
-    password,
-  }).then((response) => {
-    if (response?.data.token) {
-    setUserSession(response.data.token, JSON.stringify(response.data.user));
-  }
-})
+  return axios
+    .post(`${BASE_URL}/register`, {
+      firstName,
+      lastName,
+      phoneNumber,
+      username,
+      email,
+      password,
+    })
+    .then((response) => {
+      if (response?.data.token) {
+        setUserSession(response.data.token, JSON.stringify(response.data.user));
+      }
+    });
 };
 
 // Login Auth
@@ -39,26 +40,28 @@ const signIn = (email, password) => {
       password,
     })
     .then((response) => {
-     if(response?.data.user.isAdmin === false && typeof window !== 'undefined') {
-      setUserSession(response.data.token, JSON.stringify(response.data.user));
-      //  // set the token cookie with a max age of 30 days
-      //  setCookie(null, "token", response.data.token, {
-      //   maxAge: 30 * 24 * 60 * 60,
-      //   path: "/",
-      // });
-      // // console.log(document.cookie);
+      if (
+        response?.data.user.isAdmin === false &&
+        typeof window !== "undefined"
+      ) {
+        setUserSession(response.data.token, JSON.stringify(response.data.user));
+        //  // set the token cookie with a max age of 30 days
+        //  setCookie(null, "token", response.data.token, {
+        //   maxAge: 30 * 24 * 60 * 60,
+        //   path: "/",
+        // });
+        // // console.log(document.cookie);
 
-      // // set the user cookie with a max age of 30 days
-      // setCookie(null, "user", JSON.stringify(response.data.user), {
-      //   maxAge: 30 * 24 * 60 * 60,
-      //   path: "/",
-      // });
-     } else {
-      return null;
-     }
-    })
+        // // set the user cookie with a max age of 30 days
+        // setCookie(null, "user", JSON.stringify(response.data.user), {
+        //   maxAge: 30 * 24 * 60 * 60,
+        //   path: "/",
+        // });
+      } else {
+        return null;
+      }
+    });
 };
-
 
 // Login Auth admin
 const signInAdmin = (email, password) => {
@@ -68,19 +71,18 @@ const signInAdmin = (email, password) => {
       password,
     })
     .then((response) => {
-     if(response?.data.user.isAdmin === true) {
-      setUserSession(response.data.token, JSON.stringify(response.data.user));
-     } else {
-      return alert("Only Admin can have access", null)
-     }
-    })
+      if (response?.data.user.isAdmin === true) {
+        setUserSession(response.data.token, JSON.stringify(response.data.user));
+      } else {
+        return alert("Only Admin can have access", null);
+      }
+    });
 };
 
 // Get User's Details
 const getLoggedInUser = () => {
-  return axios.get(`${BASE_URL}/me`, { headers: authHeader()})
+  return axios.get(`${BASE_URL}/me`, { headers: authHeader() });
 };
-
 
 // Logout Auth
 const logout = async () => {
@@ -90,12 +92,11 @@ const logout = async () => {
     console.log(error);
   }
   removeUserSession();
-  if(typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     destroyCookie(null, "token");
     destroyCookie(null, "user");
   }
   // console.log(document.cookie);
-
 };
 
 const AuthService = { signUp, signIn, getLoggedInUser, logout, signInAdmin };
