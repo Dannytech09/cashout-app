@@ -1,9 +1,11 @@
 import axios from "axios";
 import { setUserSession, removeUserSession } from "../Utils/Common";
 import authHeader from "./auth-Header";
-import { setCookie } from "nookies";
+// import { setCookie } from "nookies";
 import { destroyCookie } from 'nookies';
 import API_BASE_URL from "@/apiConfig";
+
+const BASE_URL = `${API_BASE_URL}/api/v1/auth/`
 
 
 // Register Auth
@@ -15,7 +17,7 @@ const signUp = (
   email,
   password
 ) => {
-  return axios.post(`${API_BASE_URL}/register`, {
+  return axios.post(`${BASE_URL}/register`, {
     firstName,
     lastName,
     phoneNumber,
@@ -32,7 +34,7 @@ const signUp = (
 // Login Auth
 const signIn = (email, password) => {
   return axios
-    .post(`${API_BASE_URL}/login`, {
+    .post(`${BASE_URL}/login`, {
       email,
       password,
     })
@@ -61,7 +63,7 @@ const signIn = (email, password) => {
 // Login Auth admin
 const signInAdmin = (email, password) => {
   return axios
-    .post(`${API_BASE_URL}/login`, {
+    .post(`${BASE_URL}/login`, {
       email,
       password,
     })
@@ -76,14 +78,14 @@ const signInAdmin = (email, password) => {
 
 // Get User's Details
 const getLoggedInUser = () => {
-  return axios.get(`${API_BASE_URL}/me`, { headers: authHeader()})
+  return axios.get(`${BASE_URL}/me`, { headers: authHeader()})
 };
 
 
 // Logout Auth
 const logout = async () => {
   try {
-    await axios.get(`${API_BASE_URL}/logout`);
+    await axios.get(`${BASE_URL}/logout`);
   } catch (error) {
     console.log(error);
   }

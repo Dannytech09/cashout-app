@@ -2,6 +2,8 @@ import { useState } from "react";
 import classNames from "classnames";
 import API_BASE_URL from "@/apiConfig";
 
+const ADMIN_BASE_URL = `${API_BASE_URL}/admin`
+
 export default function PatchForm() {
   const [network, setNetwork] = useState("");
   const [data, setData] = useState([{ name: "", amount: "" }]);
@@ -9,7 +11,7 @@ export default function PatchForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`${API_BASE_URL}/update-price`, {
+    const response = await fetch(`${ADMIN_BASE_URL}/price/update-price`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

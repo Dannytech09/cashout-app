@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import API_BASE_URL from "@/apiConfig";
 
+const BASE_URL = `${API_BASE_URL}/pay`
+
 function BuyData() {
   const router = useRouter();
   const [networkData, setNetworkData] = useState([]);
@@ -30,7 +32,7 @@ function BuyData() {
     async function fetchData() {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/buyData`
+          `${BASE_URL}/getData`
           // {
           //   headers: authHeader()
           // }
@@ -129,7 +131,7 @@ function BuyData() {
       setInsufficientBal(false);
       setUnauthorised(false);
       const response = await axios.post(
-        `http://localhost:4000/api/v1/auth/purchase/${id}`,
+        `${BASE_URL}/${id}/purchase`,
         { network, dataVol, phoneNumber },
         {
           headers: authHeader(),
