@@ -6,6 +6,7 @@ import AuthService from "../services/auth.Service";
 import { FaRegEye } from "react-icons/fa";
 import useAuthGuard from "../hooks/useAuthGuard";
 import axios from "axios";
+import API_BASE_URL from "@/apiConfig";
 
 const Login = () => {
   useAuthGuard();
@@ -36,7 +37,7 @@ const Login = () => {
   const submitHandler = async ({ email, password }) => {
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:4000/api/v1/auth/login", {
+      const response = await axios.post(`${API_BASE_URL}/api/v1/auth/login`, {
         email,
         password,
       });
@@ -50,7 +51,7 @@ const Login = () => {
       }
     } catch (error) {
       // invalid credentials
-      console.error(error);
+      // console.error(error);
       setMessage("Invalid email or password");
     }
     setLoading(false);

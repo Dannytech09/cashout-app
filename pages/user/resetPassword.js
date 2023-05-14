@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { setUserSession, getUser } from "../../Utils/Common";
+import { setUserSession } from "../../Utils/Common";
 import Link from "next/link";
 import withAuth from "../../hocs/withAuth";
+import API_BASE_URL from "@/apiConfig";
 
 function Login() {
   const [password, setPassword] = useState("");
@@ -15,11 +16,11 @@ function Login() {
     }
     setError(null);
     axios
-      .put("https://cashout-app.herokuapp.com/api/v1/auth/resetpassword", {
+      .put(`${API_BASE_URL}/api/v1/auth/resetpassword`, {
         password: password,
       })
       .then((response) => {
-        console.log("response >>> ", response);
+        // console.log("response >>> ", response);
         setUserSession(response.data.token);
         window.location = "/login";
       })

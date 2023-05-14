@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import authHeader from "../../services/auth-Header";
-
-const API_URL = "http://localhost:4000/api/v1/users/"
+import API_BASE_URL from "@/apiConfig";
 
 export default function BlockedUsers() {
 
@@ -9,7 +8,7 @@ export default function BlockedUsers() {
 
     useEffect(() => {
         async function TotalUsersBlocked() {
-           const res = await fetch(API_URL, {headers: authHeader()})
+           const res = await fetch(`${API_BASE_URL}/api/v1/users`, {headers: authHeader()})
            const data = await res.json();
 
            const blocked = data?.data?.map((user) => (user.blocked))

@@ -5,10 +5,10 @@ export default function authHeader() {
   if (user && token) {
     //   console.log(token)
     return {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
-} else {
+  } else {
     return {};
-}
+  }
 }

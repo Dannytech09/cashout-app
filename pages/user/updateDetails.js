@@ -5,11 +5,12 @@ import { getToken } from "../../Utils/Common";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
+import API_BASE_URL from "@/apiConfig";
 
 function UpdateUser() {
   const [user, setUser] = useState();
 
-  const API_URL = "http://localhost:4000/api/v1/auth/update-details";
+  const API_URL = `${API_BASE_URL}/api/v1/auth/update-details`;
 
   const {
     register,

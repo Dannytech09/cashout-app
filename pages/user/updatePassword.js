@@ -4,11 +4,12 @@ import { getToken } from "../../Utils/Common";
 import { useForm } from "react-hook-form";
 import withAuth from "../../hocs/withAuth";
 import Sidebar from "../../components/user/Sidebar";
+import API_BASE_URL from "@/apiConfig";
 
 function UpdateUser() {
   const router = useRouter();
 
-  const API_URL = "http://localhost:4000/api/v1/auth/update-password";
+  const API_URL = `${API_BASE_URL}/api/v1/auth/update-password`;
 
   const {
     register,

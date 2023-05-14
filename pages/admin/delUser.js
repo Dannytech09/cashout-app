@@ -4,11 +4,10 @@ import { getToken } from "../../Utils/Common";
 import Link from "next/link";
 import React, { useState } from "react";
 import withAuth from "../../hocs/withAuth";
+import API_BASE_URL from "@/apiConfig";
 
 function DeleteUser() {
   const [delUser, setDelUser] = useState();
-
-  const API_URL = "http://localhost:4000/api/v1/users/"
 
   const {
     register,
@@ -21,7 +20,7 @@ function DeleteUser() {
   });
 
   const submitHandler = (id) => {
-    const url = `${API_URL}${id.id}`;
+    const url = `${API_BASE_URL}/api/v1/users/${id.id}`;
     axios
       .delete(url, {
         headers: {

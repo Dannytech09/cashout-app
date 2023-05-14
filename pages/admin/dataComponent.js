@@ -25,4 +25,4 @@ function dataComponent() {
   );
 }
 
-export default (dataComponent);
+export default withAuth(dataComponent);

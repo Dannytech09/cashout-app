@@ -3,9 +3,7 @@ import { setUserSession, removeUserSession } from "../Utils/Common";
 import authHeader from "./auth-Header";
 import { setCookie } from "nookies";
 import { destroyCookie } from 'nookies';
-
-// const API_URL = "https://cashout-app.onrender.com/api/v1/auth/";
-const API_URL = "http://localhost:4000/api/v1/auth/";
+import API_BASE_URL from "@/apiConfig";
 
 
 // Register Auth
@@ -17,7 +15,7 @@ const signUp = (
   email,
   password
 ) => {
-  return axios.post(API_URL + "register", {
+  return axios.post(`${API_BASE_URL}/register`, {
     firstName,
     lastName,
     phoneNumber,
@@ -34,7 +32,7 @@ const signUp = (
 // Login Auth
 const signIn = (email, password) => {
   return axios
-    .post(API_URL + "login", {
+    .post(`${API_BASE_URL}/login`, {
       email,
       password,
     })
@@ -63,7 +61,7 @@ const signIn = (email, password) => {
 // Login Auth admin
 const signInAdmin = (email, password) => {
   return axios
-    .post(API_URL + "login", {
+    .post(`${API_BASE_URL}/login`, {
       email,
       password,
     })
@@ -78,14 +76,14 @@ const signInAdmin = (email, password) => {
 
 // Get User's Details
 const getLoggedInUser = () => {
-  return axios.get(API_URL + '/me', { headers: authHeader()})
+  return axios.get(`${API_BASE_URL}/me`, { headers: authHeader()})
 };
 
 
 // Logout Auth
 const logout = async () => {
   try {
-    await axios.get(API_URL + "logout");
+    await axios.get(`${API_BASE_URL}/logout`);
   } catch (error) {
     console.log(error);
   }

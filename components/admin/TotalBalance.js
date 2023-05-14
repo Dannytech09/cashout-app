@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react';
 import authHeader from "../../services/auth-Header";
+import API_BASE_URL from '@/apiConfig';
 
 function TotalBalance() {
   const [totalBalance, setTotalBalance] = useState(0);
   const [loading, setLoading] = useState(true)
 
 
-  const API_URL = "http://localhost:4000/api/v1/users/"
-
   useEffect(() => {
     async function fetchTotalBalance() {
-      const res = await fetch(API_URL,  { headers: authHeader()});
+      const res = await fetch(`${API_BASE_URL}/api/v1/users`,  { headers: authHeader()});
       const data = await res.json();
-      console.log(data)
       setLoading(true)
 
       let balances;
       if (data && data.data) {
       balances = data.data.map((user) => parseFloat(user.balance.$numberDecimal));
       } else {
-        console.error('Data is undefined or missing "data" property.');
+        return <p>Error: Data is undefined or missing</p>;
+        // console.error('Data is undefined or missing "data" property.');
       }
       const total = balances.reduce((acc, curr) => acc + curr, 0);
       setTotalBalance(total);

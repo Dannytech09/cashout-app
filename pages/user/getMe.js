@@ -1,6 +1,7 @@
 import React from 'react'
 import { parseCookies } from "nookies";
 import axios from 'axios';
+import API_BASE_URL from '@/apiConfig';
 
 export default function getMe(userId) {
 
@@ -24,7 +25,7 @@ export default function getMe(userId) {
     }
   
     try {
-      const res = await axios.get("http://localhost:4000/api/v1/auth/me", {
+      const res = await axios.get(`${API_BASE_URL}/api/v1/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -38,7 +39,7 @@ export default function getMe(userId) {
         },
       };
     } catch (error) {
-        console.log(error)
+        // console.log(error)
       // Redirect to login page if token is invalid or expired
       return {
         redirect: {

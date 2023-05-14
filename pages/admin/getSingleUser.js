@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import User from "../../components/admin/User";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { getToken } from "../../Utils/Common";
 import Link from "next/link";
 import withAuth from "../../hocs/withAuth";
+import API_BASE_URL from "@/apiConfig";
 
 function GetSingleUser() {
   const [user, setUser] = useState();
-
-  const API_URL = "http://localhost:4000/api/v1/users/"
 
   const {
     register,
@@ -22,7 +21,7 @@ function GetSingleUser() {
   });
 
   const submitHandler = (id) => {
-    const url = `${API_URL}${id.id}`;
+    const url = `${API_BASE_URL}/api/v1/users/${id.id}`;
     axios
       .get(url, {
         headers: {

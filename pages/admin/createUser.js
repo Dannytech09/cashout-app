@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { getToken } from "../../Utils/Common";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
+import API_BASE_URL from "@/apiConfig";
 
 
 function CreateUser() {
-  const API_URL = "http://localhost:4000/api/v1/users/";
 
   const {
     register,
@@ -38,7 +38,7 @@ function CreateUser() {
     {
       axios
         .post(
-          API_URL,
+          `${API_BASE_URL}/api/v1/users`,
           {
             firstName: firstName,
             lastName: lastName,

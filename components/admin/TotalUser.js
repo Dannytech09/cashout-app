@@ -12,7 +12,7 @@ export default function TotalUser() {
         })
         .catch((error) => {
           if(error) {
-            console.log(error)
+            return <p>{Error}: Data is undefined or missing</p>;
           }
         });
     };

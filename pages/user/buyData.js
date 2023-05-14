@@ -4,15 +4,13 @@ import ConfirmDataModal from "@/components/utils/confirmDataModal";
 import axios from "axios";
 import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
-import DataServices from "@/services/data.services";
-import AuthService from "@/services/auth.Service";
-import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
+import API_BASE_URL from "@/apiConfig";
 
 function BuyData() {
   const router = useRouter();
   const [networkData, setNetworkData] = useState([]);
-  const [amountPlaceHolder, setAmountPlaceHolder] = useState(true)
+  const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
   const [loading, setLoading] = useState(true);
   const [phoneErr, setPhoneErr] = useState(false);
   const [insufficientBal, setInsufficientBal] = useState(false);
@@ -32,13 +30,13 @@ function BuyData() {
     async function fetchData() {
       try {
         const response = await fetch(
-          "http://localhost:4000/buyData"
+          `${API_BASE_URL}/buyData`
           // {
           //   headers: authHeader()
           // }
         );
         const res = await response.json();
-        console.log(res.networkData);
+        // console.log(res.networkData);
         setNetworkData(res.networkData);
         setLoading(false);
         return;
@@ -81,7 +79,7 @@ function BuyData() {
     // error if user selects a value and later select the default value
     if (selectedDataVol) {
       setAmounts(selectedDataVol);
-      setAmountPlaceHolder(false)
+      setAmountPlaceHolder(false);
     }
     setPhoneNumber("");
     setAmount("");
@@ -143,18 +141,16 @@ function BuyData() {
     } catch (error) {
       if (error.response.data.error) {
         setUnauthorised(true);
-      } else if (
-        error.response.data.invalidMessage
-      ) {
+      } else if (error.response.data.invalidMessage) {
         setPhoneErr(true);
         console.log(error.response);
-      } else if ( error.response.data.code === 3002) {
-        setsSmsApiErrorMessage(true)
-      }  else if (error.response.data.code === 3003) {
+      } else if (error.response.data.code === 3002) {
+        setsSmsApiErrorMessage(true);
+      } else if (error.response.data.code === 3003) {
         setInsufficientBal(true);
       } else {
         console.log(error.response);
-      } 
+      }
       setLoading(false);
     }
 
@@ -188,25 +184,29 @@ function BuyData() {
         <div className="p-10 w-full">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Data</h3>
-      <div>
-        {phoneErr && (
-          <div className={styles.errorMessage}>Please input a valid phone number.</div>
-        )}
-        {insufficientBal && (
-          <div className={styles.errorMessage}>Please fund your wallet.</div>
-        )}
-        {unauthorised && (
-          <div className={styles.errorMessage}>
-            Not authorized to access this route! Please get yourself
-            authenticated.
-          </div>
-        )}
-        {SsmsApiErrorMessage && (
-           <div className={styles.errorMessage}>
-         {`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`}
-         </div>
-        )}
-      </div>
+            <div>
+              {phoneErr && (
+                <div className={styles.errorMessage}>
+                  Please input a valid phone number.
+                </div>
+              )}
+              {insufficientBal && (
+                <div className={styles.errorMessage}>
+                  Please fund your wallet.
+                </div>
+              )}
+              {unauthorised && (
+                <div className={styles.errorMessage}>
+                  Not authorized to access this route! Please get yourself
+                  authenticated.
+                </div>
+              )}
+              {SsmsApiErrorMessage && (
+                <div className={styles.errorMessage}>
+                  {`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`}
+                </div>
+              )}
+            </div>
             <select
               className={`${styles.formControl} input-field`}
               onChange={handleNetworkAndInputValidation}
@@ -239,12 +239,14 @@ function BuyData() {
             />
             <br />
             <div className={styles.amountBtn}>
-              <div 
+              <div
                 className={`${styles.formControl} border border-white bg-white input-field`}
               >
-                { amountPlaceHolder ? "amount" :
-                <h2 value={amount}> {amounts.amount}</h2>
-              }
+                {amountPlaceHolder ? (
+                  "amount"
+                ) : (
+                  <h2 value={amount}> {amounts.amount}</h2>
+                )}
               </div>
               <br />
               <div

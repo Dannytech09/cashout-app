@@ -5,11 +5,10 @@ import { useForm } from "react-hook-form";
 import { getToken } from "../../Utils/Common";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
+import API_BASE_URL from "@/apiConfig";
 
 function Upgrade() {
   const [user, setUser] = useState();
-
-  const API_URL = "http://localhost:4000/api/v1/users/";
 
   const {
     register,
@@ -25,7 +24,7 @@ function Upgrade() {
 
   const submitHandler = ({ id, accountType }) => {
     {
-      const url = `${API_URL}${id}`;
+      const url = `${API_BASE_URL}/api/v1/users/${id}`;
       axios
         .put(
           url,

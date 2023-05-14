@@ -1,8 +1,4 @@
-import { useState } from 'react';
 import Link from 'next/link';
-import MenuBar from '@/components/heroIcons/MenuBar';
-import classNames from "classnames";
-import styles from "@/styles/NavBar.module.css"
 import HomeHeader from "@/components/homePage/Home-Header"
 
 const Hero = () => {
@@ -25,10 +21,10 @@ const Hero = () => {
         </p>
         <div className="flex mt-20 gap-4 text-center justify-center select-none">
         <div className="border  bg-cyan-700">
-       <Link href="http://localhost:3000/login"><button className="py-3 px-3 font-sans bg-hover:red font-bold text-2xl text-white-700">Login</button></Link> 
+       <Link href="/login"><button className="py-3 px-3 font-sans bg-hover:red font-bold text-2xl text-white-700">Login</button></Link> 
         </div>
         <div className="border bg-cyan-700">
-        <Link href="http://localhost:3000/register"><button className="py-3 px-3 font-sans bg-hover:red font-bold text-2xl text-white-700">Register</button></Link> 
+        <Link href="/register"><button className="py-3 px-3 font-sans bg-hover:red font-bold text-2xl text-white-700">Register</button></Link> 
         </div>
         </div>      
         

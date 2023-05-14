@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { setUserSession } from "../../Utils/Common";
 import Link from "next/link";
+import API_BASE_URL from "@/apiConfig";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ export default function Login() {
     }
     setError(null);
     axios
-      .post("https://cashout-app.herokuapp.com/api/v1/auth/forgotpassword", {
+      .post(`${API_BASE_URL}/api/v1/auth/forgotpassword`, {
         email: email,
       })
       .then((response) => {
