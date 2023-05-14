@@ -52,7 +52,7 @@ export default function User({ user }) {
             </li>
             <li>
               {" "}
-              User's Account-Type: &nbsp;
+              User&apos;s Account-Type: &nbsp;
               <span> {user.accountType}</span>
             </li>
           </ul>

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import withAuth from "../../hocs/withAuth";
 import Layout from "../../components/user/Layout";
 
-function profile() {
+function Profile() {
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -70,4 +70,4 @@ function profile() {
   );
 }
 
-export default withAuth(profile);
+export default withAuth(Profile);

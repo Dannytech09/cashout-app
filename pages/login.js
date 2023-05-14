@@ -134,7 +134,7 @@ const Login = () => {
           <Link href="/user/forgotPassword">Forgot Password ?</Link>
         </div>
         <div className="py-1 px-1 font-sans bg-hover:red font-bold text-1xl text-slate-200 bg-cyan-700">
-          <Link href="/register">Don't have an Account ?</Link>
+          <Link href="/register">Don&apos;t have an Account ?</Link>
         </div>
       </div>
     </form>

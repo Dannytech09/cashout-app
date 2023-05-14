@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Layout from "../../components/admin/Layout-Admin";
 import withAuth from "../../hocs/withAuth";
 
-function profile() {
+function Profile() {
   const [user, setUser] = useState();
 
   useEffect(() => {
@@ -15,11 +15,11 @@ function profile() {
   return (
     <div className="text-slate-800 h-screen">
       <Head>
-        <title>Admin's Profile</title>
+        <title>Admin&apos;s Profile</title>
       </Head>
       <Layout>
       <div className="p-3">
-        <h1 className="text-center">Admin's Profile</h1>
+        <h1 className="text-center">Admin&apos;s Profile</h1>
         <br />
         {user && (
           <div className="flex justify-around">
@@ -64,4 +64,4 @@ function profile() {
   );
 }
 
-export default withAuth(profile)
+export default withAuth(Profile)

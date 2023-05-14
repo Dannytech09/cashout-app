@@ -41,7 +41,7 @@ function GetAllUsers() {
     <div className="relative">
       <div className="p-2 fixed top-0 w-full border border-solid border-slate-500 bg-slate-900">
         <h1 className="mt-5 text-center text-slate-200 font-extrabold text-2xl">
-          All User's Info
+          All User&apos;s Info
         </h1>
         <div className="hover:pointer border border-solid p-2 m-4 text-slate-200 hover:bg-slate-400 hover:text-amber-400 text-center">
           <Link className="hover:text-amber-400 " href={"/admin/dashboard"}>

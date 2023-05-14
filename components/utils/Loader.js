@@ -22,7 +22,7 @@ export default function Loader() {
       router.events.off("routeChangeComplete", handleComplete);
       router.events.off("routeChangeError", handleComplete);
     };
-  }, [loading]);
+  }, [router.asPath, router.events]);
 
   return (
     loading && (

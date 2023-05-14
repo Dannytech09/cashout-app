@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import HomeHeader from "@/components/homePage/Home-Header"
+import Image from 'next/image';
 
 const Hero = () => {
   return (
@@ -9,7 +10,7 @@ const Hero = () => {
       </div>
     <div className="select-none flex items-center justify-center h-screen mb-12 bg-fixed bg-center bg-cover">
       <div>
-      <img className="opacity-80 lg:mt-[-20ch] xl:mt-[-10ch] md:mt-[20ch] sm:h-[50ch] sm:mt-[-10ch] w-screen bg-fixed bg-center bg-cover" src="/hero.jpg" alt="" srcSet="" />
+      <Image className="opacity-80 lg:mt-[-20ch] xl:mt-[-10ch] md:mt-[20ch] sm:h-[50ch] sm:mt-[-10ch] w-screen bg-fixed bg-center bg-cover" src="/hero.jpg" alt="" srcSet="" />
       {/* Overlay */}
       <div className="absolute w-full h-[100ch] top-20 left-0 bottom-0 bg-black/70 sm:z-[2]" />
       </div>

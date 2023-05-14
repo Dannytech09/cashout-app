@@ -83,7 +83,7 @@ function UpdateUser() {
         className="mt-4 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"
       >
         <h1 className="sm:text-3xl mb-2 font-sans text-2xl">
-          Update User's Details
+          Update User&apos;s Details
         </h1>
         <input
           {...register("id", {

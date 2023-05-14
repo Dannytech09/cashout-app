@@ -52,7 +52,7 @@ export default function Header() {
             <h2 className={styles.welBack}>Welcome Back {user.firstName}!</h2>
             <p className="mt-2 p-2 text-xs text-center">
               Refer people to CashOutPlug and earn 1,000 naira immediately the
-              person upgrade his/her account to Partner's Account Type
+              person upgrade his/her account to Partner&apos;s Account Type
             </p>
             <div className="flex w-screen justify-center gap-5 mt-5">
               <div className="border ml-2 text-sm border-solid border-secondary p-2 rounded-2xl bg-secondary">
