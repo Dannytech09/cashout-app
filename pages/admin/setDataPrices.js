@@ -1,6 +1,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import API_BASE_URL from "@/apiConfig";
+import { getToken } from "@/Utils/Common";
 
 const ADMIN_BASE_URL = `${API_BASE_URL}/admin`
 
@@ -14,6 +15,7 @@ export default function PatchForm() {
     const response = await fetch(`${ADMIN_BASE_URL}/price/update-price`, {
       method: "PATCH",
       headers: {
+        Authorization: "Bearer " + getToken(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ network, data }),
@@ -23,7 +25,7 @@ export default function PatchForm() {
       alert("Data updated successfully");
     } else {
       const error = await response.json();
-      alert(`Error updating data: ${error.message}`);
+      alert(`Error updating data: ${error.error}`);
     }
   };
 

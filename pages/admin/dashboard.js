@@ -1,3 +1,4 @@
+import { useState } from "react";
 import TotalUser from "../../components/admin/TotalUser";
 import TotalBalance from "../../components/admin/TotalBalance";
 import BlockedUsers from "../../components/admin/BlockedUsers";
@@ -11,10 +12,13 @@ import withAuth from "../../hocs/withAuth";
 
 const Dashboard = (users, totalBal, blocked) => {
   const router = useRouter();
+  const [loading, setLoading ] = useState(false)
 
-  const logoutHandler = () => {
-    AuthService.logout();
+  const logoutHandler = async () => {
+    setLoading(true);
+    await AuthService.logout();
     router.push("/admin/login");
+    setLoading(false);
   };
 
   return (
@@ -27,6 +31,7 @@ const Dashboard = (users, totalBal, blocked) => {
 
           <div className="flex justify-between p-2 w-screen">
             <h1 className="m-auto">Welcome Back Admin!</h1>
+          {loading ? (<p className=" text-xs">Logging out...</p>) : null}
             <div className="border p-1 hover:bg-red-600 hover:border-blue-500">
               <button
                 onClick={logoutHandler}

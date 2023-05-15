@@ -37,29 +37,25 @@ const Login = () => {
   const submitHandler = async ({ email, password }) => {
     setLoading(true);
     try {
-      // const response = await axios.post(`http://localhost:4000/api/v1/auth/login`, {
-      //   email,
-      //   password,
-      // });
       const response = await AuthService.signIn(email, password);
       if (response?.data?.token && typeof window !== "undefined") {
-        // redirect to dashboard
         router.push("/user/dashboard");
-      } else {
-        // server error
-        setMessage("Something went wrong, please try again later");
       }
     } catch (error) {
       // invalid credentials
-      console.error(error);
-      setMessage("Invalid email or password");
+      if(error.response.data.error === "Invalid credentials") {
+        setMessage("Invalid email or password");
+      } else {
+        setMessage("Something went wrong !");
+      }
     }
     setLoading(false);
   };
 
   return (
     <div>
-      {loading ? <p>Loading...</p> : message ? <p>{message}</p> : null}
+      {loading ? <p>Loading...</p> : null}
+      {message ? <p>{message}</p> : null}
 
       <form
         onSubmit={handleSubmit(submitHandler)}

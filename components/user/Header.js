@@ -15,8 +15,8 @@ export default function Header() {
     setUser(user);
   }, []);
   
-  const logoutHandler = () => {
-    AuthService.logout();
+  const logoutHandler = async () => {
+    await AuthService.logout();
     router.push("/login");
   };
 

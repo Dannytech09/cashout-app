@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import API_BASE_URL from "@/apiConfig";
 
-const BASE_URL = `${API_BASE_URL}/pay`
+const BASE_URL = `${API_BASE_URL}/pay`;
 
 function BuyData() {
   const router = useRouter();
@@ -43,8 +43,8 @@ function BuyData() {
         setLoading(false);
         return;
       } catch (error) {
-        console.error(error);
-        return;
+        // console.error(error);
+        return <p>error: {error.response.data.error}</p>;
       }
     }
     fetchData();
@@ -66,7 +66,7 @@ function BuyData() {
     setPhoneNumber("");
     setAmount("");
     setNetwork(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
   // handle two onchange props
   const handleNetworkAndInputValidation = (e) => {
@@ -85,7 +85,7 @@ function BuyData() {
     }
     setPhoneNumber("");
     setAmount("");
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
   // handle two onchange props
   const handleDataVolAndInputValidation = (e) => {
@@ -98,7 +98,7 @@ function BuyData() {
     const inputValue = e.target.value;
     setPhoneNumber(inputValue);
     handleInputField(e);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const submit = (e) => {
@@ -143,7 +143,9 @@ function BuyData() {
     } catch (error) {
       if (error.response.data.error) {
         setUnauthorised(true);
-      } else if (error.response.data.invalidMessage) {
+      } else if (
+        error.response.data.message === "Please input a valid phone number"
+      ) {
         setPhoneErr(true);
         console.log(error.response);
       } else if (error.response.data.code === 3002) {
@@ -178,12 +180,9 @@ function BuyData() {
   }
 
   return (
-    <>
-      <form
-        onSubmit={submit}
-        className="flex justify-center h-screen lg:h-full bg-slate-500 w-full "
-      >
-        <div className="p-10 w-full">
+    <div className="bg-slate-500 h-screen md:h-screen xl:h-full">
+      <form onSubmit={submit} className="">
+        <div className="p-10">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Data</h3>
             <div>
@@ -283,7 +282,7 @@ function BuyData() {
         onConfirm={confirmData}
         // value={buyData}
       />
-    </>
+    </div>
   );
 }
 

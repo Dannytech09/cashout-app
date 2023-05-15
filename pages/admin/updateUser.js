@@ -9,6 +9,7 @@ import API_BASE_URL from "@/apiConfig";
 
 function UpdateUser() {
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -29,18 +30,20 @@ function UpdateUser() {
     // mode: "onchange"
   });
 
-  const submitHandler = ({
+  const url = `${API_BASE_URL}/api/v1/users`;
+
+  const submitHandler = async ({
     id,
     firstName,
     lastName,
     phoneNumber,
     username,
   }) => {
-    {
-      const url = `${API_BASE_URL}/api/v1/users/${id}`;
-      axios
-        .put(
-          url,
+    setLoading(true);
+    try {
+      if (typeof window !== undefined) {
+        const response = await axios.put(
+          `${url}/${id}`,
           {
             firstName: firstName,
             lastName: lastName,
@@ -53,31 +56,30 @@ function UpdateUser() {
               "Content-Type": "application/json; charset=utf8",
             },
           }
-        )
-        .then((res) => {
-          if (res.data.data === null) {
-            alert("Invalid User ID");
-          }
+        );
+        console.log(response);
+        if (response.data.data === null) {
+          alert("Invalid User ID");
+        } else {
           alert("User Updated Successfully See Details Below!");
-          setUser(res.data.data);
-        })
-        .catch((error) => {
-          if (
-            error.response?.status === 401 ||
-            error.response?.status === 500
-          ) {
-            alert("Not Authorised to access this resource or Server Error");
-          } else if (error.response?.status === 400) {
-            alert("User already exist or Duplicate field entered");
-          } else {
-            alert("Something went wrong");
-          }
-        });
+        }
+        setUser(response.data.data);
+      }
+    } catch (error) {
+      if (error.response?.status === 401 || error.response?.status === 500) {
+        alert("Not Authorised to access this resource or Server Error");
+      } else if (error.response?.status === 400) {
+        alert("User already exist or Duplicate field entered");
+      } else {
+        alert("Network issue or Network issue or No User found");
+        console.log(error);
+      }
     }
+    setLoading(false);
   };
-
   return (
     <div>
+      {loading ? <p>Loading...</p> : null}
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="mt-4 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"
@@ -253,4 +255,52 @@ function UpdateUser() {
   );
 }
 
-export default withAuth(UpdateUser)
+export default withAuth(UpdateUser);
+
+// const url = `${API_BASE_URL}/api/v1/users`;
+
+// // const headers = {
+// //   Authorization: "Bearer " + getToken(),
+// //   "Content-Type": "application/json; charset=utf8",
+// // }
+
+// const submitHandler = async ({
+//   id,
+//   firstName,
+//   lastName,
+//   phoneNumber,
+//   username,
+// }) => {
+//     setLoading(true);
+// try {
+// if(typeof window !== undefined) {
+
+//   const response = await axios.post(`${url}/${id}`, {   firstName: firstName,
+//     lastName: lastName,
+//     phoneNumber: phoneNumber,
+//     username: username, }, {headers:  {
+//       Authorization: "Bearer " + getToken(),
+//       "Content-Type": "application/json; charset=utf8",
+//     }});
+//   console.log(response)
+//   if (response.data.data === null) {
+//     alert("Invalid User ID");
+//   } else {
+//   alert("User Updated Successfully See Details Below!");
+//   }
+//   setUser(response.data.data);
+// }
+
+// } catch (error) {
+//   if (
+//       error.response?.status === 401 ||
+//       error.response?.status === 500
+//     ) {
+//       alert("Not Authorised to access this resource or Server Error");
+//     } else if (error.response?.status === 400) {
+//       alert("User already exist or Duplicate field entered");
+//     } else {
+//       alert("Network issue or no User found");
+//       console.log(error)
+
+//   }

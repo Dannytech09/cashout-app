@@ -8,7 +8,8 @@ import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
 
 function GetSingleUser() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const {
     register,
@@ -21,6 +22,7 @@ function GetSingleUser() {
   });
 
   const submitHandler = (id) => {
+    setLoading(true)
     const url = `${API_BASE_URL}/api/v1/users/${id.id}`;
     axios
       .get(url, {
@@ -30,7 +32,6 @@ function GetSingleUser() {
         },
       })
       .then((res) => {
-        setLoading(true)
         alert("Check Successful");
         setUser(res.data.data);
       })
@@ -43,13 +44,19 @@ function GetSingleUser() {
           alert("User not found or Server Error");
           // window.location.reload("/admin/getSingleUser");
         }
-        return;
       });
-    // console.log(id)
+      setLoading(false)
   };
+
+  if(loading) {
+    return (
+      <p>Loading...</p>
+    )
+  }
 
   return (
     <div>
+       {/* {loading ? <p>Loading...</p> : null} */}
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="mt-20 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"

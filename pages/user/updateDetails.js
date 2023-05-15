@@ -9,6 +9,7 @@ import API_BASE_URL from "@/apiConfig";
 
 function UpdateUser() {
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
 
   const API_URL = `${API_BASE_URL}/api/v1/auth/update-details`;
 
@@ -26,6 +27,7 @@ function UpdateUser() {
   });
 
   const submitHandler = ({ firstName, lastName, phoneNumber }) => {
+    setLoading(true);
     {
       axios
         .put(
@@ -61,11 +63,13 @@ function UpdateUser() {
             alert("Something went wrong");
           }
         });
+        setLoading(false);
     }
   };
 
   return (
     <div>
+      {loading ? <p>Loading...</p> : null}
       <div className="flex absolute mt-[-2ch]">
         <Sidebar />
       </div>

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import AuthService from "../../services/auth.Service";
 
 export default function Login() {
+  const [loading, setLoading ] = useState(false);
+
   useAuthGuard();
   const {
     register,
@@ -21,6 +23,7 @@ export default function Login() {
   const router = useRouter();
 
   const submitHandler = async ({ email, password }) => {
+    setLoading(true);
     if (typeof window !== "undefined") {
 
       if (email && password) {
@@ -43,11 +46,14 @@ export default function Login() {
               alert("Something went Wrong! If problem persist please check your network..");
             }
           });
+          setLoading(false);
       }
     }
   };
 
   return (
+    <div>
+    {loading ? (<p>Loading...</p>) : null}
     <form
       onSubmit={handleSubmit(submitHandler)}
       className="select-none text-xs sm:text-sm justify-center md:text-sm lg:justify-center lg:text-sm flex flex-col gap-4 sm:gap-6 items-center h-screen"
@@ -109,5 +115,6 @@ export default function Login() {
         <h2 className="relative z-30"> Submit</h2>
       </button>
     </form>
+    </div>
   );
 }

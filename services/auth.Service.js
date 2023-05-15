@@ -33,13 +33,13 @@ const signUp = (
 };
 
 // Login Auth
-const signIn = (email, password) => {
+const signIn = async (email, password) => {
   return axios
     .post(`${BASE_URL}/login`, {
       email,
       password,
     })
-    .then((response) => {
+    .then(async (response) => {
       if (
         response?.data.user.isAdmin === false &&
         typeof window !== "undefined"
@@ -92,10 +92,10 @@ const logout = async () => {
     console.log(error);
   }
   removeUserSession();
-  if (typeof window !== "undefined") {
-    destroyCookie(null, "token");
-    destroyCookie(null, "user");
-  }
+  // if (typeof window !== "undefined") {
+  //   destroyCookie(null, "token");
+  //   destroyCookie(null, "user");
+  // }
   // console.log(document.cookie);
 };
 
