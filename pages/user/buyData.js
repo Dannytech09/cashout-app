@@ -17,7 +17,7 @@ function BuyData() {
   const [phoneErr, setPhoneErr] = useState(false);
   const [insufficientBal, setInsufficientBal] = useState(false);
   const [unauthorised, setUnauthorised] = useState(false);
-  const [SsmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
+  // const [SsmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
 
   const [network, setNetwork] = useState("--Choose Network--");
   const [dataVol, setDataVol] = useState("--Data Volume--");
@@ -44,7 +44,7 @@ function BuyData() {
         return;
       } catch (error) {
         // console.error(error);
-        return <p>error: {error.response.data.error}</p>;
+        alert("Not authorised or server error")
       }
     }
     fetchData();
@@ -137,9 +137,16 @@ function BuyData() {
           headers: authHeader(),
         }
       );
-      alert(response.data.message);
-      setLoading(false);
-      router.reload();
+      if(response.data.code === 3000) {
+        alert(response.data.message);
+        router.reload();
+        // setNetwork([]);
+        // setDataVol("");
+        // setPhoneNumber("");
+        // setAmount([]);
+        setLoading(false);
+        console.log(response.data)
+      }
     } catch (error) {
       if (error.response.data.error) {
         setUnauthorised(true);
@@ -147,13 +154,16 @@ function BuyData() {
         error.response.data.message === "Please input a valid phone number"
       ) {
         setPhoneErr(true);
-        console.log(error.response);
-      } else if (error.response.data.code === 3002) {
-        setsSmsApiErrorMessage(true);
-      } else if (error.response.data.code === 3003) {
+        // console.log(error.response);
+      } 
+      // else if (error.response.data.message === `Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`) {
+      //   setsSmsApiErrorMessage(true);
+      // } 
+      else if (error.response.data.message === "Insufficient funds") {
         setInsufficientBal(true);
       } else {
-        console.log(error.response);
+        // console.log(error.response);
+        alert(`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`)
       }
       setLoading(false);
     }
@@ -202,11 +212,11 @@ function BuyData() {
                   authenticated.
                 </div>
               )}
-              {SsmsApiErrorMessage && (
+              {/* {SsmsApiErrorMessage && (
                 <div className={styles.errorMessage}>
                   {`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`}
                 </div>
-              )}
+              )} */}
             </div>
             <select
               className={`${styles.formControl} input-field`}

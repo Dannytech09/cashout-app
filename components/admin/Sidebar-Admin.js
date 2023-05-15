@@ -75,8 +75,8 @@ const SidebarAdmin = () => {
     }
   );
 
-  const logoutHandler = () => {
-    AuthService.logout();
+  const logoutHandler = async () => {
+    await AuthService.logout();
     router.push("/admin/login");
   };
 
