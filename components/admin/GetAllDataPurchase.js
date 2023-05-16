@@ -21,6 +21,7 @@ function DataPurchased({ allDataPurchased }) {
                 Transaction ID: {item._id}
               </p>
               <p className="text-gray-700 text-[1.1ch]">User ID: {item.user}</p>
+              <p className="text-gray-700 text-[1.1ch]">Username: {item.username}</p>
               <p className="text-gray-700 text-[1.1ch]">
                 Network: {item.network}
               </p>
@@ -35,6 +36,18 @@ function DataPurchased({ allDataPurchased }) {
               </p>
               <p className="text-gray-700 text-[1.1ch]">
                 Amount: {item.amount}
+              </p>
+              <p className="text-gray-700 text-[1.1ch]">
+                Prev Bal: {item.prevBal}
+              </p>
+              <p className="text-gray-700 text-[1.1ch]">
+                Post Bal: {item.postBal}
+              </p>
+              <p className="text-gray-700 text-[1.1ch]">
+                Tracking ID: {item.transaction_id}
+              </p>
+              <p className="text-gray-700 text-[1.1ch]">
+                Status: {item.transaction_status}
               </p>
               <p className="text-gray-700 text-[1.1ch]">
                 {" "}

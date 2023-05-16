@@ -17,7 +17,7 @@ function BuyData() {
   const [phoneErr, setPhoneErr] = useState(false);
   const [insufficientBal, setInsufficientBal] = useState(false);
   const [unauthorised, setUnauthorised] = useState(false);
-  // const [SsmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
+  const [SsmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
 
   const [network, setNetwork] = useState("--Choose Network--");
   const [dataVol, setDataVol] = useState("--Data Volume--");
@@ -44,7 +44,7 @@ function BuyData() {
         return;
       } catch (error) {
         // console.error(error);
-        alert("Not authorised or server error")
+        alert("Not authorised or server error");
       }
     }
     fetchData();
@@ -122,53 +122,45 @@ function BuyData() {
   //  const clonedForm = JSON.parse(JSON.stringify(form));
 
   const confirmData = async () => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    const id = user._id;
+    if (typeof window !== "undefined") {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      const id = user._id;
 
-    try {
-      setLoading(true);
-      setPhoneErr(false);
-      setInsufficientBal(false);
-      setUnauthorised(false);
-      const response = await axios.post(
-        `${BASE_URL}/${id}/purchase`,
-        { network, dataVol, phoneNumber },
-        {
-          headers: authHeader(),
+      try {
+        setLoading(true);
+        setPhoneErr(false);
+        setInsufficientBal(false);
+        setUnauthorised(false);
+        const response = await axios.post(
+          `${BASE_URL}/${id}/purchase`,
+          { network, dataVol, phoneNumber },
+          {
+            headers: authHeader(),
+          }
+        );
+        if (response.data.code === "000") {
+          alert(response.data.message);
+          router.reload();
+          setLoading(false);
         }
-      );
-      if(response.data.code === 3000) {
-        alert(response.data.message);
-        router.reload();
-        // setNetwork([]);
-        // setDataVol("");
-        // setPhoneNumber("");
-        // setAmount([]);
+      } catch (error) {
+        if (error.response.data.error) {
+          setUnauthorised(true);
+        } else if (error.response.data.code === "003") {
+          setPhoneErr(true);
+        } else if (error.response.data.code === "001") {
+          setsSmsApiErrorMessage(true);
+        } else if (error.response.data.code === "006") {
+          setInsufficientBal(true);
+        } else {
+          // console.log(error.response);
+          alert(`Something went wrong!`);
+        }
         setLoading(false);
-        console.log(response.data)
       }
-    } catch (error) {
-      if (error.response.data.error) {
-        setUnauthorised(true);
-      } else if (
-        error.response.data.message === "Please input a valid phone number"
-      ) {
-        setPhoneErr(true);
-        // console.log(error.response);
-      } 
-      // else if (error.response.data.message === `Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`) {
-      //   setsSmsApiErrorMessage(true);
-      // } 
-      else if (error.response.data.message === "Insufficient funds") {
-        setInsufficientBal(true);
-      } else {
-        // console.log(error.response);
-        alert(`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`)
-      }
-      setLoading(false);
-    }
 
-    closeModal();
+      closeModal();
+    }
   };
 
   function handleInputField() {
@@ -212,11 +204,11 @@ function BuyData() {
                   authenticated.
                 </div>
               )}
-              {/* {SsmsApiErrorMessage && (
+              {SsmsApiErrorMessage && (
                 <div className={styles.errorMessage}>
                   {`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`}
                 </div>
-              )} */}
+              )}
             </div>
             <select
               className={`${styles.formControl} input-field`}
