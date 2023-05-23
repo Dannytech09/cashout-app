@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import authHeader from "../../services/auth-Header";
-import ConfirmDataModal from "@/components/utils/ConfirmDataModal";
+import ConfirmDataModal from "../../components/utils/ConfirmDataModal";
 import axios from "axios";
 import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Sidebar from "@/components/user/Sidebar";
-import Footer from "../../components/user/Footer"
+import Footer from "../../components/user/Footer";
 import API_BASE_URL from "@/apiConfig";
 
 const BASE_URL = `${API_BASE_URL}/pay`;
@@ -199,7 +199,7 @@ function BuyData() {
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-      <Sidebar/>
+      <Sidebar />
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
@@ -301,7 +301,7 @@ function BuyData() {
         onConfirm={confirmData}
         // value={buyData}
       />
-      <Footer/>
+      <Footer />
     </div>
   );
 }
