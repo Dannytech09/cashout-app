@@ -110,4 +110,4 @@ function DeleteUser() {
   );
 }
 
-export default withAuth(DeleteUser)
+export default withAuth(DeleteUser);

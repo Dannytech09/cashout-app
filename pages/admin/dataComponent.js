@@ -7,8 +7,8 @@ function dataComponent() {
    return (
     <div className="flex flex-col gap-4 p-4">
       <div className="border rounded-md bg-blue-100 p-4">
-        <Link href={"/admin/getAllDataPurchased"} className="text-gray-600 hover:text-gray-800 font-medium">
-        Data Purchase History
+        <Link href={"/admin/getAllPurchases"} className="text-gray-600 hover:text-gray-800 font-medium">
+        Purchases History
         </Link>
       </div>
       <div className="border rounded-md bg-green-100 p-4">

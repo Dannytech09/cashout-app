@@ -1,8 +1,7 @@
 export const getUser = () => {
-  return JSON.parse(sessionStorage.getItem("user"));
-  // const userStr = sessionStorage.getItem("user");
-  // if(userStr) return JSON.parse(userStr);
-  // else return null;
+  if(typeof window !== "undefined") {
+    return JSON.parse(sessionStorage.getItem("user"));
+  }
 };
 
 export const getToken = () => {

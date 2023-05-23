@@ -9,17 +9,31 @@ import LogoutIcon from "../heroIcons/LogoutIcon";
 export default function Header() {
   const router = useRouter();
   const [user, setUser] = useState();
-  
+  const [error, setError] = useState('')
+
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    setUser(user);
+    AuthService.getLoggedInUser()
+      .then((response) => {
+        setUser(response.data.data);
+        // console.log(response.data.data);
+      })
+      .catch((error) => {
+        setError(error);
+        // console.log("Error 1:", error);
+      });
   }, []);
+
   
   const logoutHandler = async () => {
     await AuthService.logout();
     router.push("/login");
   };
 
+  // useEffect(() => {
+  //   const user = JSON.parse(sessionStorage.getItem("user"));
+  //   setUser(user);
+  //   console.log(user)
+  // }, []);
 
   return (
     // <div>
@@ -31,9 +45,15 @@ export default function Header() {
               <h2 className="text-sm sm:text-xs font-bold">
                 &#8358; {user.balance.$numberDecimal}
               </h2>
+              {error && (
+                <p>Error fetching balance</p>
+              )}
             </div>
           )}
-          <div onClick={logoutHandler} className="fixed-right sm:mr-4 md:mr-4 z-50 border-red-2 p-2 h-10 w-10 bg-red-500">
+          <div
+            onClick={logoutHandler}
+            className="fixed-right sm:mr-4 md:mr-4 z-50 border-red-2 p-2 h-10 w-10 bg-red-500"
+          >
             <LogoutIcon />
           </div>
         </div>

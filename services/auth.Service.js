@@ -2,7 +2,7 @@ import axios from "axios";
 import { setUserSession, removeUserSession } from "../Utils/Common";
 import authHeader from "./auth-Header";
 // import { setCookie } from "nookies";
-import { destroyCookie } from "nookies";
+// import { destroyCookie } from "nookies";
 import API_BASE_URL from "@/apiConfig";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/auth`;

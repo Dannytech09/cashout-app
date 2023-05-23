@@ -1,0 +1,67 @@
+.formControl {
+    color: firebrick;
+    width: 25rem;
+    padding: .4rem;
+    margin-bottom: 1rem;
+}
+
+.airtimeBtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-top: -2rem;
+    box-sizing: border-box;
+}
+
+.btn {
+    width: 25rem;
+    color: #ed4544;
+    text-align: center;
+    justify-content: center;
+    padding: .7rem;
+}
+
+.errorMessage {
+    color: red;
+    margin-bottom: 2rem;
+    font-size: .9rem;
+    padding: 1rem;
+    border: 2px solid;
+    border: #000f;
+    max-width: 20rem;
+    margin:auto;
+    margin-bottom: .5rem;
+    background-color: #000f;
+  }
+
+  .submitDashboardBtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-top: -2rem;
+    box-sizing: border-box;
+}
+
+  /* Media query */
+  @media(max-width: 479px) {
+      .formControl {
+        color: firebrick;
+        width: 18rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+  }
+
+@media(max-width: 479px) {
+.btn {
+    width: 18rem;
+    color: #ed4544;
+    text-align: center;
+    justify-content: center;
+    padding: 1rem;
+}
+}

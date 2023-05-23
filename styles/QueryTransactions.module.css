@@ -1,0 +1,17 @@
+.btn {
+    width: 100;
+    color: #ed4544;
+    text-align: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.submitDashboardBtn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    margin-top: -2rem;
+    box-sizing: border-box;
+}
