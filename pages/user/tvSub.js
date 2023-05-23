@@ -135,7 +135,7 @@ export default function TvSub() {
     setLoading(false);
   };
 
-  const handleFormValidation = () => {
+  const handleFormValidation = useCallback(() => {
     let allFormFilled = true;
 
     if (
@@ -146,15 +146,13 @@ export default function TvSub() {
       allFormFilled = false;
     }
 
-    // Add more validation logic for other form fields if needed
-
     setAllSelected(allFormFilled);
-  };
+  }, [selectedService, iucNumber]);
 
   useEffect(() => {
     handleFormValidation();
-  }, [selectedService, selectedVariation, iucNumber, handleFormValidation]);
-  
+  }, [handleFormValidation]);
+
   const submit = (e) => {
     e.preventDefault();
     if (allSelected) {

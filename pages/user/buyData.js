@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import authHeader from "../../services/auth-Header";
-import ConfirmDataModal from "../../components/utils/ConfirmDataModal";
 import axios from "axios";
 import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Sidebar from "@/components/user/Sidebar";
 import Footer from "../../components/user/Footer";
+import ConfirmDataModal from "../../components/utils/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
 
 const BASE_URL = `${API_BASE_URL}/pay`;
