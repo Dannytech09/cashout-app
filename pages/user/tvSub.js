@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import styles from "../../styles/TvSub.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import authHeader from "../../services/auth-Header";
 import Sidebar from "@/components/user/Sidebar";
-import ConfirmTvModal from "@/components/utils/ConfirmTvModal";
+import ConfirmTvModal from "../../components/utils/ConfirmTvModal";
 import API_BASE_URL from "@/apiConfig";
 // import Footer from "../../components/user/Footer";
 
@@ -46,21 +46,21 @@ export default function TvSub() {
   const handleServiceChange = (event) => {
     const serviceID = event.target.value;
     setSelectedService(serviceID);
-    console.log(serviceID);
     setSelectedVariation("");
+    // console.log(serviceID);
   };
 
   const handleVariationChange = (event) => {
     variationCode = event.target.value;
     setSelectedVariation(variationCode);
-    console.log(variationCode);
+    // console.log(variationCode);
   };
 
   // handle IUC NUMBER
   const handleIucNumber = (e) => {
     const inputValue = e.target.value;
     setIucNumber(inputValue);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   const getServiceOptions = () => {
