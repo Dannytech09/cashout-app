@@ -64,7 +64,7 @@ export default function Main() {
 
       {error && (
         <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-red-600">
-          You can't generate more than one account number. Kindly contact support.
+          You can&apos;t generate more than one account number. Kindly contact support.
         </p>
       )}
       {buttonClicked && !error && !isFetching  ? <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-green-700">Loading...</p> : null}
