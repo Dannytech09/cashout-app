@@ -6,7 +6,7 @@ function MyHistories({ myHistories, checkTransaction }) {
     <div className="relative">
       <div className="p-2 fixed top-0 w-full border border-solid border-slate-500 bg-slate-900">
         <h1 className="mt-2 text-center text-slate-200 font-extrabold text-sm">
-          Cable TV and Electricity Bill's History
+          Cable TV and Electricity Bill&apos;s History
         </h1>
       </div>
       <div className="mt-[4ch] bg-black">
@@ -31,12 +31,12 @@ function MyHistories({ myHistories, checkTransaction }) {
                 Amount: {item.amount}
               </p>
               <div className="flex justify-between">
-              <p className="text-gray-700 text-[1.1ch]">
-                Prev Bal: {item.prevBal}
-              </p>
-              <p className="text-gray-700 text-[1.1ch]">
-                Post Bal: {item.postBal}
-              </p>
+                <p className="text-gray-700 text-[1.1ch]">
+                  Prev Bal: {item.prevBal}
+                </p>
+                <p className="text-gray-700 text-[1.1ch]">
+                  Post Bal: {item.postBal}
+                </p>
               </div>
               <p className="text-gray-700 text-[1.1ch]">
                 Tracking ID: {item.transaction_id}
