@@ -4,12 +4,11 @@ import ConfirmAirtimeModal from "@/components/utils/ConfirmAirtimeModal";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styles from "../../styles/BuyAirtime.module.css"
+import styles from "../../styles/BuyAirtime.module.css";
 import Sidebar from "@/components/user/Sidebar";
-import Footer from "@/components/user/Footer"
+import Footer from "@/components/user/Footer";
+import SmileIcon from "@/components/heroIcons/SmileIcon";
 import API_BASE_URL from "@/apiConfig";
-
-
 
 const BASE_URL = `${API_BASE_URL}/buyAirtime`;
 
@@ -24,7 +23,6 @@ function BuyAirtime() {
   const [allSelected, setAllSelected] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [max, setMax] = useState(false);
-
 
   const [network, setNetwork] = useState("--Choose Network--");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -44,15 +42,15 @@ function BuyAirtime() {
     const inputValue = e.target.value;
 
     // Remove non-numeric characters from the input
-    const numericPhoneNumber = inputValue.replace(/\D/g, '');
+    const numericPhoneNumber = inputValue.replace(/\D/g, "");
 
     setPhoneNumber(numericPhoneNumber);
 
-     // Regex pattern to match Nigerian phone numbers
-     const regex = /^(\+?234|0)[789]\d{9}$/;
+    // Regex pattern to match Nigerian phone numbers
+    const regex = /^(\+?234|0)[789]\d{9}$/;
 
-     const isValidPhoneNumber = regex.test(inputValue)
-     setIsValid(isValidPhoneNumber)
+    const isValidPhoneNumber = regex.test(inputValue);
+    setIsValid(isValidPhoneNumber);
 
     handleInputField(e);
     console.log(e.target.value);
@@ -61,7 +59,7 @@ function BuyAirtime() {
   const changeAmount = (e) => {
     const inputValue = e.target.value;
 
-    const numericPhoneNumber = inputValue.replace(/\D/g, '');
+    const numericPhoneNumber = inputValue.replace(/\D/g, "");
     setAmount(numericPhoneNumber);
 
     handleInputField(e);
@@ -130,7 +128,7 @@ function BuyAirtime() {
           setApiError(true);
         } else if (error.response.data.code === "006") {
           setInsufficientBal(true);
-        } else if(error.response.data.code === "009") {
+        } else if (error.response.data.code === "009") {
           setMax(true);
         } else {
           alert(`Something went wrong!`);
@@ -163,7 +161,7 @@ function BuyAirtime() {
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-      <Sidebar/>
+      <Sidebar />
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
@@ -176,7 +174,8 @@ function BuyAirtime() {
               )}
               {insufficientBal && (
                 <div className={styles.errorMessage}>
-                  Please fund your wallet.
+                  Fund your wallet now boss !
+                  <span className="fill-blue-900 stroke-blue-600"><SmileIcon/></span>
                 </div>
               )}
               {unauthorised && (
@@ -186,14 +185,12 @@ function BuyAirtime() {
                 </div>
               )}
               {apiError && (
-                <div className={styles.errorMessage}>
-                  Transaction Failed!
-                </div>
+                <div className={styles.errorMessage}>Transaction Failed!</div>
               )}
               {max && (
-                 <div className={styles.errorMessage}>
-                 Minimum amount - 100 and maximum amount 5000 naira
-               </div>
+                <div className={styles.errorMessage}>
+                  Minimum amount - 100 and maximum amount 5000 naira
+                </div>
               )}
             </div>
             <select
@@ -215,7 +212,7 @@ function BuyAirtime() {
               onChange={changePhoneNumber}
             />
             <div className="text-xs mr-40 mt-[-2ch] text-red-600">
-            {isValid ? null : <p>Invalid Phone Number</p> }
+              {isValid ? null : <p>Invalid Phone Number</p>}
             </div>
             <br />
             <input
@@ -226,25 +223,25 @@ function BuyAirtime() {
             />
             <br />
             <div className={styles.airtimeBtn}>
-            <div
-              className={`${styles.btn} border border-white bg-white text-center hover:cursor-pointer`}
-            >
-              <button
-                disabled={!allSelected}
-                onClick={openModal}
-                style={{
-                  opacity: allSelected ? "1" : "0.5",
-                  cursor: allSelected ? "pointer" : "not-allowed",
-                }}
+              <div
+                className={`${styles.btn} border border-white bg-white text-center hover:cursor-pointer`}
               >
-                {loading ? <p>Loading...</p> : "Buy Airtime"}
-              </button>
-            </div>
-            <div
-              className={`${styles.btn} mt-3 border border-blue-900 bg-blue-900 text-center hover:cursor-pointer`}
-            >
-              <Link href="/user/dashboard"> Goto My Dashboard </Link>
-            </div>
+                <button
+                  disabled={!allSelected}
+                  onClick={openModal}
+                  style={{
+                    opacity: allSelected ? "1" : "0.5",
+                    cursor: allSelected ? "pointer" : "not-allowed",
+                  }}
+                >
+                  {loading ? <p>Loading...</p> : "Buy Airtime"}
+                </button>
+              </div>
+              <div
+                className={`${styles.btn} mt-3 border border-blue-900 bg-blue-900 text-center hover:cursor-pointer`}
+              >
+                <Link href="/user/dashboard"> Goto My Dashboard </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -259,7 +256,7 @@ function BuyAirtime() {
         // value={buyData}
       />
       <div className="md:mb-[-20ch]">
-      <Footer/>
+        <Footer />
       </div>
     </div>
   );

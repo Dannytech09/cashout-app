@@ -16,12 +16,12 @@ const customStyles = {
   }
 };
 
-const ConfirmDataModal = ({ network, dataVol, phoneNumber, modalIsOpen, onRequestClose, onConfirm, children }) => {
+const ConfirmDataModal = ({ phoneNumber, network, modalIsOpen, onRequestClose, onConfirm, children }) => {
   return (
     <Modal appElement={typeof window !== 'undefined' ? document.getElementById('__next') : null}
     isOpen={modalIsOpen} onRequestClose={onRequestClose} style={customStyles}>
     <div className='p-6'>
-      <h2 className='text-1xl'>You are about to purchase {dataVol} {network} to {phoneNumber}</h2>
+      <h2 className='text-1xl'>You are about to purchase {network} to {phoneNumber}</h2>
       <div className='text-center mt-10 flex justify-around'>
       <button className='text-green-600 font-bold' onClick={onConfirm}>Confirm</button>
       <button className='text-red-600 font-bold' onClick={onRequestClose}>Cancel</button>

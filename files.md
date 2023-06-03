@@ -678,3 +678,466 @@ some name Enterprises is a private limited liability company registered under th
   <script src="homepage/assets/js/main.js"></script>
 
 </body>
+
+
+
+
+
+import React, { useState, useEffect } from "react";
+import Card from "../utils/Card";
+import WalletIcon from "../heroIcons/WalletIcon";
+const axios = require("axios");
+import API_BASE_URL from "@/apiConfig";
+
+const BASE_URL = `${API_BASE_URL}/api/v1`;
+
+export default function Main() {
+  const [data, setData] = useState(null); // State to hold the fetched data
+  const [isClicked, setIsClicked] = useState(false); // Flag to track if the component is clicked
+  const [isFetching, setIsFetching] = useState(false); // Flag to track the fetching status
+
+  const handleClick = () => {
+    setIsClicked(true);
+  };
+
+  useEffect(() => {
+    if (isClicked && !isFetching) {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      const token = sessionStorage.getItem("token") || null;
+      const id = user._id;
+      const header = { Authorization: `Bearer ${token}` };
+
+      const fetchData = async () => {
+        setIsFetching(true); // Set the flag to indicate fetching is in progress
+        try {
+          const response = await axios.post(
+            `${BASE_URL}/autoFunding/${id}`,
+            null,
+            { headers: header }
+          );
+          setData(response.data.data.result);
+          console.log(response.data.data.result);
+        } catch (error) {
+          console.log(error);
+        }
+        setIsFetching(false); // Reset the flag after fetching is completed
+      };
+
+      // fetchData();
+    }
+  }, [isClicked, isFetching]); // Depend on the "isClicked" and "isFetching" flags
+
+  return (
+    <Card className="max-sm:flex-col max-sm:w-full text-center z-60 flex h-60 p-4 justify-between w-full border-3 bg-slate-100 border-white">
+      <div>
+        <div className="flex gap-20 text-center max-sm:w-full h-[20ch] bg-slate-400 border-2 max-sm:mt-[-2ch] border-slate-200 rounded-2xl w-[30%]">
+          <span className="fill-blue-900 h-7 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+            <WalletIcon />
+      {/* <button onClick={handleClick}>Get Account Number</button> */}
+          </span>
+          <h3 className="text-xs pt-3 place-items-center font-extrabold">
+            Monnify wema
+          </h3>
+          {/* {data && data.length >= 1 && (
+            <div>
+          <span>Bank Name: {data[0]?.bankName}</span>
+          <span>Account Number: {data[0]?.accountNumber}</span>
+          <span>Account Name: {data[0]?.accountName}</span>
+          </div>
+          )} */}
+        </div>
+        <div className="flex gap-20 max-sm:w-full h-[20ch] mt-[0ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[30%]">
+          <span className="fill-blue-900 h-7 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+            <WalletIcon />
+          </span>
+          <h3 className="text-xs pt-3 font-extrabold">Monnify sterling</h3>
+          {/* {data && data.length >= 2 && (
+            <div>
+          <span>Bank Name: {data[1]?.bankName}</span>
+          <span>Account Number: {data[1]?.accountNumber}</span>
+          <span>Account Name: {data[1]?.accountName}</span>
+          </div>
+          )} */}
+        </div>
+        <div className="flex gap-20 max-sm:w-full h-[20ch] mt-[0ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[30%]">
+          <span className="fill-blue-900 h-7 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+            <WalletIcon />
+          </span>
+          <h3 className="text-xs pt-3 font-extrabold">Monnify rolex</h3>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from "react";
+import Card from "../utils/Card";
+import WalletIcon from "../heroIcons/WalletIcon";
+const axios = require("axios");
+import API_BASE_URL from "@/apiConfig";
+
+const BASE_URL = `${API_BASE_URL}/api/v1`;
+
+export default function Main() {
+  const [data, setData] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleClick = () => {
+    fetchData();
+    setButtonClicked(true);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("buttonClicked", "true");
+    }
+  };
+
+  const fetchData = async () => {
+    setIsFetching(true);
+
+    try {
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      const token = sessionStorage.getItem("token") || null;
+      const id = user._id;
+      const header = { Authorization: `Bearer ${token}` };
+
+      const response = await axios.post(`${BASE_URL}/autoFunding/${id}`, null, {
+        headers: header,
+      });
+      setData(response.data.data.result);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
+    setIsFetching(false);
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedButtonClicked = localStorage.getItem("buttonClicked");
+      if (storedButtonClicked === "true") {
+        setButtonClicked(true);
+      }
+    }
+  }, []);
+
+  return (
+    <Card className="max-sm:flex-col max-sm:w-full text-center z-60 flex h-60 p-4 justify-between w-full border-3 bg-slate-100 border-white">
+      {!buttonClicked && (
+        <div className="flex justify-center hover:bg-blue-600 hover:border-blue-600 max-sm:w-[5ch] p-1.5 h-[6ch] mb-5 bg-green-400 border-2 max-sm:mt-[-2ch] border-green-200 rounded-2xl w-[20%]">
+          <button className="" onClick={handleClick}>
+            {" "}
+              <p className="text-[.9ch] hover:text-white hover:text-extrabold text-black text-bold">
+                Get Acct Number
+              </p>
+          </button>
+        </div>
+      )}
+
+      {error && (
+        <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-red-600">
+          You can't generate more than one account number. Kindly contact support.
+        </p>
+      )}
+      {buttonClicked && !error && !isFetching  ? <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-green-700">Loading...</p> : null}
+      <div className="flex gap-5 pr-4 border-slate-200 text-center max-sm:w-full h-[20ch] bg-slate-400 border-2 max-sm:mt-[-2ch] rounded-2xl w-[30%]">
+        <span className="fill-blue-900 h-7 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+          <WalletIcon />
+        </span>
+        {data && data.length >= 1 ? (
+          <div className="flex gap-8 md:flex-col p-3">
+            {" "}
+            <div className="">
+              <span className="text-xs ">{data[0]?.bankName}</span>
+            </div>
+            <div className="">
+              <span className="text-xs">
+                Acct Number {data[0]?.accountNumber}
+              </span>
+            </div>
+            <div className="">
+              <span className="text-xs">Acct Name {data[0]?.accountName}</span>
+            </div>
+          </div>
+        ) : (
+          <p className="text-xs lg:text-sm text-center text-white my-auto justify-center">We are available to generate your unique auto-funding by transfer wallet account number. Kindly use the get acct number to get started</p>
+        ) }
+      </div>
+      <div className="flex gap-5 pr-4 border-slate-200 max-sm:w-full h-[20ch] mt-[0ch] bg-slate-400 border-2 rounded-2xl w-[30%]">
+        <span className="fill-blue-900 h-7 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+          <WalletIcon />
+        </span>
+        {data && data.length >= 2 ? (
+          <div className="flex gap-8 md:flex-col p-3">
+            {" "}
+            <div className="">
+              <span className="text-xs">{data[1]?.bankName}</span>
+            </div>
+            <div className="">
+              <span className="text-xs">
+                Acct Number {data[1]?.accountNumber}
+              </span>
+            </div>
+            <div className="">
+              <span className="text-xs">Acct Name {data[1]?.accountName}</span>
+            </div>
+          </div>
+        ) : (
+          <p className="text-xs lg:text-sm  text-center text-white my-auto justify-center">We are available to generate your unique auto-funding by transfer wallet account number. Kindly use the get acct number to get started</p>
+        )}
+      </div>
+    </Card>
+  );
+}
+
+
+
+
+<!-- Implement sidebar toggle one menu -->
+import React, { useMemo, useState, useRef } from "react";
+import classNames from "classnames";
+import CollapseBtn from "../heroIcons/CollapseBtn";
+import Logo from "../heroIcons/Logo";
+import HomeIcon from "../heroIcons/HomeIcon";
+import DataIcon from "../heroIcons/DataIcon";
+import AirtimeIcon from "../heroIcons/AirtimeIcon";
+import FundWalletIcon from "../heroIcons/FundWalletIcon";
+import Airtime2Cash from "../heroIcons/Airtime2Cash";
+import LogoutIcon from "../heroIcons/LogoutIcon";
+import ProfileIcon from "../heroIcons/ProfileIcon";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import AuthService from "../../services/auth.Service";
+import withAuth from "../../hocs/withAuth";
+import UserPlusIcon from "../heroIcons/UserPlusIcon";
+import LockPassIcon from "../heroIcons/LockPassIcon";
+
+// Using array for nav items
+const menuItems = [
+  { id: 1, label: "Dashboard", icon: HomeIcon, link: "/user/dashboard" },
+  {
+    id: 2,
+    label: "Buy Data",
+    icon: DataIcon,
+    link: [
+      { id: 11, label: "Link 1", link: "/user/buyData" },
+      { id: 12, label: "Link 2", link: "/user/data" },
+    ],
+  },
+  { id: 3, label: "Buy Airtime", icon: AirtimeIcon, link: "/user/buyAirtime" },
+  {
+    id: 4,
+    label: "Fund Wallet",
+    icon: FundWalletIcon,
+    link: "/user/fundWallet",
+  },
+  {
+    id: 5,
+    label: "Cable Sub",
+    icon: FundWalletIcon,
+    link: "/user/tvSub",
+  },
+  {
+    id: 6,
+    label: "Elect Bill",
+    icon: FundWalletIcon,
+    link: "/user/electBill",
+  },
+  {
+    id: 7,
+    label: "Airtime to Cash",
+    icon: Airtime2Cash,
+    link: "/user/airtime-cash",
+  },
+  {
+    id: 8,
+    label: "Profile",
+    icon: ProfileIcon,
+    link: "/user/profile",
+  },
+  {
+    id: 9,
+    label: "Update Profile",
+    icon: UserPlusIcon,
+    link: "/user/updateDetails",
+  },
+  {
+    id: 10,
+    label: "Change Password",
+    icon: LockPassIcon,
+    link: "/user/updatePassword",
+  },
+];
+
+const Sidebar = () => {
+  const [toggle, setToggle] = useState(true);
+  const [isMenuVisible, setMenuVisibility] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuVisibility(!isMenuVisible);
+  };
+  const specificMenuItem = menuItems.find((menu) => menu.id === 2);
+
+  const router = useRouter();
+
+  const wrapperClasses = classNames(
+    "z-30 h-screen text-slate-800 mt-10 px-4 pt-3 flex absolute flex-col",
+    {
+      ["hidden"]: !toggle,
+      ["bg-gray-200"]: toggle,
+      // ["w-15 bg-secondary"]: toggle,
+      // ["fixed top-0 left-0 w-64 h-full bg-gray-900 text-gray-100 overflow-y-auto transition-transform transform -translate-x-full"]: toggle,
+    }
+  );
+
+  const logoutHandler = async () => {
+    await AuthService.logout();
+    router.push("/login");
+  };
+
+  const handleSideBarToggle = () => {
+    setToggle(!toggle);
+  };
+
+  const activeMenu = useMemo(
+    () => menuItems.find((menu) => menu.link === router.pathname),
+    [router.pathname]
+  );
+
+  const getNavItemClasses = (menu) => {
+    return classNames(
+      "flex-col items-center py-4 px-3 h-full cursor-pointer hover:bg-blue-200 rounded w-full overflow-hidden whitespace-nowrap",
+      {
+        ["bg-light-lighter"]: menu.id,
+      }
+    );
+  };
+
+  // useEffect(() => {
+  //   // Add event listener to the document object
+  //   document.addEventListener('mousedown', handleClickOutside);
+
+  //   // Remove event listener when the component unmounts
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, []);
+
+  // function handleClickOutside(event) {
+  //   if (sideNavRef.current && !sideNavRef.current.contains(event.target)) {
+  //     onClickOutside && onClickOutside();
+  //     // Clicked outside the side navigation bar, close it
+  //     // Implement your close side navigation bar logic here
+  //   }
+  // }
+
+  return (
+    <>
+      <div
+        className="flex absolute z-50 border-red-2 p-2 h-10 w-10 bg-red-500"
+        onClick={handleSideBarToggle}
+      >
+        <div>
+          <CollapseBtn />
+        </div>
+      </div>
+      <div
+        className={wrapperClasses}
+        style={{ transition: "width 300ms cubic-beizer(0.2, 0, 0, 1) 9s" }}
+      >
+        <div>
+          <div className="flex flex-col">
+            {/* Logo Container */}
+            <div className="flex item-center justify-between relative">
+              <div className="flex items-center pl-1 gap-4 w-auto h-auto ">
+                <Logo />
+                <span
+                  className={classNames("mt-1 text-sm font-medium text-text", {
+                    hidden: !toggle,
+                  })}
+                >
+                  Logo
+                </span>
+              </div>
+            </div>
+
+            {/* SideBar Content container */}
+            <div className="flex flex-col w-full items-start mt-2">
+              {menuItems.map(({ id, icon: Icon, ...menu }) => {
+                const classes = getNavItemClasses(menu);
+                return (
+                  <div key={menu.id} className={classes}>
+                    <Link href={menu.link}>
+                      <h5
+                        className={classNames(
+                          "text-md flex font-medium text-text-light"
+                        )}
+                        onClick={toggleMenu}
+                      >
+                        <div
+                          className="fill-blue-900 stroke-blue-600"
+                          style={{ width: "2.5rem" }}
+                        >
+                          <Icon />
+                        </div>
+                        <span
+                          className={classNames(
+                            "text-md font-medium text-text-light"
+                          )}
+                        >
+                          {menu.label}
+                        </span>
+                        {/* {toggle && <Icon />} */}
+                      </h5>
+                    </Link>
+                    {id === specificMenuItem.id && isMenuVisible && (
+                      <div className="flex flex-col border border-blue-100 border-r-20 bg-blue-100 gap-3 mt-2 text-center">
+                        <Link href={specificMenuItem.link}>
+                          <h5>Buy Data 1</h5>
+                        </Link>
+                        <Link href={specificMenuItem.link}>
+                          <h5>Buy Data 2</h5>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          {/* `${getNavItemClasses({})} px-4 py-3` */}
+
+          {/* Logout Container */}
+          <button
+            onClick={logoutHandler}
+            className={
+              "flex items-center hover:bg-blue-200 py-4 px-3 cursor-pointer bg-gray-200  rounded w-full overflow-hidden whitespace-nowrap"
+            }
+          >
+            {toggle && (
+              <h5
+                className={classNames(
+                  "flex gap-5 text-md font-medium text-text-light fill-blue-900 stroke-blue-600"
+                )}
+              >
+                <span>
+                  <LogoutIcon />
+                </span>
+                Logout
+              </h5>
+            )}
+          </button>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default withAuth(Sidebar);

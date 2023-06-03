@@ -56,7 +56,7 @@ function QueryTranx() {
       .then((response) => {
         setTransactions(response.data.data);
         setCheckSubmit(true);
-        // console.log(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         if (error.response.data.code === "011") {

@@ -22,11 +22,11 @@ export default function subMain() {
       <div className="flex justify-evenly bg-slate-100 p-2 rounded-b-xl">
         <div className="flex gap-2 items-center justify-center px-2 max-sm:w-35 text-center h-[6ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[40%]">
         <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><TvCabIcon/></span>
-          <h3 className="text-blue-600 text-md">Cable Sub</h3>
+          <Link href={"/user/tvSub"} className="text-blue-600 text-md">Cable Sub</Link>
         </div>
         <div className="flex gap-2 items-center justify-center px-2 max-sm:w-35 text-center h-[6ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[40%]">
         <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><LightElectIcon/></span>
-          <h3 className="text-blue-600 text-md">Elect bills</h3>
+          <Link href={"/user/electBill"} className="text-blue-600 text-md">Elect bills</Link>
         </div>
       </div>
     </Card>

@@ -10,9 +10,8 @@ const Hero = () => {
       </div>
     <div className="select-none flex items-center justify-center h-screen mb-12 bg-fixed bg-center bg-cover">
       <div>
-      <Image className="opacity-80 lg:mt-[-20ch] xl:mt-[-10ch] md:mt-[20ch] sm:h-[50ch] sm:mt-[-10ch] w-screen bg-fixed bg-center bg-cover" src="/hero.jpg" alt="" srcSet="" />
-      {/* Overlay */}
-      <div className="absolute w-full h-[100ch] top-20 left-0 bottom-0 bg-black/70 sm:z-[2]" />
+      <Image className="opacity-1 lg:mt-[-20ch] xl:mt-[-10ch] md:mt-[20ch] sm:h-[50ch] sm:mt-[-10ch] w-screen bg-center bg-cover" src="/hero.jpg"  width={1920}  height={1080} alt="img" />
+      {/* <div className="absolute w-full h-[100ch] top-20 left-0 bottom-0 bg-black/70 sm:z-[2]" /> */}
       </div>
       <div className="items-center text-center justify-center absolute top-1px left-0 bottom p-5 text-white z-[2]">
         <h2 className="text-4xl sm:text-xl text-white font-bold">Welcome to Cashout Plug</h2>

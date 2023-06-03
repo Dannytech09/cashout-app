@@ -1,3 +1,7 @@
+.form {
+    height: 100vh;
+}
+
 .formControl {
     color: firebrick;
     width: 25rem;
@@ -20,7 +24,7 @@
     color: #ed4544;
     text-align: center;
     justify-content: center;
-    padding: .7rem;
+    padding: .1rem;
 }
 
 .errorMessage {
@@ -42,7 +46,7 @@
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    margin-top: -2rem;
+    /* margin-top: -2rem; */
     box-sizing: border-box;
 }
 
@@ -51,8 +55,9 @@
       .formControl {
         color: firebrick;
         width: 18rem;
-        padding: 1rem;
-        margin-bottom: 1rem;
+        padding: .3rem;
+        margin-bottom: .4rem;
+       
     }
   }
 
@@ -62,6 +67,6 @@
     color: #ed4544;
     text-align: center;
     justify-content: center;
-    padding: 1rem;
+    padding: .3rem;
 }
 }

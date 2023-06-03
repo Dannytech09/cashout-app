@@ -29,24 +29,36 @@ const menuItems = [
   },
   {
     id: 5,
+    label: "Cable Sub",
+    icon: FundWalletIcon,
+    link: "/user/tvSub",
+  },
+  {
+    id: 6,
+    label: "Elect Bill",
+    icon: FundWalletIcon,
+    link: "/user/electBill",
+  },
+  {
+    id: 7,
     label: "Airtime to Cash",
     icon: Airtime2Cash,
     link: "/user/airtime-cash",
   },
   {
-    id: 6,
+    id: 8,
     label: "Profile",
     icon: ProfileIcon,
     link: "/user/profile",
   },
   {
-    id: 7,
+    id: 9,
     label: "Update Profile",
     icon: UserPlusIcon,
     link: "/user/updateDetails",
   },
   {
-    id: 8,
+    id: 10,
     label: "Change Password",
     icon: LockPassIcon,
     link: "/user/updatePassword",
@@ -84,13 +96,13 @@ const Sidebar = () => {
 
   const getNavItemClasses = (menu) => {
     return classNames(
-      "flex items-center py-4 px-3 h-full cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap",
+      "flex items-center py-4 px-3 h-full cursor-pointer hover:bg-blue-200 rounded w-full overflow-hidden whitespace-nowrap",
       {
         ["bg-light-lighter"]: menu.id,
       }
     );
   };
- 
+
   // useEffect(() => {
   //   // Add event listener to the document object
   //   document.addEventListener('mousedown', handleClickOutside);
@@ -116,88 +128,88 @@ const Sidebar = () => {
         onClick={handleSideBarToggle}
       >
         <div>
-
-        <CollapseBtn />
+          <CollapseBtn />
         </div>
       </div>
       <div
         className={wrapperClasses}
         style={{ transition: "width 300ms cubic-beizer(0.2, 0, 0, 1) 9s" }}
       >
-        <div className="flex flex-col">
-          {/* Logo Container */}
-          <div className="flex item-center justify-between relative">
-            <div className="flex items-center pl-1 gap-4 w-auto h-auto ">
-              <Logo />
-              <span
-                className={classNames("mt-1 text-sm font-medium text-text", {
-                  hidden: !toggle,
-                })}
-              >
-                Logo
-              </span>
+        <div>
+          <div className="flex flex-col">
+            {/* Logo Container */}
+            <div className="flex item-center justify-between relative">
+              <div className="flex items-center pl-1 gap-4 w-auto h-auto ">
+                <Logo />
+                <span
+                  className={classNames("mt-1 text-sm font-medium text-text", {
+                    hidden: !toggle,
+                  })}
+                >
+                  Logo
+                </span>
+              </div>
             </div>
-          </div>
 
-          {/* SideBar Content container */}
-          <div className="flex flex-col w-full items-start mt-2">
-            {menuItems.map(({ icon: Icon, ...menu }) => {
-              const classes = getNavItemClasses(menu);
-              return (
-                <div key={menu.id} className={classes}>
-                  <Link href={menu.link}>
-                    <h5
-                      className={classNames(
-                        "text-md flex font-medium text-text-light"
-                      )}
-                    >
-                      <div
-                        className="fill-blue-900 stroke-blue-600"
-                        style={{ width: "2.5rem" }}
-                      >
-                        <Icon />
-                      </div>
-                      <span
+            {/* SideBar Content container */}
+            <div className="flex flex-col w-full items-start mt-2">
+              {menuItems.map(({ icon: Icon, ...menu }) => {
+                const classes = getNavItemClasses(menu);
+                return (
+                  <div key={menu.id} className={classes}>
+                    <Link href={menu.link}>
+                      <h5
                         className={classNames(
-                          "text-md font-medium text-text-light"
+                          "text-md flex font-medium text-text-light"
                         )}
                       >
-                        {menu.label}
-                      </span>
-                      {/* {toggle && <Icon />} */}
-                    </h5>
-                  </Link>
-                </div>
-              );
-            })}
+                        <div
+                          className="fill-blue-900 stroke-blue-600"
+                          style={{ width: "2.5rem" }}
+                        >
+                          <Icon />
+                        </div>
+                        <span
+                          className={classNames(
+                            "text-md font-medium text-text-light"
+                          )}
+                        >
+                          {menu.label}
+                        </span>
+                        {/* {toggle && <Icon />} */}
+                      </h5>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-        {/* `${getNavItemClasses({})} px-4 py-3` */}
+          {/* `${getNavItemClasses({})} px-4 py-3` */}
 
-        {/* Logout Container */}
-        <button
-          onClick={logoutHandler}
-          className={
-            "flex items-center py-4 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
-          }
-        >
-          {toggle && (
-            <h5
-              className={classNames(
-                "flex gap-5 text-md font-medium text-text-light fill-blue-900 stroke-blue-600"
-              )}
-            >
-              <span>
-                <LogoutIcon />
-              </span>
-              Logout
-            </h5>
-          )}
-        </button>
+          {/* Logout Container */}
+          <button
+            onClick={logoutHandler}
+            className={
+              "flex items-center hover:bg-blue-200 py-4 px-3 cursor-pointer bg-gray-200  rounded w-full overflow-hidden whitespace-nowrap"
+            }
+          >
+            {toggle && (
+              <h5
+                className={classNames(
+                  "flex gap-5 text-md font-medium text-text-light fill-blue-900 stroke-blue-600"
+                )}
+              >
+                <span>
+                  <LogoutIcon />
+                </span>
+                Logout
+              </h5>
+            )}
+          </button>
+        </div>
       </div>
     </>
   );
 };
 
-export default withAuth(Sidebar); 
-
+export default withAuth(Sidebar);
