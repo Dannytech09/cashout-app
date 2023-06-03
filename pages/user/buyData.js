@@ -6,10 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Sidebar from "@/components/user/Sidebar";
 import Footer from "../../components/user/Footer";
+import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
 
-const BASE_URL = `${API_BASE_URL}/pay`;
+const BASE_URL = `${API_BASE_URL}/vend`;
 
 function BuyData() {
   const router = useRouter();
@@ -29,6 +30,7 @@ function BuyData() {
   const [amounts, setAmounts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
+  const [selectedDataName, setSelectedDataName] = useState("")
 
   useEffect(() => {
     async function fetchData() {
@@ -40,7 +42,7 @@ function BuyData() {
           // }
         );
         const res = await response.json();
-        // console.log(res.networkData);
+        console.log(res.networkData);
         setNetworkData(res.networkData);
         setLoading(false);
         return;
@@ -61,15 +63,26 @@ function BuyData() {
       (ctr) => ctr.network === e.target.value
     );
     if (selectedNetwork) {
-      // check if selectedNetwork is undefined. if not checked it will throw an
-      // error if user selects a value and later select the default value
       setDataVols(selectedNetwork.dataVol);
+
+      const selectedData = selectedNetwork.dataVol.find(
+        (vol) => vol.name === e.target.value
+      );
+  
+      if (selectedData) {
+        const selectedDataVolName = selectedData.name;
+        console.log(selectedDataVolName);
+  
+        // You can save the selected data volume name in a state variable or use it as needed
+        // setVariableName(selectedDataVolName);
+      }
     }
     setPhoneNumber("");
     setAmount("");
     setNetwork(e.target.value);
-    // console.log(e.target.value);
+    console.log(e.target.value);
   };
+  
   // handle two onchange props
   const handleNetworkAndInputValidation = (e) => {
     changeNetwork(e);
@@ -78,7 +91,7 @@ function BuyData() {
 
   const changeDataVol = (e) => {
     setDataVol(e.target.value);
-    const selectedDataVol = dataVols.find((ctr) => ctr.name === e.target.value);
+    const selectedDataVol = dataVols.find((ctr) => ctr.plan_code === e.target.value);
     // check if selectedDataVol is undefined. if not checked it will throw an
     // error if user selects a value and later select the default value
     if (selectedDataVol) {
@@ -87,8 +100,9 @@ function BuyData() {
     }
     setPhoneNumber("");
     setAmount("");
-    // console.log(e.target.value);
+    console.log(e.target.value);
   };
+  
   // handle two onchange props
   const handleDataVolAndInputValidation = (e) => {
     changeDataVol(e);
@@ -100,7 +114,7 @@ function BuyData() {
     const inputValue = e.target.value;
     setPhoneNumber(inputValue);
     handleInputField(e);
-    // console.log(e.target.value);
+    console.log(e.target.value);
   };
 
   const submit = (e) => {
@@ -118,7 +132,7 @@ function BuyData() {
     setModalIsOpen(false);
   };
 
-  // Track when modal to leave the screen upon opening it
+  // Track when modal is to leave the screen upon opening it
   useEffect(() => {
     let timer;
     if (modalIsOpen) {
@@ -130,11 +144,6 @@ function BuyData() {
     return () => clearTimeout(timer);
   }, [modalIsOpen]);
 
-  // const form = { network, dataVol, phoneNumber };
-  // avoid circular reference issue by turning it into string
-  // then changing it back to the original value(obj) using parse
-  // Assign a value to clonedForm somewhere in your code, e.g.
-  //  const clonedForm = JSON.parse(JSON.stringify(form));
 
   const confirmData = async () => {
     if (typeof window !== "undefined") {
@@ -149,7 +158,7 @@ function BuyData() {
         setsSmsApiErrorMessage(false);
         const response = await axios.post(
           `${BASE_URL}/${id}/purchase`,
-          { network, dataVol, phoneNumber },
+          { network: network, plan_code: dataVol, mobile: phoneNumber },
           {
             headers: authHeader(),
           }
@@ -160,6 +169,7 @@ function BuyData() {
           setLoading(false);
         }
       } catch (error) {
+            // console.log(error.response);
         if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
@@ -211,8 +221,9 @@ function BuyData() {
                 </div>
               )}
               {insufficientBal && (
-                <div className={styles.errorMessage}>
-                  Please fund your wallet.
+                <div className={`${styles.errorMessage} item-center justify-center flex gap-2`}>
+                  Fund your wallet now boss !
+                  <span className="fill-blue-800 stroke-yellow-600"><SmileIcon/></span>
                 </div>
               )}
               {unauthorised && (
@@ -234,7 +245,7 @@ function BuyData() {
               <option value={network}>--Choose Network--</option>
               {networkData.map((ctr) => (
                 <option value={ctr.network} key={ctr.network}>
-                  {ctr.network}
+                  {ctr.variation_string}
                 </option>
               ))}
             </select>
@@ -245,7 +256,7 @@ function BuyData() {
             >
               <option value={dataVol}>--Data Volume--</option>
               {dataVols.map((ctr) => (
-                <option value={ctr.name} key={ctr.name}>
+                <option value={ctr.plan_code} key={ctr.plan_code}>
                   {ctr.name}
                 </option>
               ))}
@@ -293,12 +304,12 @@ function BuyData() {
         </div>
       </form>
       <ConfirmDataModal
-        network={network}
-        dataVol={dataVol}
         phoneNumber={phoneNumber}
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
+        network={network}
+        // dataVol={dataVol}
         // value={buyData}
       />
       <Footer />

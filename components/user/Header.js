@@ -9,7 +9,7 @@ import LogoutIcon from "../heroIcons/LogoutIcon";
 export default function Header() {
   const router = useRouter();
   const [user, setUser] = useState();
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
 
   useEffect(() => {
     AuthService.getLoggedInUser()
@@ -23,7 +23,6 @@ export default function Header() {
       });
   }, []);
 
-  
   const logoutHandler = async () => {
     await AuthService.logout();
     router.push("/login");
@@ -41,13 +40,11 @@ export default function Header() {
       <div className={styles.headerCon}>
         <div className="flex flex-row justify-between">
           {user && (
-            <div className="ml-10 mt-0 p-2 h-10 w-[25%] sm:w-[27.2%] md:w-[16.9%] xl:w-[14.8%] bg-slate-100 sm:border-2 border-2 border-x-0 border-r-2  border-solid hover:border-dotted">
+            <div className="ml-10 mt-0 p-2 h-10 w-[35%] sm:w-[30.2%] md:w-[20.9%] xl:w-[12.8%] bg-slate-100 sm:border-2 border-2 border-x-0 border-r-2  border-solid hover:border-dotted">
               <h2 className="text-sm sm:text-xs font-bold">
                 &#8358; {user.balance.$numberDecimal}
               </h2>
-              {error && (
-                <p>Error fetching balance</p>
-              )}
+              {error && <p>Error fetching balance</p>}
             </div>
           )}
           <div

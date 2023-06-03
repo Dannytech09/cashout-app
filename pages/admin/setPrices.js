@@ -13,8 +13,8 @@ export default function PatchForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await fetch(`${ADMIN_BASE_URL}/price/update-price`, {
-      method: "PUT",
+    const response = await fetch(`${ADMIN_BASE_URL}/update-price`, {
+      method: "PATCH",
       headers: {
         Authorization: "Bearer " + getToken(),
         "Content-Type": "application/json",
@@ -29,6 +29,11 @@ export default function PatchForm() {
       alert(`Error updating data: ${error.message}`);
     }
   };
+
+  const handleNetworkChange = (e) => {
+    const inputValue = e.target.value;
+    setNetwork(inputValue);
+  }
 
   const handleDataChange = (event, index) => {
     const newData = [...data];
@@ -57,7 +62,7 @@ export default function PatchForm() {
       </div>
       <div className="mb-4 max-w-screen-md flex-col w-screen text-center">
         <h1 className="m-5 p-2 border border-green-400 bg-green-400 text-white ">
-          Update Data Prices - self
+          Update Data Prices - A
         </h1>
         <label htmlFor="network" className="block text-white font-bold mb-2">
           Network:
@@ -66,14 +71,14 @@ export default function PatchForm() {
           id="network"
           name="network"
           value={network}
-          onChange={(event) => setNetwork(event.target.value)}
+          onChange={handleNetworkChange}
           className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option value="">Select network</option>
-          <option value="mtn">MTN</option>
-          <option value="glo">Glo</option>
-          <option value="airtel">Airtel</option>
-          <option value="9mobile">9mobile</option>
+          <option value="MTN">MTN</option>
+          <option value="GLO-CG">GLO-CG</option>
+          <option value="AIRTEL-CG">AIRTEL-CG</option>
+          <option value="9MOBILE-CG">9MOBILE-CG</option>
         </select>
       </div>
       <div className="mb-4">

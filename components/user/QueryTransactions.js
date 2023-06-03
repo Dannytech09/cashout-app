@@ -24,7 +24,11 @@ function QueryTransactions({
         </h1>
       </div>
       <div className="mt-20 m-4 text-center text-xs">
-        <p>This Page helps you check if a particular transaction was successfully processed or failed for Airtime, Cable and Electricity bills. Kindly get your tracking/transaction ID handy </p>
+        <p>
+          This Page helps you check if a particular transaction was successfully
+          processed or failed for Airtime, Cable and Electricity bills. Kindly
+          get your tracking/transaction ID handy{" "}
+        </p>
       </div>
       <div className="mt-[3ch]">
         <div className="flex flex-col gap-4 p-4">
@@ -62,10 +66,10 @@ function QueryTransactions({
             <div className="border border-gray-50 bg-gray-50 p-2">
               <ul className="text-center text-xs">
                 <li>
-                  Service: <span>{transactions.Service}</span>
+                  Service: <span>{transactions.Product_Name}</span>
                 </li>
                 <li>
-                  Phone/IUC Number: <span>{transactions.Phone_IUC_number}</span>
+                  Unique Number: <span>{transactions.Unique_Element}</span>
                 </li>
                 <li>
                   Amount: <span>{transactions.Amount}</span>

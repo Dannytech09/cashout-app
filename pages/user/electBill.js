@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 import authHeader from "../../services/auth-Header";
 import Sidebar from "@/components/user/Sidebar";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
-import ConfirmTvModal from "../../components/utils/ConfirmTvModal";
+import ConfirmElectModal from "@/components/user/ConfirmElectModal";
 import API_BASE_URL from "@/apiConfig";
 // import Footer from "../../components/user/Footer";
 
-const BASE_URL = `${API_BASE_URL}/tvSub`;
+const BASE_URL = `${API_BASE_URL}`;
 
 export default function TvSub() {
   const router = useRouter();
@@ -18,126 +18,106 @@ export default function TvSub() {
   const [insufficientBal, setInsufficientBal] = useState(false);
   const [unauthorised, setUnauthorised] = useState(false);
   const [apiError, setApiError] = useState(false);
-  const [invalidIuc, setInvalidIuc] = useState(false);
+  const [invalidMeter, setInvalidMeter] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
   const [renderName, setRenderName] = useState();
-  const [renderDueDate, setRenderDueDate] = useState();
   const [purchaseBtn, setPurchaseBtn] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [isEditable, setIsEditable] = useState(true);
+  const [invalidAmount, setInvalidAmount] = useState(false);
 
   const [selectedService, setSelectedService] = useState("");
-  const [selectedVariation, setSelectedVariation] = useState("");
-  const [iucNumber, setIucNumber] = useState("");
-  const [data, setData] = useState([]);
+  const [selectedType, setSelectedType] = useState("");
+  const [meterNumber, setMeterNumber] = useState("");
+  const [amount, setAmount] = useState("");
 
-  let variationCode;
+  const verifyServiceId = [
+    "ikeja-electric",
+    "eko-electric",
+    "kano-electric",
+    "portharcourt-electric",
+    "jos-electric",
+    "ibadan-electric",
+    "kaduna-electric",
+    "abuja-electric",
+    "enugu-electric",
+    "benin-electric",
+  ];
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(BASE_URL);
-        const jsonData = await response.json();
-        setData(jsonData.content);
-        console.log(jsonData.content)
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchData();
-  }, []);
+  const verifyType = ["prepaid", "postpaid"];
 
   const handleServiceChange = (event) => {
     const serviceID = event.target.value;
     setSelectedService(serviceID);
-    setSelectedVariation("");
-    // console.log(serviceID);
+    // setSelectedType("");
+    console.log(serviceID);
   };
 
-  const handleVariationChange = (event) => {
-    variationCode = event.target.value;
-    setSelectedVariation(variationCode);
-    // console.log(variationCode);
+  const handleSelectedType = (event) => {
+    const inputValue = event.target.value;
+    setSelectedType(inputValue);
+    console.log(inputValue);
   };
 
   // handle IUC NUMBER
-  const handleIucNumber = (e) => {
+  const handleMeterNumber = (e) => {
     const inputValue = e.target.value;
-    setIucNumber(inputValue);
-    // console.log(inputValue);
+    setMeterNumber(inputValue);
+    console.log(inputValue);
   };
 
-  const getServiceOptions = () => {
-    return data.map((service) => (
-      <option key={service.serviceID} value={service.serviceID}>
-        {service.serviceID}
-      </option>
-    ));
+  const handleAmount = (e) => {
+    const inputValue = e.target.value;
+    setAmount(inputValue);
+    console.log(inputValue);
   };
 
-  const getVariationOptions = () => {
-    const selectedServiceData = data.find(
-      (service) => service.serviceID === selectedService
-    );
-
-    if (selectedServiceData) {
-      return selectedServiceData.varations.map((variation) => (
-        <option key={variation.variation_code} value={variation.variation_code}>
-          {variation.name}
-        </option>
-        // console.log(selectedServiceData)
-      ));
-    }
-
-    return null;
-  };
-
-  //   Verify IUC NUMBER
+  //   Verify METER NUMBER
   const handleFormSubmit = async (event) => {
     if (typeof window !== "undefined") {
       event.preventDefault();
 
       try {
         // check 404 error
+        setInvalidAmount(false);
         setLoading(true);
         setRenderName(false);
-        setRenderDueDate(false);
         setInsufficientBal(false);
         setUnauthorised(false);
+        setIsEditable(true);
         const response = await axios.post(
-          `${BASE_URL}/verify-iuc`,
+          `${BASE_URL}/electBill/verify`,
           {
             serviceID: selectedService,
-            billersCode: iucNumber,
-            variation_code: variationCode,
+            type: selectedType,
+            billersCode: meterNumber,
           },
           {
             headers: authHeader(),
           }
         );
         if (response.data.code === "000") {
-          setRenderName(response.data.data.content.Customer_Name);
-          setRenderDueDate(response.data.data.content.Due_Date);
+          setRenderName(response.data.data.Customer_Name);
+          setIsEditable(false);
           setPurchaseBtn(true);
           setLoading(false);
-        //   console.log(response);
-          //   alert(response.data.message);
-          //   router.reload();
+            // console.log(response);
         }
       } catch (error) {
         if (error.response?.data?.error) {
           setUnauthorised(true);
-        } else if (error.response.data.code === "006") {
-          setInsufficientBal(true);
         } else if (error.response.data.code === "003") {
-          setInvalidIuc(true);
-          console.log(error.response.data);
+          setInvalidMeter(true);
         } else if (error.response.data.code === "005") {
           setApiError(true);
+        } else if (error.response.data.data.code === "009") {
+          setInvalidAmount(true);
+        } else if (error.response.data.code === "006") {
+          setInsufficientBal(true);
         } else {
           alert("Something went wrong !");
         }
         // console.log(error);
-        // setLoading(false);
       }
     }
     setLoading(false);
@@ -146,16 +126,12 @@ export default function TvSub() {
   const handleFormValidation = useCallback(() => {
     let allFormFilled = true;
 
-    if (
-      !selectedService ||
-      !iucNumber ||
-      selectedService === "Select a service"
-    ) {
+    if (!selectedService || !meterNumber || selectedType === "Select Type") {
       allFormFilled = false;
     }
 
     setAllSelected(allFormFilled);
-  }, [selectedService, iucNumber]);
+  }, [selectedService, selectedType, meterNumber]);
 
   useEffect(() => {
     handleFormValidation();
@@ -200,24 +176,27 @@ export default function TvSub() {
         setInsufficientBal(false);
         setUnauthorised(false);
         const response = await axios.post(
-          `${BASE_URL}/pay/${id}`,
+          `${BASE_URL}/pay/electBill/${id}`,
           {
             serviceID: selectedService,
-            billersCode: iucNumber,
-            variation_code: selectedVariation,
+            billersCode: meterNumber,
+            variation_code: selectedType,
+            amount: amount,
           },
           {
             headers: authHeader(),
           }
         );
         if (response.data.code === "000") {
-          alert(response.data.Record.message);
+          alert(response.data.message);
           setLoading(false);
-          router.reload();
-        //   console.log(response);
+            router.reload();
+            // console.log(response);
         }
       } catch (error) {
-        if (error.response?.data?.error) {
+        if (error.response.data.code === "009") {
+          setInvalidAmount(true);
+        } else if (error.response?.data?.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "006") {
           setInsufficientBal(true);
@@ -244,13 +223,17 @@ export default function TvSub() {
         <div className="p-10 flex flex-col">
           <div className="mx-auto">
             <h3 className="text-black text-center text-xl p-5">
-              Cable Subscription
+              Electricity Bill&apos;s Payment
             </h3>
             <div>
-            {insufficientBal && (
-                <div className={`${styles.errorMessage} item-center justify-center flex gap-2`}>
+              {insufficientBal && (
+                <div
+                  className={`${styles.errorMessage} item-center justify-center flex gap-2`}
+                >
                   Fund your wallet now boss !
-                  <span className="fill-blue-800 stroke-yellow-600"><SmileIcon/></span>
+                  <span className="fill-blue-800 stroke-yellow-600">
+                    <SmileIcon />
+                  </span>
                 </div>
               )}
               {unauthorised && (
@@ -265,90 +248,99 @@ export default function TvSub() {
                   Server Error !
                 </div>
               )}
-              {invalidIuc && (
+              {invalidMeter && (
                 <div className={`${styles.errorMessage} text-center`}>
                   {" "}
-                  Invalid IUC number. Please re-check number and try again !
+                  Invalid meter number. Please re-check number and try again !
+                </div>
+              )}
+              {invalidAmount && (
+                <div className={`${styles.errorMessage} text-center`}>
+                  {" "}
+                  Amount cannot be below/above 500 and 10,000 respectively !
                 </div>
               )}
             </div>
             <div className="flex flex-col mx-auto ">
               <div className="ml-5">
-                <label htmlFor="service-select">Select Service:</label>
+                <label htmlFor="service-select">Select City Code:</label>
               </div>
               <div className="mx-auto">
                 {" "}
                 <select
-                  className={`${styles.formControl} input-field`}
-                  id="service-select"
                   value={selectedService}
+                  readOnly={!isEditable}
                   onChange={handleServiceChange}
+                  className={`${styles.formControl} input-field`}
                 >
-                  <option value="">Select a service</option>
-                  {getServiceOptions()}
+                  <option value="">Select Service</option>
+                  {verifyServiceId.map((serviceId) => (
+                    <option
+                      key={serviceId}
+                      disabled={!isEditable}
+                      value={serviceId}
+                    >
+                      {serviceId}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               <div className="ml-5">
-                <label htmlFor="variation-select">Select Variation:</label>
+                <label htmlFor="variation-select">Select Type:</label>
               </div>
               <div className="mx-auto">
                 <select
+                  value={selectedType}
+                  onChange={handleSelectedType}
                   className={`${styles.formControl} input-field`}
-                  id="variation-select"
-                  value={selectedVariation}
-                  onChange={handleVariationChange}
                 >
-                  <option value="">Select a variation</option>
-                  {getVariationOptions()}
+                  <option value="">Select Type</option>
+                  {verifyType.map((type) => (
+                    <option key={type} disabled={!isEditable} value={type}>
+                      {type}
+                    </option>
+                  ))}
                 </select>
               </div>
+
               <div className="ml-5">
                 <label className="text-sm" htmlFor="">
-                  IUC Number:
+                  Meter Number:
                 </label>
               </div>
               <div className="mx-auto">
                 <input
-                  placeholder="IUC NUMBER"
+                  placeholder="Meter Number"
                   className={`${styles.formControl} text-red-400 text-sm input-field`}
-                  value={iucNumber}
-                  onChange={handleIucNumber}
+                  value={meterNumber}
+                  readOnly={!isEditable}
+                  onChange={handleMeterNumber}
+                />
+              </div>
+              <div className="mx-auto">
+                <div className="ml-5">
+                  <label className="text-sm" htmlFor="">
+                    Amount:
+                  </label>
+                </div>
+                <input
+                  placeholder="Amount"
+                  className={`${styles.formControl} text-red-400 text-sm input-field`}
+                  value={amount}
+                  readOnly={!isEditable}
+                  onChange={handleAmount}
                 />
               </div>
               <div className="flex flex-col mx-auto">
-                {" "}
-                {/* Added "items-center" class to center align the content */}
                 {renderName && (
                   <div className="flex flex-col">
-                    {" "}
-                    {/* Added "items-center" class to center align the content */}
                     <label className="block text-sm" htmlFor="">
                       Customer&apos;s Name:
-                    </label>{" "}
-                    {/* Added "mb-2" class to add some margin-bottom */}
+                    </label>
                     <input
                       className={`${styles.formControl} text-red-400 input-field`}
                       value={renderName}
-                      readOnly
-                    />
-                  </div>
-                )}
-              </div>
-              <div className="flex mx-auto flex-col">
-                {" "}
-                {/* Added "items-center" class to center align the content */}
-                {renderDueDate && (
-                  <div className="flex flex-col">
-                    {" "}
-                    {/* Added "items-center" class to center align the content */}
-                    <label className="block text-sm" htmlFor="">
-                      Due Date:
-                    </label>{" "}
-                    {/* Added "mb-2" class to add some margin-bottom */}
-                    <input
-                      className={`${styles.formControl} text-red-400 input-field`}
-                      value={renderDueDate}
                       readOnly
                     />
                   </div>
@@ -361,7 +353,7 @@ export default function TvSub() {
               >
                 {purchaseBtn ? (
                   <button onClick={submit} disabled={!allSelected}>
-                    Purchase Tv Sub
+                    Purchase Elect Bill
                   </button>
                 ) : (
                   <button
@@ -371,7 +363,7 @@ export default function TvSub() {
                       cursor: allSelected ? "pointer" : "not-allowed",
                     }}
                   >
-                    {loading ? <p>Loading...</p> : "Verify IUC Number"}
+                    {loading ? <p>Loading...</p> : "Verify Meter Number"}
                   </button>
                 )}
               </div>
@@ -384,10 +376,10 @@ export default function TvSub() {
           </div>
         </div>
       </form>
-      <ConfirmTvModal
-        //    selectedService={selectedService}
-        selectedVariation={selectedVariation}
-        iucNumber={iucNumber}
+      <ConfirmElectModal
+        selectedService={selectedService}
+        selectedType={selectedType}
+        meterNumber={meterNumber}
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
