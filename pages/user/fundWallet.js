@@ -46,7 +46,7 @@ const fundWallet = () => {
             <p>
               Please send us a notification through the below form after payment
               is made. If we verify that no payment was made before using this
-              form below, it may lead to temporary suspension of the owner's
+              form below, it may lead to temporary suspension of the owner&apos;s
               account. Thanks.
             </p>
             <p className="text-red-500 p-4 m4">form coming soon...</p>

@@ -5,7 +5,7 @@ import PaymentHistory from "@/components/user/PaymentHistory";
 
 const BASE_URL = `${API_BASE_URL}/api/v1`;
 
-export default function paymentHistory() {
+export default function PayHistory() {
   const [data, setData] = useState([]);
   // const [isFetching, setIsFetching] = useState(false);
   const [checkTransaction, setCheckTransaction] = useState(false);
@@ -25,7 +25,7 @@ export default function paymentHistory() {
         }
       );
       setData(response.data.data);
-      console.log(response.data.data);
+    //   console.log(response.data.data);
     } catch (error) {
       if (error.response.data.code === "002") {
         setCheckTransaction(true);
