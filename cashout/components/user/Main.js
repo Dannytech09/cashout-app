@@ -120,8 +120,11 @@ export default function Main() {
             </div>
           </div>
         ) : data ? (
-          <div className="flex gap-8 md:flex-col p-3">
-            {" "}
+          <div>
+            <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
+              Auto-Funding by Transfer Acct Number
+            </div>
+          <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
             <div className="">
               <span className="text-xs ">{data[0]?.banks[0]?.bank_name}</span>
             </div>
@@ -129,15 +132,13 @@ export default function Main() {
               <span className="text-xs">
                 Acct Number: {data[0]?.banks[0].account_number[0]}
               </span>
-              <p className="text-xs p-3 text-[0.8ch] text-red-500">
-                Auto-Funding
-              </p>
             </div>
             <div className="">
               <span className="text-xs">
                 Acct Name: {data[0]?.account_name}
               </span>
             </div>
+          </div>
           </div>
         ) : (
           <p className="text-xs lg:text-sm text-center text-white my-auto justify-center">
@@ -152,7 +153,6 @@ export default function Main() {
         </span>
         {postData ? (
           <div className="flex gap-8 md:flex-col p-3">
-            {" "}
             <div className="">
               <span className="text-xs ">{postData[1]?.bankName}</span>
             </div>
@@ -168,8 +168,11 @@ export default function Main() {
             </div>
           </div>
         ) : data ? (
-          <div className="flex gap-6 md:flex-col p-3">
-            {" "}
+          <div>
+            <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
+              Auto-Funding by Transfer Acct Number
+            </div>
+          <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
             <div className="">
               <span className="text-xs">{data[0]?.banks[1].bank_name}</span>
             </div>
@@ -177,15 +180,13 @@ export default function Main() {
               <span className="text-xs">
                 Acct Number: {data[0]?.banks[1].account_number[0]}
               </span>
-              <p className="text-xs p-3 text-[0.8ch] text-red-500">
-                Auto-Funding
-              </p>
             </div>
             <div className="">
               <span className="text-xs">
                 Acct Name: {data[0]?.account_name}
               </span>
             </div>
+          </div>
           </div>
         ) : (
           <p className="text-xs lg:text-sm  text-center text-white my-auto justify-center">

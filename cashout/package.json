@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "packageManager": "yarn@1.22.19",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
