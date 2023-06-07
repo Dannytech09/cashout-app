@@ -20,7 +20,9 @@ function BuyData() {
   const [phoneErr, setPhoneErr] = useState(false);
   const [insufficientBal, setInsufficientBal] = useState(false);
   const [unauthorised, setUnauthorised] = useState(false);
-  const [SsmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
+  const [sSmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [serverError, setServerError] = useState(false);
 
   const [network, setNetwork] = useState("--Choose Network--");
   const [dataVol, setDataVol] = useState("--Data Volume--");
@@ -30,7 +32,6 @@ function BuyData() {
   const [amounts, setAmounts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
-  const [selectedDataName, setSelectedDataName] = useState("")
 
   useEffect(() => {
     async function fetchData() {
@@ -68,13 +69,10 @@ function BuyData() {
       const selectedData = selectedNetwork.dataVol.find(
         (vol) => vol.name === e.target.value
       );
-  
+
       if (selectedData) {
-        const selectedDataVolName = selectedData.name;
-        console.log(selectedDataVolName);
-  
-        // You can save the selected data volume name in a state variable or use it as needed
-        // setVariableName(selectedDataVolName);
+        selectedDataVolName = selectedData.name;
+        // console.log(selectedDataVolName);
       }
     }
     setPhoneNumber("");
@@ -82,7 +80,7 @@ function BuyData() {
     setNetwork(e.target.value);
     console.log(e.target.value);
   };
-  
+
   // handle two onchange props
   const handleNetworkAndInputValidation = (e) => {
     changeNetwork(e);
@@ -91,7 +89,9 @@ function BuyData() {
 
   const changeDataVol = (e) => {
     setDataVol(e.target.value);
-    const selectedDataVol = dataVols.find((ctr) => ctr.plan_code === e.target.value);
+    const selectedDataVol = dataVols.find(
+      (ctr) => ctr.plan_code === e.target.value
+    );
     // check if selectedDataVol is undefined. if not checked it will throw an
     // error if user selects a value and later select the default value
     if (selectedDataVol) {
@@ -102,7 +102,7 @@ function BuyData() {
     setAmount("");
     console.log(e.target.value);
   };
-  
+
   // handle two onchange props
   const handleDataVolAndInputValidation = (e) => {
     changeDataVol(e);
@@ -114,7 +114,7 @@ function BuyData() {
     const inputValue = e.target.value;
     setPhoneNumber(inputValue);
     handleInputField(e);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const submit = (e) => {
@@ -144,7 +144,6 @@ function BuyData() {
     return () => clearTimeout(timer);
   }, [modalIsOpen]);
 
-
   const confirmData = async () => {
     if (typeof window !== "undefined") {
       const user = JSON.parse(sessionStorage.getItem("user"));
@@ -156,6 +155,8 @@ function BuyData() {
         setInsufficientBal(false);
         setUnauthorised(false);
         setsSmsApiErrorMessage(false);
+        setErrorMessage(false);
+        setServerError(false);
         const response = await axios.post(
           `${BASE_URL}/${id}/purchase`,
           { network: network, plan_code: dataVol, mobile: phoneNumber },
@@ -163,24 +164,32 @@ function BuyData() {
             headers: authHeader(),
           }
         );
+        console.log(response);
         if (response.data.code === "000") {
+          alert(response.data.message);
+          router.reload();
+          setLoading(false);
+        } else if (response.data.code === "010") {
           alert(response.data.message);
           router.reload();
           setLoading(false);
         }
       } catch (error) {
-            // console.log(error.response);
         if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
           setPhoneErr(true);
-        } else if (error.response.data.code === "001") {
+        } else if (error.response.data.code === "011") {
           setsSmsApiErrorMessage(true);
+        } else if (error.response.data.code === "010") {
+          setErrorMessage(true);
         } else if (error.response.data.code === "006") {
           setInsufficientBal(true);
+        } else if (error.response.data.code === "005") {
+          setServerError(true);
         } else {
           // console.log(error.response);
-          alert(`Something went wrong!`);
+          alert(`Something went wrong! If problem persist check your network`);
         }
         setLoading(false);
       }
@@ -208,8 +217,10 @@ function BuyData() {
   }
 
   return (
-    <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
+    <div className="bg-slate-500 h-full md:h-screen xl:h-screen">
+      <div className="">
       <Sidebar />
+      </div>
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
@@ -221,9 +232,13 @@ function BuyData() {
                 </div>
               )}
               {insufficientBal && (
-                <div className={`${styles.errorMessage} item-center justify-center flex gap-2`}>
+                <div
+                  className={`${styles.errorMessage} item-center justify-center flex gap-2`}
+                >
                   Fund your wallet now boss !
-                  <span className="fill-blue-800 stroke-yellow-600"><SmileIcon/></span>
+                  <span className="fill-blue-800 stroke-yellow-600">
+                    <SmileIcon />
+                  </span>
                 </div>
               )}
               {unauthorised && (
@@ -232,9 +247,19 @@ function BuyData() {
                   authenticated.
                 </div>
               )}
-              {SsmsApiErrorMessage && (
+              {sSmsApiErrorMessage && (
                 <div className={styles.errorMessage}>
-                  {`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`}
+                  Invalid network or plan
+                </div>
+              )}
+              {errorMessage && (
+                <div className={styles.errorMessage}>
+                  If problem persist kindly contact the admin !
+                </div>
+              )}
+              {serverError && (
+                <div className={styles.errorMessage}>
+                  Internal Server Error!
                 </div>
               )}
             </div>

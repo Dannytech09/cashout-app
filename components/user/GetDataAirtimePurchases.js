@@ -1,5 +1,5 @@
 import React from "react";
-import Footer from "./Footer";
+import SubFooter from "./SubFooter";
 
 function MyPurchases({ myPurchases, checkTransaction }) {
   return (
@@ -63,12 +63,12 @@ function MyPurchases({ myPurchases, checkTransaction }) {
           ))}
         </div>
         <div className="mt-10 text-center">
-          {checkTransaction ? "Ohh.. No Transaction performed yet !" : null}
+          {checkTransaction ? ( <p className="mt-20 text-red-300">Ohh.. No Transaction performed yet !</p>) : null}
         </div>
       </div>
-      {/* <div className="fixed bottom-0 left-0 right-0"> */}
-      <Footer />
-      {/* </div> */}
+      <div className="fixed bottom-0 left-0 right-0">
+      <SubFooter/>
+      </div>
     </div>
   );
 }

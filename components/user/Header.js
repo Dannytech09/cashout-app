@@ -5,6 +5,8 @@ import Greetings from "../utils/Greetings";
 import styles from "../../styles/dashboard.module.css";
 import SmileIcon from "../heroIcons/SmileIcon";
 import LogoutIcon from "../heroIcons/LogoutIcon";
+import Link from "next/link";
+import MotionText from "./MotionText";
 
 export default function Header() {
   const router = useRouter();
@@ -18,6 +20,7 @@ export default function Header() {
         // console.log(response.data.data);
       })
       .catch((error) => {
+        console.log(error)
         setError(error);
         // console.log("Error 1:", error);
       });
@@ -49,7 +52,7 @@ export default function Header() {
           )}
           <div
             onClick={logoutHandler}
-            className="fixed-right sm:mr-4 md:mr-4 z-50 border-red-2 p-2 h-10 w-10 bg-red-500"
+            className="fixed-right sm:mr-4 md:mr-4 z-50 border-red-2 p-2 mr-4 h-10 w-10 bg-red-500"
           >
             <LogoutIcon />
           </div>
@@ -73,15 +76,20 @@ export default function Header() {
             </p>
             <div className="flex w-screen justify-center gap-5 mt-5">
               <div className="border ml-2 text-sm border-solid border-secondary p-2 rounded-2xl bg-secondary">
-                <button className={styles.fundWallet}>Fund Wallet</button>
+                <Link href={"/user/fundWallet"}>
+                  <button className={styles.fundWallet}>Fund Wallet</button>
+                </Link>
               </div>
               <div className="border mr-2 text-sm border-solid border-secondary p-2 rounded-2xl bg-secondary">
-                <button className={styles.myTransact}>My Transactions</button>
+                <Link href={"/user/history"}>
+                  <button className={styles.myTransact}>My Transactions</button>
+                </Link>
               </div>
             </div>
           </div>
-        )}
+            )}
       </div>
+      <MotionText text="Updated codes - Data balance checkers- MTN - *321*3*3#, Glo - *127*0#, Airtel - *323#, 9mobile SME - *917*9#, 9mobile gifting - *228#" />
     </div>
     // </div>
   );

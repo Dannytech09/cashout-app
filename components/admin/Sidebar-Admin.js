@@ -16,46 +16,47 @@ import AuthService from "../../services/auth.Service";
 // Using array for nav items
 const menuItems = [
   { id: 1, label: "Admin Board", icon: HomeIcon, link: "/admin/dashboard" },
-  { id: 2, label: "Get All Users", icon: DataIcon, link: "/admin/getAllUsers" },
+  { id: 2, label: "Fund Wallet", icon: FundWalletIcon, link: "/admin/cd" },
+  { id: 3, label: "Get All Users", icon: DataIcon, link: "/admin/getAllUsers" },
   {
-    id: 3,
+    id: 4,
     label: "LookUp User",
     icon: ProfileIcon,
     link: "/admin/getSingleUser",
   },
   {
-    id: 4,
+    id: 5,
     label: "Update User",
     icon: ProfileIcon,
     link: "/admin/updateUser",
   },
-  { id: 5, label: "Block User", icon: AirtimeIcon, link: "/admin/blockUser" },
+  { id: 6, label: "Block User", icon: AirtimeIcon, link: "/admin/blockUser" },
   {
-    id: 6,
+    id: 7,
     label: "Create User",
     icon: FundWalletIcon,
     link: "/admin/createUser",
   },
   {
-    id: 7,
+    id: 8,
     label: "Delete User",
     icon: Airtime2Cash,
     link: "/admin/delUser",
   },
   {
-    id: 8,
+    id: 9,
     label: "Admin's Info",
     icon: ProfileIcon,
     link: "/admin/profile",
   },
   {
-    id: 9,
+    id: 10,
     label: "Upgrade User",
     icon: FundWalletIcon,
     link: "/admin/upgrade",
   },
   {
-    id: 10,
+    id: 11,
     label: "Data component",
     icon: FundWalletIcon,
     link: "/admin/dataComponent",
@@ -91,7 +92,7 @@ const SidebarAdmin = () => {
 
   const getNavItemClasses = (menu) => {
     return classNames(
-      "flex items-center py-4 px-3 h-full cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap",
+      "flex items-center py-3 px-3 h-full cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap",
       {
         ["bg-light-lighter"]: menu.id,
       }

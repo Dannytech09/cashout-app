@@ -12,11 +12,11 @@ function GetMyHistories() {
       const res = await DataServices.getMyHistories();
 
       setMyHistories(res.data.data);
-        console.log(res.data.data);
+        // console.log(res.data.data);
     } catch (error) {
       if (error.response.data.code === "002") {
         setCheckTransaction(true);
-        console.log(error)
+        // console.log(error.response.data.message)
       }
     }
   };

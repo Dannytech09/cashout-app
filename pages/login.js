@@ -43,8 +43,8 @@ const Login = () => {
       }
     } catch (error) {
       // invalid credentials
-      if(error.response.data.error === "Invalid credentials") {
-        setMessage("Invalid email or password");
+      if (error.response.data.error === "Invalid credentials") {
+        setMessage("Invalid email or password !");
       } else {
         setMessage("Something went wrong !");
       }
@@ -54,19 +54,22 @@ const Login = () => {
 
   return (
     <div>
-      {loading ? <p>Loading...</p> : null}
-      {message ? <p>{message}</p> : null}
+      {loading ? <p className="mt-3 ml-3">Loading...</p> : null}
 
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-screen"
       >
         <h1 className="sm:text-3xl mb-2 font-sans text-3xl">LOGIN</h1>
-        {errors.email?.message && (
+        {errors.email?.message ? (
           <p className="text-center w-full max-w-[39ch] border border-solid border-rose-700 text-rose-300 py-2">
             {errors.email?.message}
           </p>
-        )}
+        ) : message ? (
+          <p className="text-center w-full max-w-[39ch] border border-solid border-rose-700 text-rose-300 py-2">
+            {message}
+          </p>
+        ) : null}
 
         <input
           type="text"
@@ -75,7 +78,7 @@ const Login = () => {
             pattern: {
               value:
                 /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-              message: "Invalid Email and password !",
+              message: "Invalid Email or password !",
             },
           })}
           className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"

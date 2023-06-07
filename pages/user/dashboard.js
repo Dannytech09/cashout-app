@@ -5,6 +5,7 @@ import Header from "../../components/user/Header";
 import Main from "../../components/user/Main";
 import Layout from "../../components/user/Layout";
 import withAuth from "../../hocs/withAuth";
+import SubFooter from "@/components/user/SubFooter";
 
 function Dashboard() {
   // const me = sessionStorage.getItem("user");
@@ -30,6 +31,9 @@ function Dashboard() {
           </div>
           <div className="">
             <Footer />
+          </div>
+          <div className="">
+            <SubFooter/>
           </div>
         </div>
       </Layout>
