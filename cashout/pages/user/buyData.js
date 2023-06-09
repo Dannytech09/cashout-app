@@ -43,7 +43,7 @@ function BuyData() {
           // }
         );
         const res = await response.json();
-        console.log(res.networkData);
+        // console.log(res.networkData);
         setNetworkData(res.networkData);
         setLoading(false);
         return;
@@ -78,7 +78,7 @@ function BuyData() {
     setPhoneNumber("");
     setAmount("");
     setNetwork(e.target.value);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   // handle two onchange props
@@ -100,7 +100,7 @@ function BuyData() {
     }
     setPhoneNumber("");
     setAmount("");
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   // handle two onchange props
@@ -164,7 +164,7 @@ function BuyData() {
             headers: authHeader(),
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.data.code === "000") {
           alert(response.data.message);
           router.reload();

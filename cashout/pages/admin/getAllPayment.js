@@ -14,10 +14,10 @@ function GetAllPayment() {
     await UserService.getPayment()
       .then((res) => {
         setPayment(res.data.data);
-        console.log(res.data.data)
+        // console.log(res.data.data)
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
         if (
           error.response.data.status === 401 ||
           error.response.data.status === 400

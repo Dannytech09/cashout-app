@@ -12,7 +12,7 @@ function GetMyPurchases() {
       const res = await DataServices.getMyPurchases();
 
       setMyPurchases(res.data.data);
-      //   console.log(res.data.data);
+        // console.log(res.data.data);
     } catch (error) {
       if (error.response.data.code === "002") {
         setCheckTransaction(true);

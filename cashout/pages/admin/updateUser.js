@@ -57,7 +57,7 @@ function UpdateUser() {
             },
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.data.data === null) {
           alert("Invalid User ID");
         } else {
@@ -72,7 +72,7 @@ function UpdateUser() {
         alert("User already exist or Duplicate field entered");
       } else {
         alert("Network issue or Network issue or No User found");
-        console.log(error);
+        // console.log(error);
       }
     }
     setLoading(false);

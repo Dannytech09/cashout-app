@@ -38,7 +38,7 @@ export default function TvSub() {
         const response = await fetch(BASE_URL);
         const jsonData = await response.json();
         setData(jsonData.content);
-        console.log(jsonData.content)
+        // console.log(jsonData.content)
       } catch (error) {
         console.error(error);
       }
@@ -130,7 +130,7 @@ export default function TvSub() {
           setInsufficientBal(true);
         } else if (error.response.data.code === "003") {
           setInvalidIuc(true);
-          console.log(error.response.data);
+          // console.log(error.response.data);
         } else if (error.response.data.code === "005") {
           setApiError(true);
         } else {

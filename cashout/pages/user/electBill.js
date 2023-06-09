@@ -50,26 +50,26 @@ export default function TvSub() {
     const serviceID = event.target.value;
     setSelectedService(serviceID);
     // setSelectedType("");
-    console.log(serviceID);
+    // console.log(serviceID);
   };
 
   const handleSelectedType = (event) => {
     const inputValue = event.target.value;
     setSelectedType(inputValue);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   // handle IUC NUMBER
   const handleMeterNumber = (e) => {
     const inputValue = e.target.value;
     setMeterNumber(inputValue);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   const handleAmount = (e) => {
     const inputValue = e.target.value;
     setAmount(inputValue);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   //   Verify METER NUMBER

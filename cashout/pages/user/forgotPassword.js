@@ -19,7 +19,7 @@ export default function Login() {
         email: email,
       })
       .then((response) => {
-        console.log("response >>> ", response);
+        // console.log("response >>> ", response);
         setUserSession(response.data.token);
         window.location = "/user/resetPassword";
       })

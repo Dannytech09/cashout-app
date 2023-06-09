@@ -20,7 +20,7 @@ export default function Header() {
         // console.log(response.data.data);
       })
       .catch((error) => {
-        console.log(error)
+        // console.log(error)
         setError(error);
         // console.log("Error 1:", error);
       });

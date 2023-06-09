@@ -51,7 +51,7 @@ export default function SignUp() {
             error.response?.status === 500
           ) {
             alert("User Already Exist");
-            console.log(error);
+            // console.log(error);
             // router.reload('/register')
           } else {
             alert("Something went wrong");

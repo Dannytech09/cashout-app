@@ -89,7 +89,7 @@ const logout = async () => {
   try {
     await axios.get(`${BASE_URL}/logout`);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
   removeUserSession();
   // if (typeof window !== "undefined") {

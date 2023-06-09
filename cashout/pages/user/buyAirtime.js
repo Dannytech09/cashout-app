@@ -34,7 +34,7 @@ function BuyAirtime() {
     const inputValue = e.target.value;
     setNetwork(inputValue);
     handleInputField(e);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   // handle two onchange props
@@ -53,7 +53,7 @@ function BuyAirtime() {
     setIsValid(isValidPhoneNumber);
 
     handleInputField(e);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const changeAmount = (e) => {
@@ -63,7 +63,7 @@ function BuyAirtime() {
     setAmount(numericPhoneNumber);
 
     handleInputField(e);
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   const submit = (e) => {
@@ -132,7 +132,7 @@ function BuyAirtime() {
           setMax(true);
         } else {
           alert(`Something went wrong!`);
-          console.log(error.response);
+          // console.log(error.response);
         }
         setLoading(false);
       }
