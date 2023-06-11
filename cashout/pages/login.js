@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import AuthService from "../services/auth.Service";
 import { FaRegEye } from "react-icons/fa";
 import useAuthGuard from "../hooks/useAuthGuard";
-import axios from "axios";
-// import API_BASE_URL from "@/apiConfig";
 
 const Login = () => {
   useAuthGuard();

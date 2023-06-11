@@ -30,8 +30,8 @@ export default function NavBar() {
       <nav className="bg-[#2E6268] py-6 px-6">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center flex-shrink-0 text-slate-800 mr-6">
-            <span className="font-semibold text-xl tracking-tight">
-              Cashout Plug
+            <span className="font-semibold text-sm tracking-tight">
+              Wondersdata || Formerly WondersdataPlug
             </span>
           </div>
           <div
@@ -44,7 +44,7 @@ export default function NavBar() {
                 Home
               </h4>
             </Link>
-            <Link href="/contact">
+            <Link href="/">
               <h4 className="inline-block px-4 py-2 rounded font-bold text-slate-800 hover:text-slate-900">
                 Contact
               </h4>

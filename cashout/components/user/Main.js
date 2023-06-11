@@ -75,7 +75,7 @@ export default function Main() {
   }, []);
 
   return (
-    <Card className="max-sm:flex-col max-sm:w-full text-center z-60 flex h-60 p-4 mb-[-5ch] justify-between w-full border-3 bg-slate-100 border-white">
+    <Card className="max-sm:flex-col max-sm:w-full text-center z-60 flex h-80 p-4 lg:mb-[-10ch] justify-between w-full">
      
       {!buttonClicked && (
         <div className="flex justify-center hover:bg-blue-600 hover:border-blue-600 max-sm:w-[5ch] p-1.5 h-[6ch] mb-5 bg-green-400 border-2 max-sm:mt-[-2ch] border-green-200 rounded-2xl w-[20%]">
@@ -123,7 +123,7 @@ export default function Main() {
         ) : data ? (
           <div>
             <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
-              Auto-Funding by Transfer Acct Number
+              Transfer made to this acct will credit your wallet automatically
             </div>
           <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
             <div className="">
@@ -171,7 +171,7 @@ export default function Main() {
         ) : data ? (
           <div>
             <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
-              Auto-Funding by Transfer Acct Number
+            Transfer made to this acct will credit your wallet automatically
             </div>
           <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
             <div className="">
@@ -196,14 +196,12 @@ export default function Main() {
           </p>
         )}
       </div>
-      {/* <div className="mb-10"> */}
-      {/* {!buttonClicked && ( */}
-      <div className="flex gap-5 pr-4 border-slate-200 max-sm:w-full h-[20ch] mt-[0ch] mb-[20ch] bg-slate-400 border-2 rounded-2xl w-[30%]">
+      <div className="flex gap-5 pr-4 border-slate-200 max-sm:w-full h-[20ch] mt-[0ch] bg-slate-400 border-2 rounded-2xl w-[30%]">
         <span className="fill-blue-900 h-7 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
           <WalletIcon />
         </span>
         {postData ? (
-          <div className="flex gap-8 md:flex-col p-3">
+            <div className="flex gap-8 md:flex-col p-3">
             <div className="">
               <span className="text-xs ">{postData[2]?.bankName}</span>
             </div>
@@ -221,7 +219,7 @@ export default function Main() {
         ) : data ? (
           <div>
             <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
-              Auto-Funding by Transfer Acct Number
+            Transfer made to this acct will credit your wallet automatically
             </div>
           <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
             <div className="">
@@ -246,8 +244,6 @@ export default function Main() {
           </p>
         )}
       </div>
-      {/* )} */}
-      {/* </div> */}
     </Card>
   );
 }

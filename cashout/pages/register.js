@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import AuthService from "../services/auth.Service";
 
 export default function SignUp() {
-  // const [successMessage, setSuccessMessage] = useState("");
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -25,14 +25,12 @@ export default function SignUp() {
 
   const router = useRouter();
 
-  const submitHandler = ({
-    firstName,
-    lastName,
-    phoneNumber,
-    username,
-    email,
-    password,
-  }) => {
+  const submitHandler = (data) => {
+    setError("");
+    const { firstName, lastName, phoneNumber, username, email, password } =
+      data;
+
+
     if (firstName || lastName || phoneNumber || username || email || password) {
       AuthService.signUp(
         firstName,
@@ -46,16 +44,17 @@ export default function SignUp() {
           router.push("/user/dashboard");
         })
         .catch((error) => {
-          if (
-            error.response?.status === 400 ||
-            error.response?.status === 500
-          ) {
-            alert("User Already Exist");
-            // console.log(error);
-            // router.reload('/register')
-          } else {
-            alert("Something went wrong");
-          }
+          console.log(error)
+          // if (
+          //   error.response?.status === 400 ||
+          //   error.response?.status === 500
+          // ) {
+          //   alert("User Already Exist");
+          //   // console.log(error);
+          //   // router.reload('/register')
+          // } else {
+          //   alert("Something went wrong");
+          // }
         });
     }
   };

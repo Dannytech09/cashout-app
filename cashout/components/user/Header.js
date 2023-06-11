@@ -71,7 +71,7 @@ export default function Header() {
           <div className="text-center">
             <h2 className={styles.welBack}>Welcome Back {user.firstName}!</h2>
             <p className="mt-2 p-2 text-xs text-center">
-              Refer people to CashOutPlug and earn 1,000 naira immediately the
+              Refer people to Wondersdata and earn 1,000 naira immediately the
               person upgrade his/her account to Partner&apos;s Account Type
             </p>
             <div className="flex w-screen justify-center gap-5 mt-5">
