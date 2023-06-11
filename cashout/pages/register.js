@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import AuthService from "../services/auth.Service";
 
 export default function SignUp() {
-  const [error, setError] = useState("");
+  const [apiError, setApiError] = useState("");
 
   const {
     register,
@@ -26,10 +26,9 @@ export default function SignUp() {
   const router = useRouter();
 
   const submitHandler = (data) => {
-    setError("");
+    setApiError("");
     const { firstName, lastName, phoneNumber, username, email, password } =
       data;
-
 
     if (firstName || lastName || phoneNumber || username || email || password) {
       AuthService.signUp(
@@ -44,17 +43,12 @@ export default function SignUp() {
           router.push("/user/dashboard");
         })
         .catch((error) => {
-          console.log(error)
-          // if (
-          //   error.response?.status === 400 ||
-          //   error.response?.status === 500
-          // ) {
-          //   alert("User Already Exist");
-          //   // console.log(error);
-          //   // router.reload('/register')
-          // } else {
-          //   alert("Something went wrong");
-          // }
+          console.log(error);
+          if (error.response?.data.message) {
+            setApiError(error.response?.data.message);
+          } else {
+            alert("Something went wrong !");
+          }
         });
     }
   };
@@ -69,12 +63,12 @@ export default function SignUp() {
         <div className="text-center w-full max-w-[39ch] border border-solid border-green-400 text-green-900 py-2">
           {successMessage}
         </div>
-      )}
-      {error && (
-        <div className="text-center w-full max-w-[39ch] border border-solid border-rose-700 text-rose-300 py-2">
-          {error}
-        </div>
       )} */}
+      {apiError && (
+        <div className="text-center w-full max-w-[39ch] border border-solid border-rose-700 text-rose-300 py-2">
+          {apiError}
+        </div>
+      )}
 
       <input
         {...register("firstName", {
@@ -203,8 +197,9 @@ export default function SignUp() {
         {...register("password", {
           required: "Please enter password !",
           minLength: {
-            value: 6,
-            message: "Minimum of 6 digits",
+            value: 8,
+            message:
+              "Minimum of 8 letters including at least one digit and one special character(e.g: #)",
           },
         })}
         autoComplete="off"
