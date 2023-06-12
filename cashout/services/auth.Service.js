@@ -40,23 +40,12 @@ const signIn = async (email, password) => {
       password,
     })
     .then(async (response) => {
+      // console.log(response);
       if (
-        response?.data.user.isAdmin === false &&
+        response?.data?.user.isAdmin === false &&
         typeof window !== "undefined"
       ) {
-        setUserSession(response.data.token, JSON.stringify(response.data.user));
-        //  // set the token cookie with a max age of 30 days
-        //  setCookie(null, "token", response.data.token, {
-        //   maxAge: 30 * 24 * 60 * 60,
-        //   path: "/",
-        // });
-        // // console.log(document.cookie);
-
-        // // set the user cookie with a max age of 30 days
-        // setCookie(null, "user", JSON.stringify(response.data.user), {
-        //   maxAge: 30 * 24 * 60 * 60,
-        //   path: "/",
-        // });
+        setUserSession(response?.data?.token, JSON.stringify(response.data.user));
       } else {
         return null;
       }

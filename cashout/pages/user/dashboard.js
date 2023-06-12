@@ -2,7 +2,6 @@ import Head from "next/head";
 import SubMain from "@/components/user/SubMain";
 import Footer from "../../components/user/Footer";
 import Header from "../../components/user/Header";
-import Main from "../../components/user/Main";
 import Layout from "../../components/user/Layout";
 import withAuth from "../../hocs/withAuth";
 import SubFooter from "@/components/user/SubFooter";
@@ -23,9 +22,9 @@ function Dashboard() {
           <div className="">
             <Header />
           </div>
-          <div className="">
+          {/* <div className="">
             <Main />
-          </div>
+          </div> */}
           <div className="">
             <SubMain/>
           </div>
