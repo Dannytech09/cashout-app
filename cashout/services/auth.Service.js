@@ -45,7 +45,10 @@ const signIn = async (email, password) => {
         response?.data?.user.isAdmin === false &&
         typeof window !== "undefined"
       ) {
-        setUserSession(response?.data?.token, JSON.stringify(response.data.user));
+        setUserSession(
+          response?.data?.token,
+          JSON.stringify(response.data.user)
+        );
       } else {
         return null;
       }
