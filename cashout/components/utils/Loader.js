@@ -1,34 +1,12 @@
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import React from 'react';
+import styles from "../../styles/Loader.module.css";
 
-export default function Loader() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const handleStart = (url) => url !== router.asPath && setLoading(true);
-    const handleComplete = (url) =>
-      url === router.asPath &&
-      setTimeout(() => {
-        setLoading(false);
-      }, 10000);
-
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
-
-    return () => {
-      router.events.off("routeChangeStart", handleStart);
-      router.events.off("routeChangeComplete", handleComplete);
-      router.events.off("routeChangeError", handleComplete);
-    };
-  }, [router.asPath, router.events]);
-
+const Loader = () => {
   return (
-    loading && (
-      <div className="spinner-wrapper">
-        <div className="spinner" />
-      </div>
-    )
-  );
+    <div className={`${styles.loaderContainer} fixed top-0 left-0 w-full h-full flex items-center justify-center`}>
+      <div className={`${styles.loader} border-4 border-t-4 border-gray-200 rounded-full animate-spin-clockwise`} />
+    </div>
+  )
 }
+
+export default Loader;
