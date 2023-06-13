@@ -5,6 +5,7 @@ import WalletIcon from "@/components/heroIcons/WalletIcon";
 const axios = require("axios");
 import API_BASE_URL from "@/apiConfig";
 import withAuth from "../../hocs/withAuth";
+import Sidebar from "@/components/user/Sidebar";
 
 const BASE_URL = `${API_BASE_URL}/api/v1`;
 
@@ -36,9 +37,9 @@ const FundWallet = () => {
         headers: header,
       });
       setPostData(response.data.data.result);
-      // console.log(response.data.data.result)
+      console.log(response.data.data.result)
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       setError(true);
     }
     setIsFetching(false);
@@ -78,7 +79,10 @@ const FundWallet = () => {
 
   return (
     // <div className="h-full">
-    <Card className="overflow-y-auto fixed inset-0 bg-black max-sm:flex-col text-center z-60 flex p-4 justify-between border-red-300">
+    <Card className="overflow-y-auto overflow-x-0 fixed inset-0 bg-black max-sm:flex-col text-center z-60 flex p-4 justify-between border-red-300">
+      <div className="fixed left-0 top-0">
+        <Sidebar/>
+        </div>
    <div className="max-w-screen-sm p-4 border-red-300">
 
       <h3 className="text-white p-3">* Auto Funding By Transfer</h3>
@@ -273,7 +277,7 @@ const FundWallet = () => {
             Account Name: Adebola Daniel Juwon
           </p>
           <ul className="text-center ">
-            <div className="border-blue-400 w-screen p-5 m-3 bg-blue-400 text-white">
+            <div className="border-blue-400 sm:w-screen p-5 m-3 bg-blue-400 text-white">
               <li>Opay - 9066560771</li>
               <li>Kuda - 1101725915</li>
               <li>GTB - 0449785257</li>

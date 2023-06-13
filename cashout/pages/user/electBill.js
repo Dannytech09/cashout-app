@@ -8,6 +8,7 @@ import Sidebar from "@/components/user/Sidebar";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmElectModal from "@/components/user/ConfirmElectModal";
 import API_BASE_URL from "@/apiConfig";
+import Loader from "@/components/utils/Loader";
 // import Footer from "../../components/user/Footer";
 
 const BASE_URL = `${API_BASE_URL}`;
@@ -214,8 +215,11 @@ export default function TvSub() {
   };
 
   return (
-    <>
-      <Sidebar />
+    <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
+    {loading && <Loader />}
+   <div>
+   <Sidebar />
+   </div>
       <form
         className={`${styles.form} bg-slate-500 h-full md:h-screen xl:h-screen`}
         onSubmit={handleFormSubmit}
@@ -384,6 +388,6 @@ export default function TvSub() {
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
       />
-    </>
+    </div>
   );
 }

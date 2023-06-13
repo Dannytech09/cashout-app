@@ -39,9 +39,6 @@ function BuyData() {
       try {
         const response = await fetch(
           `${BASE_URL}/getData`
-          // {
-          //   headers: authHeader()
-          // }
         );
         const res = await response.json();
         // console.log(res.networkData);
