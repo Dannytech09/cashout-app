@@ -43,7 +43,7 @@ export default function SignUp() {
           router.push("/user/dashboard");
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           if (error.response?.data.message) {
             setApiError(error.response?.data.message);
           } else {
