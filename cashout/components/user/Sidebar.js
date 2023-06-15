@@ -80,11 +80,13 @@ const Sidebar = () => {
     }
   );
 
-  const logoutHandler = async () => {
-    await AuthService.logout();
-    router.push("/login");
-  };
-
+const logoutHandler = async () => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("buttonClicked");
+  }
+  await AuthService.logout();
+  router.push("/login");
+};
   const handleSideBarToggle = () => {
     setToggle(!toggle);
   };

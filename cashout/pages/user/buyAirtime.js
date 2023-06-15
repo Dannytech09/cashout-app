@@ -9,6 +9,7 @@ import Sidebar from "@/components/user/Sidebar";
 import Footer from "@/components/user/Footer";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
 import API_BASE_URL from "@/apiConfig";
+import Loader from "@/components/utils/Loader";
 
 const BASE_URL = `${API_BASE_URL}/buyAirtime`;
 
@@ -116,7 +117,7 @@ function BuyAirtime() {
         if (response.data.code === "000") {
           alert(response.data.message);
           router.reload();
-          setLoading(false);
+          // setLoading(false);
           // console.log(response)
         }
       } catch (error) {
@@ -161,7 +162,10 @@ function BuyAirtime() {
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
+       {loading && <Loader />}
+      <div>
       <Sidebar />
+      </div>
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">

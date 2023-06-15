@@ -9,6 +9,7 @@ import Footer from "../../components/user/Footer";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
+import Loader from "@/components/utils/Loader";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
 
@@ -38,9 +39,6 @@ function BuyData() {
       try {
         const response = await fetch(
           `${BASE_URL}/getData`
-          // {
-          //   headers: authHeader()
-          // }
         );
         const res = await response.json();
         // console.log(res.networkData);
@@ -218,6 +216,7 @@ function BuyData() {
 
   return (
     <div className="bg-slate-500 h-full md:h-screen xl:h-screen">
+      {loading && <Loader/>}
       <div className="">
       <Sidebar />
       </div>

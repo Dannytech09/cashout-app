@@ -27,10 +27,12 @@ export default function Header() {
   }, []);
 
   const logoutHandler = async () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("buttonClicked");
+    }
     await AuthService.logout();
     router.push("/login");
   };
-
   // useEffect(() => {
   //   const user = JSON.parse(sessionStorage.getItem("user"));
   //   setUser(user);
