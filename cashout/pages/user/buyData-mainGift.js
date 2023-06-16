@@ -1,68 +1,104 @@
 import React, { useState, useEffect } from "react";
 import authHeader from "../../services/auth-Header";
-import ConfirmAirtimeModal from "@/components/utils/ConfirmAirtimeModal";
+import ConfirmDataGiftModal from "@/components/user/ConfirmDataGiftModal";
 import axios from "axios";
+import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import styles from "../../styles/BuyAirtime.module.css";
-import Sidebar from "@/components/user/Sidebar";
-import Footer from "@/components/user/Footer";
-import SmileIcon from "@/components/heroIcons/SmileIcon";
 import API_BASE_URL from "@/apiConfig";
+import Sidebar from "@/components/user/Sidebar";
 import Loader from "@/components/utils/Loader";
 
-const BASE_URL = `${API_BASE_URL}/buyAirtime`;
+const BASE_URL = `${API_BASE_URL}/pay`;
 
-function BuyAirtime() {
+function BuyDataMainGift() {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [networkData, setNetworkData] = useState([]);
+  const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [phoneErr, setPhoneErr] = useState(false);
   const [insufficientBal, setInsufficientBal] = useState(false);
   const [unauthorised, setUnauthorised] = useState(false);
-  const [apiError, setApiError] = useState(false);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [allSelected, setAllSelected] = useState(false);
-  const [isValid, setIsValid] = useState(false);
-  const [max, setMax] = useState(false);
+  const [SsmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
 
   const [network, setNetwork] = useState("--Choose Network--");
+  const [dataVol, setDataVol] = useState("--Data Volume--");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [amount, setAmount] = useState("");
+  const [dataVols, setDataVols] = useState([]);
+  const [amounts, setAmounts] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [allSelected, setAllSelected] = useState(false);
 
-  const serviceId = ["mtn", "glo", "airtel", "etisalat"];
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `${BASE_URL}/getData`
+          // {
+          //   headers: authHeader()
+          // }
+        );
+        const res = await response.json();
+        // console.log(res.networkData);
+        setNetworkData(res.networkData);
+        setLoading(false);
+        return;
+      } catch (error) {
+        console.error(error);
+        alert("Not authorised or server error");
+      }
+    }
+    fetchData();
+  }, []);
+
+  // if (loading) {
+  //   return <div className="bg-slate-100">Loading...</div>;
+  // }
 
   const changeNetwork = (e) => {
-    const inputValue = e.target.value;
-    setNetwork(inputValue);
+    const selectedNetwork = networkData.find(
+      (ctr) => ctr.network === e.target.value
+    );
+    if (selectedNetwork) {
+      // check if selectedNetwork is undefined. if not checked it will throw an
+      // error if user selects a value and later select the default value
+      setDataVols(selectedNetwork.dataVol);
+    }
+    setPhoneNumber("");
+    setAmount("");
+    setNetwork(e.target.value);
+    // console.log(e.target.value);
+  };
+  // handle two onchange props
+  const handleNetworkAndInputValidation = (e) => {
+    changeNetwork(e);
     handleInputField(e);
-    // console.log(inputValue);
+  };
+
+  const changeDataVol = (e) => {
+    setDataVol(e.target.value);
+    const selectedDataVol = dataVols.find((ctr) => ctr.name === e.target.value);
+    // check if selectedDataVol is undefined. if not checked it will throw an
+    // error if user selects a value and later select the default value
+    if (selectedDataVol) {
+      setAmounts(selectedDataVol);
+      setAmountPlaceHolder(false);
+    }
+    setPhoneNumber("");
+    setAmount("");
+    // console.log(e.target.value);
+  };
+  // handle two onchange props
+  const handleDataVolAndInputValidation = (e) => {
+    changeDataVol(e);
+    handleInputField(e);
   };
 
   // handle two onchange props
-  const changePhoneNumber = (e) => {
+  const handlePhoneNumberAndInputValidation = (e) => {
     const inputValue = e.target.value;
-
-    // Remove non-numeric characters from the input
-    const numericPhoneNumber = inputValue.replace(/\D/g, "");
-
-    setPhoneNumber(numericPhoneNumber);
-
-    // Regex pattern to match Nigerian phone numbers
-    const regex = /^(\+?234|0)[789]\d{9}$/;
-
-    const isValidPhoneNumber = regex.test(inputValue);
-    setIsValid(isValidPhoneNumber);
-
-    handleInputField(e);
-    // console.log(e.target.value);
-  };
-
-  const changeAmount = (e) => {
-    const inputValue = e.target.value;
-
-    const numericPhoneNumber = inputValue.replace(/\D/g, "");
-    setAmount(numericPhoneNumber);
-
+    setPhoneNumber(inputValue);
     handleInputField(e);
     // console.log(e.target.value);
   };
@@ -76,25 +112,11 @@ function BuyAirtime() {
 
   const openModal = () => {
     setModalIsOpen(true);
-    // onConfirm();
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
-    // onRequestClose();
   };
-
-  // Track when modal to leave the screen upon opening it
-  useEffect(() => {
-    let timer;
-    if (modalIsOpen) {
-      timer = setTimeout(() => {
-        closeModal();
-      }, 3000);
-    }
-
-    return () => clearTimeout(timer);
-  }, [modalIsOpen]);
 
   const confirmData = async () => {
     if (typeof window !== "undefined") {
@@ -106,10 +128,9 @@ function BuyAirtime() {
         setPhoneErr(false);
         setInsufficientBal(false);
         setUnauthorised(false);
-        setMax(false);
         const response = await axios.post(
-          `${BASE_URL}/${id}`,
-          { serviceID: network, phone: phoneNumber, amount: amount },
+          `${BASE_URL}/${id}/purchase`,
+          { network, dataVol, phoneNumber },
           {
             headers: authHeader(),
           }
@@ -117,8 +138,7 @@ function BuyAirtime() {
         if (response.data.code === "000") {
           alert(response.data.message);
           router.reload();
-          // setLoading(false);
-          // console.log(response)
+          setLoading(false);
         }
       } catch (error) {
         if (error.response.data.error) {
@@ -126,14 +146,12 @@ function BuyAirtime() {
         } else if (error.response.data.code === "003") {
           setPhoneErr(true);
         } else if (error.response.data.code === "001") {
-          setApiError(true);
+          setsSmsApiErrorMessage(true);
         } else if (error.response.data.code === "006") {
           setInsufficientBal(true);
-        } else if (error.response.data.code === "009") {
-          setMax(true);
         } else {
-          alert(`Something went wrong!`);
           // console.log(error.response);
+          alert(`Something went wrong!`);
         }
         setLoading(false);
       }
@@ -161,15 +179,16 @@ function BuyAirtime() {
   }
 
   return (
-    <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-       {loading && <Loader />}
-      <div>
-      <Sidebar />
-      </div>
+    <div className="bg-slate-500 h-screen md:h-screen xl:h-full">
+        {loading && <Loader/>}
+        <div>
+            <Sidebar/>
+        </div>
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl p-5">Buy Airtime</h3>
+            <h3 className="text-black text-xl p-5">Buy Bulk Data</h3>
+            <p className="text-xs text-slate-200">Note: You can use all these esp. when subscribing for router/mifi or bulk data plan. Glo divides their data into day and night (night plans are not displayed when customer check balance however, it&apos;s there and can be used at night) The main data displayed on customer&apos;s balance can be used at any time</p>
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>
@@ -178,8 +197,7 @@ function BuyAirtime() {
               )}
               {insufficientBal && (
                 <div className={styles.errorMessage}>
-                  Fund your wallet now boss !
-                  <span className="fill-blue-900 stroke-blue-600"><SmileIcon/></span>
+                  Please fund your wallet.
                 </div>
               )}
               {unauthorised && (
@@ -188,23 +206,32 @@ function BuyAirtime() {
                   authenticated.
                 </div>
               )}
-              {apiError && (
-                <div className={styles.errorMessage}>Transaction Failed!</div>
-              )}
-              {max && (
+              {SsmsApiErrorMessage && (
                 <div className={styles.errorMessage}>
-                  Minimum amount - 100 and maximum amount 5000 naira
+                  {`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`}
                 </div>
               )}
             </div>
             <select
               className={`${styles.formControl} input-field`}
-              onChange={changeNetwork}
+              onChange={handleNetworkAndInputValidation}
             >
               <option value={network}>--Choose Network--</option>
-              {serviceId.map((ctr) => (
-                <option value={ctr} key={ctr}>
-                  {ctr}
+              {networkData.map((ctr) => (
+                <option value={ctr.network} key={ctr.network}>
+                  {ctr.network}
+                </option>
+              ))}
+            </select>
+            <br />
+            <select
+              className={`${styles.formControl} input-field`}
+              onChange={handleDataVolAndInputValidation}
+            >
+              <option value={dataVol}>--Data Volume--</option>
+              {dataVols.map((ctr) => (
+                <option value={ctr.name} key={ctr.name}>
+                  {ctr.name}
                 </option>
               ))}
             </select>
@@ -213,20 +240,20 @@ function BuyAirtime() {
               placeholder="Phone number"
               className={`${styles.formControl} text-red-400 input-field`}
               value={phoneNumber}
-              onChange={changePhoneNumber}
-            />
-            <div className="text-xs mr-40 mt-[-2ch] text-red-600">
-              {isValid ? null : <p>Invalid Phone Number</p>}
-            </div>
-            <br />
-            <input
-              placeholder="Amount"
-              className={`${styles.formControl} text-red-400 mt-[-2ch] input-field`}
-              value={amount}
-              onChange={changeAmount}
+              onChange={handlePhoneNumberAndInputValidation}
             />
             <br />
-            <div className={styles.airtimeBtn}>
+            <div className={styles.amountBtn}>
+              <div
+                className={`${styles.formControl} border border-white bg-white input-field`}
+              >
+                {amountPlaceHolder ? (
+                  "amount"
+                ) : (
+                  <h2 value={amount}> {amounts.amount}</h2>
+                )}
+              </div>
+              <br />
               <div
                 className={`${styles.btn} border border-white bg-white text-center hover:cursor-pointer`}
               >
@@ -238,7 +265,7 @@ function BuyAirtime() {
                     cursor: allSelected ? "pointer" : "not-allowed",
                   }}
                 >
-                  {loading ? <p>Loading...</p> : "Buy Airtime"}
+                  {loading ? <p>Loading...</p> : "Buy Data"}
                 </button>
               </div>
               <div
@@ -250,20 +277,17 @@ function BuyAirtime() {
           </div>
         </div>
       </form>
-      <ConfirmAirtimeModal
+      <ConfirmDataGiftModal
         network={network}
+        dataVol={dataVol}
         phoneNumber={phoneNumber}
-        amount={amount}
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
         // value={buyData}
       />
-      <div className="md:mb-[-20ch]">
-        <Footer />
-      </div>
     </div>
   );
 }
 
-export default BuyAirtime;
+export default BuyDataMainGift;

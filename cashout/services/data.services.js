@@ -32,27 +32,18 @@ const setDataPrices = () => {
   });
 };
 
-// Get all data purchased - restricted
+// Get all history - restricted
 const getAllPurchases = () => {
   return axios.get(`${ADMIN_BASE_URL}/purchases/getAllPurchases`, {
     headers: authHeader(),
   });
 };
 
-// Get all data purchased - restricted
+// Get all my history - restricted
 const getMyPurchases = () => {
   const user = getUser();
   const id = user._id;
   return axios.get(`${BASE_Purchase}/${id}/getSingleUserPurchases`, {
-    headers: authHeader(),
-  });
-};
-
-// Get all data purchased - restricted
-const getMyHistories = () => {
-  const user = getUser();
-  const id = user._id;
-  return axios.get(`${BASE_Purchase}/${id}/getSingleUserHistories`, {
     headers: authHeader(),
   });
 };
@@ -63,8 +54,7 @@ const DataServices = {
   setDataPrices,
   getAllPurchases,
   purchaseData,
-  getMyPurchases,
-  getMyHistories,
+  getMyPurchases
 };
 
 export default DataServices;

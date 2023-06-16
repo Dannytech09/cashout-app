@@ -1,7 +1,7 @@
 import DataServices from "../../services/data.services";
 import React, { useState, useEffect } from "react";
 import withAuth from "../../hocs/withAuth";
-import AllPurchases from "@/components/admin/GetAllPurchases";
+import AllPurchases from "@/components/admin/GetAllHistory";
 
 function GetAllPurchases() {
   const [allPurchases, setAllDataPurchased] = useState([]);

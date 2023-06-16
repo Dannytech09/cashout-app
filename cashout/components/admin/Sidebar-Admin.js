@@ -15,52 +15,51 @@ import AuthService from "../../services/auth.Service";
 
 // Using array for nav items
 const menuItems = [
-  { id: 1, label: "Admin Board", icon: HomeIcon, link: "/admin/dashboard" },
-  { id: 2, label: "Fund Wallet", icon: FundWalletIcon, link: "/admin/cd" },
-  { id: 3, label: "All Payment", icon: ProfileIcon, link: "/admin/getAllPayment" },
-  { id: 4, label: "Get All Users", icon: DataIcon, link: "/admin/getAllUsers" },
+  { id: 1, label: "Admin Board", icon: HomeIcon, link: "-wonders/dashboard" },
+  { id: 2, label: "Fund Wallet", icon: FundWalletIcon, link: "/admin-wonders/cd" },
+  {
+    id: 3,
+    label: "Data component",
+    icon: FundWalletIcon,
+    link: "/admin-wonders/dataComponent",
+  },
+  { id: 4, label: "Get All Users", icon: DataIcon, link: "/admin-wonders/getAllUsers" },
   {
     id: 5,
     label: "LookUp User",
     icon: ProfileIcon,
-    link: "/admin/getSingleUser",
+    link: "/admin-wonders/getSingleUser",
   },
   {
     id: 6,
     label: "Update User",
     icon: ProfileIcon,
-    link: "/admin/updateUser",
+    link: "/admin-wonders/updateUser",
   },
-  { id: 7, label: "Block User", icon: AirtimeIcon, link: "/admin/blockUser" },
   {
-    id: 8,
-    label: "Create User",
+    id: 7,
+    label: "Upgrade User",
     icon: FundWalletIcon,
-    link: "/admin/createUser",
+    link: "/admin-wonders/upgrade",
   },
+  { id: 8, label: "Block User", icon: AirtimeIcon, link: "/admin-wonders/blockUser" },
   {
     id: 9,
-    label: "Delete User",
-    icon: Airtime2Cash,
-    link: "/admin/delUser",
+    label: "Create User",
+    icon: FundWalletIcon,
+    link: "/admin-wonders/createUser",
   },
   {
     id: 10,
-    label: "Admin's Info",
-    icon: ProfileIcon,
-    link: "/admin/profile",
+    label: "Delete User",
+    icon: Airtime2Cash,
+    link: "/admin-wonders/delUser",
   },
   {
     id: 11,
-    label: "Upgrade User",
-    icon: FundWalletIcon,
-    link: "/admin/upgrade",
-  },
-  {
-    id: 12,
-    label: "Data component",
-    icon: FundWalletIcon,
-    link: "/admin/dataComponent",
+    label: "Admin's Info",
+    icon: ProfileIcon,
+    link: "/admin-wonders/profile",
   },
 ];
 
@@ -79,7 +78,7 @@ const SidebarAdmin = () => {
 
   const logoutHandler = async () => {
     await AuthService.logout();
-    router.push("/admin/login");
+    router.push("/admin-wonders/login");
   };
 
   const handleSideBarToggle = () => {

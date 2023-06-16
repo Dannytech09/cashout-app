@@ -234,10 +234,10 @@ function UpdateUser() {
 
         <div className="flex mt-1 gap-4 text-center justify-center select-none">
           <div className="py-1 px-1 font-sans bg-hover:red font-bold text-1xl text-slate-200 bg-cyan-700">
-            <Link href="/admin/getAllUsers">Check All Users</Link>
+            <Link href="/admin-wonders/getAllUsers">Check All Users</Link>
           </div>
           <div className="py-1 px-1 font-sans bg-hover:red font-bold text-1xl text-slate-200 bg-cyan-700">
-            <Link href="/admin/dashboard">Navigate to Admin Board</Link>
+            <Link href="/admin-wonders/dashboard">Navigate to Admin Board</Link>
           </div>
         </div>
       </form>
