@@ -1,0 +1,23 @@
+.loaderContainer {
+    background-color: rgba(0, 0, 0, 0.5); /* Change the background color and opacity as needed */
+    z-index: 9999; /* Adjust the z-index to make sure the loader is on top of other elements */
+  }
+  
+  .loader {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: white;
+    animation: spin-clockwise 1s infinite linear;
+  }
+  
+  @keyframes spin-clockwise {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
