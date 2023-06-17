@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import withAuth from "../../hocs/withAuth";
 import MyPurchases from "@/components/user/History";
 
-function history() {
+function History() {
   const [myPurchases, setMyPurchases] = useState([]);
   const [checkTransaction, setCheckTransaction] = useState(false);
 
@@ -12,7 +12,7 @@ function history() {
       const res = await DataServices.getMyPurchases();
 
       setMyPurchases(res.data.data);
-        // console.log(res.data.data);
+      // console.log(res.data.data);
     } catch (error) {
       if (error?.response?.data?.code === "002") {
         setCheckTransaction(true);
@@ -34,4 +34,4 @@ function history() {
   );
 }
 
-export default withAuth(history);
+export default withAuth(History);
