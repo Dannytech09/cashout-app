@@ -212,17 +212,17 @@ export default function TvSub() {
           }
         );
         if (response.data.code === "000") {
+          // console.log(response);
           alert(response.data.Record.message);
           setLoading(false);
           router.reload();
-        //   console.log(response);
         }
       } catch (error) {
         if (error.response?.data?.error) {
           setUnauthorised(true);
-        } else if (error.response.data.code === "006") {
+        } else if (error.response?.data?.code === "006") {
           setInsufficientBal(true);
-        } else if (error.response.data.code === "005") {
+        } else if (error.response?.data?.code === "005") {
           setApiError(true);
         } else {
           alert("Something went wrong !");
