@@ -77,8 +77,7 @@ const FundWallet = () => {
   }, []);
 
   return (
-    // <div className="h-full">
-    <Card className="overflow-y-auto overflow-x-0 fixed inset-0 bg-black max-sm:flex-col text-center z-60 flex p-4 justify-between border-red-300">
+  <Card className="overflow-y-auto overflow-x-0 fixed inset-0 bg-black max-sm:flex-col text-center z-60 flex p-4 justify-between border-red-300">
       <div className="fixed left-0 top-0">
         <Sidebar />
       </div>
@@ -306,8 +305,6 @@ const FundWallet = () => {
         </form>
       </div>
     </Card>
-    // </div>
   );
 };
-
-export default withAuth(FundWallet);
+export default withAuth(FundWallet)
