@@ -5,7 +5,7 @@ module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
-    "./pages/admin/**/*.{js,ts,jsx,tsx}",
+    "./pages/admin-wonders/**/*.{js,ts,jsx,tsx}",
     "./components/admin/**/*.{js,ts,jsx,tsx}",
   ],
   // important: true,

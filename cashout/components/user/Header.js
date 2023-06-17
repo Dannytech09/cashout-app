@@ -41,13 +41,13 @@ export default function Header() {
 
   return (
     // <div>
-    <div className="justify-content-between ">
+    <div className="justify-content-between">
       <div className={styles.headerCon}>
         <div className="flex flex-row justify-between">
           {user && (
             <div className="ml-10 mt-0 p-2 h-10 w-[35%] sm:w-[30.2%] md:w-[20.9%] xl:w-[12.8%] bg-slate-100 sm:border-2 border-2 border-x-0 border-r-2  border-solid hover:border-dotted">
               <h2 className="text-sm sm:text-xs font-bold">
-                &#8358; {user.balance.$numberDecimal}
+                &#8358; {user.bal.$numberDecimal}
               </h2>
               {error && <p>Error fetching balance</p>}
             </div>
@@ -88,10 +88,13 @@ export default function Header() {
                 </Link>
               </div>
             </div>
+            <div className="pt-3 mt-2 ">
+              <p className="text-slate-100"> Acct Type: <span>{user.accountType}</span></p>
+            </div>
           </div>
             )}
       </div>
-      <MotionText text="Updated codes - Data balance checkers- MTN - *321*3*3#, Glo - *127*0#, Airtel - *323#, 9mobile SME - *917*9#, 9mobile gifting - *228#" />
+      <MotionText text="Updated codes - Data balance checkers- MTN-SME - *321*3*3#, MTN-CG - *460*260#, Glo - *127*0#, Airtel - *323#, 9mobile SME - *917*9#, 9mobile gifting - *228#. All transactions can now be viewed from transaction history. " />
     </div>
     // </div>
   );

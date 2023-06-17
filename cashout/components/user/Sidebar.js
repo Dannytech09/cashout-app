@@ -47,18 +47,24 @@ const menuItems = [
   },
   {
     id: 8,
+    label: "Transaction History",
+    icon: Airtime2Cash,
+    link: "/user/history",
+  },
+  {
+    id: 9,
     label: "Profile",
     icon: ProfileIcon,
     link: "/user/profile",
   },
   {
-    id: 9,
+    id: 10,
     label: "Update Profile",
     icon: UserPlusIcon,
     link: "/user/updateDetails",
   },
   {
-    id: 10,
+    id: 11,
     label: "Change Password",
     icon: LockPassIcon,
     link: "/user/updatePassword",

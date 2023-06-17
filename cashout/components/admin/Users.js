@@ -11,7 +11,7 @@ export default function Users({ users }) {
           >
             <div className="flex hover:pointer hover:text-cyan-500 text-[1.3ch] ">
             ID: <span className="font-medium "> {user._id}</span>
-              <Link className=' hover:text-blue-500' href={'/admin/getSingleUser'}><h5 className="font-bold">
+              <Link className=' hover:text-blue-500' href={'/admin-wonders/getSingleUser'}><h5 className="font-bold">
                 &nbsp; click me</h5>
               </Link>
             </div>

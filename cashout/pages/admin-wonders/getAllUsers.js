@@ -1,28 +1,26 @@
 import UserService from "../../services/user.service";
 import React, { useState, useEffect } from "react";
-import AllPayment from "../../components/admin/GetAllPayment";
+import Users from "../../components/admin/Users";
 import withAuth from "../../hocs/withAuth";
 import HeadInPages from "@/components/admin/HeadInPages";
 // import Pagination from "../../components/utils/Pagination";
 
-function GetAllPayment() {
-  const [payment, setPayment] = useState([]);
+function GetAllUsers() {
+  const [users, setUsers] = useState([]);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [postsPerPage] = useState(10);
 
   const fetch = async () => {
-    await UserService.getPayment()
+    await UserService.getAllUsers()
       .then((res) => {
-        setPayment(res.data.data);
-        // console.log(res.data.data)
+        setUsers(res.data.data);
       })
       .catch((error) => {
-        // console.log(error)
         if (
           error.response.data.status === 401 ||
           error.response.data.status === 400
         ) {
-          alert("No Payment found");
+          alert("No Users found");
         }
       });
   };
@@ -43,11 +41,11 @@ function GetAllPayment() {
     <div className="relative">
       <div className="p-2 fixed top-0 w-full border border-solid border-slate-500 bg-slate-900">
         <h1 className="mt-2 text-center text-slate-200 font-extrabold text-2xl">
-          All Payment
+          All Users
         </h1>
         <HeadInPages />
       </div>
-      <AllPayment payment={payment} />
+      <Users users={users} />
       {/* <currentPost currentPosts={currentPosts} />
         <Pagination 
         postsPerPage={postsPerPage}
@@ -59,4 +57,4 @@ function GetAllPayment() {
   );
 }
 
-export default withAuth(GetAllPayment)
+export default withAuth(GetAllUsers);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import User from "../../components/admin/User";
+import User from "@/components/admin/User";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { getToken } from "../../Utils/Common";
@@ -7,8 +7,8 @@ import axios from "axios";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
 
-function Upgrade() {
-  const [user, setUser] = useState();
+function UpdateUser() {
+  const [user, setUser] = useState(false);
 
   const {
     register,
@@ -17,18 +17,18 @@ function Upgrade() {
   } = useForm({
     defaultValues: {
       id: "",
-      accountType: "",
+      blocked: "",
     },
     // mode: "onchange"
   });
 
-  const submitHandler = ({ id, accountType }) => {
+  const submitHandler = ({ id, blocked }) => {
     {
       const url = `${API_BASE_URL}/api/v1/users/${id}`;
       axios
         .put(
           url,
-          { accountType },
+          { blocked },
           {
             headers: {
               Authorization: "Bearer " + getToken(),
@@ -40,7 +40,11 @@ function Upgrade() {
           if (res.data.data === null) {
             alert("Invalid User ID");
           }
-          alert("User Upgraded Successfully !");
+          if (res.data.data.blocked) {
+            alert("User Blocked !");
+          } else {
+            alert("User Unblocked");
+          }
           setUser(res.data.data);
         })
         .catch((error) => {
@@ -64,7 +68,7 @@ function Upgrade() {
         onSubmit={handleSubmit(submitHandler)}
         className="mt-4 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"
       >
-        <h1 className="sm:text-3xl mb-2 font-sans text-2xl">Upgrade User</h1>
+        <h1 className="sm:text-3xl mb-2 font-sans text-2xl">Block User</h1>
         <input
           {...register("id", {
             required: "Please enter user's ID!",
@@ -87,29 +91,21 @@ function Upgrade() {
           </p>
         )}
         <select
-          {...register("accountType", {
+          {...register("blocked", {
             required: "  Please select a value!",
           })}
           className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
-          aria-invalid={errors.accountType ? "true" : "false"}
+          aria-invalid={errors.blocked ? "true" : "false"}
         >
-          <option
-          //   value={corporate}
-          >
-            corporate
-          </option>
-          <option
-          //   value={partner}
-          >
-            partner
-          </option>
+          <option value={false}>Unblock</option>
+          <option value={true}>Block</option>
         </select>
-        {errors.accountType && (
+        {errors.blocked && (
           <p
             className="w-full max-w-[39ch] text-rose-300 mt-[-2ch]"
             role="alert"
           >
-            {errors.accountType?.message}
+            {errors.blocked?.message}
           </p>
         )}
         <button
@@ -117,15 +113,15 @@ function Upgrade() {
           className="relative hover:after:translate-x-full after:absolute after:top-0 after:right-full after:bg-blue-600 after:z-10 after:w-full after:h-full overflow-hidden after:duration-300 hover:text-slate-900
      duration-300 w-full max-w-[39ch] border border-sky-500 border-solid uppercase py-2 px-2 text-cyan-900"
         >
-          <h2 className="relative z-30"> Upgrade User</h2>
+          <h2 className="relative z-30"> Block / Unblock User</h2>
         </button>
 
         <div className="flex mt-1 gap-4 text-center justify-center select-none">
           <div className="py-1 px-1 font-sans bg-hover:red font-bold text-1xl text-slate-200 bg-cyan-700">
-            <Link href="/admin/getAllUsers">Check All Users</Link>
+            <Link href="/admin-wonders/getAllUsers">Check All Users</Link>
           </div>
           <div className="py-1 px-1 font-sans bg-hover:red font-bold text-1xl text-slate-200 bg-cyan-700">
-            <Link href="/admin/dashboard">Navigate to Admin Board</Link>
+            <Link href="/admin-wonders/dashboard">Navigate to Admin Board</Link>
           </div>
         </div>
       </form>
@@ -135,12 +131,16 @@ function Upgrade() {
       {user ? (
         true
       ) : (
-        <div className="text-center m-10 text-red-500">Awaiting Upgrade...</div>
+        <div className="text-center m-10 text-red-500">
+          Awaiting blocking / Unblocking...
+        </div>
       )}
 
-      <User user={user} />
+      <div className="text-red-600">
+        <User user={user} />
+      </div>
     </div>
   );
 }
 
-export default withAuth(Upgrade)
+export default withAuth(UpdateUser);

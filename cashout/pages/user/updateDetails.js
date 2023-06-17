@@ -63,7 +63,7 @@ function UpdateUser() {
             alert("Something went wrong");
           }
         });
-        setLoading(false);
+      setLoading(false);
     }
   };
 

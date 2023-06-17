@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import authHeader from "../../services/auth-Header";
+import ConfirmDataGiftModal from "@/components/user/ConfirmDataGiftModal";
 import axios from "axios";
 import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Sidebar from "@/components/user/Sidebar";
-import Footer from "../../components/user/Footer";
-import SmileIcon from "@/components/heroIcons/SmileIcon";
-import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
+import Sidebar from "@/components/user/Sidebar";
 import Loader from "@/components/utils/Loader";
 
-const BASE_URL = `${API_BASE_URL}/vend`;
+const BASE_URL = `${API_BASE_URL}/pay`;
 
-function BuyData() {
+function BuyDataMainGift() {
   const router = useRouter();
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -21,10 +19,7 @@ function BuyData() {
   const [phoneErr, setPhoneErr] = useState(false);
   const [insufficientBal, setInsufficientBal] = useState(false);
   const [unauthorised, setUnauthorised] = useState(false);
-  const [sSmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [serverError, setServerError] = useState(false);
-  const [failed, setFailed] = useState("");
+  const [SsmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
 
   const [network, setNetwork] = useState("--Choose Network--");
   const [dataVol, setDataVol] = useState("--Data Volume--");
@@ -40,6 +35,9 @@ function BuyData() {
       try {
         const response = await fetch(
           `${BASE_URL}/getData`
+          // {
+          //   headers: authHeader()
+          // }
         );
         const res = await response.json();
         // console.log(res.networkData);
@@ -47,7 +45,7 @@ function BuyData() {
         setLoading(false);
         return;
       } catch (error) {
-        // console.error(error);
+        console.error(error);
         alert("Not authorised or server error");
       }
     }
@@ -63,23 +61,15 @@ function BuyData() {
       (ctr) => ctr.network === e.target.value
     );
     if (selectedNetwork) {
+      // check if selectedNetwork is undefined. if not checked it will throw an
+      // error if user selects a value and later select the default value
       setDataVols(selectedNetwork.dataVol);
-
-      const selectedData = selectedNetwork.dataVol.find(
-        (vol) => vol.name === e.target.value
-      );
-
-      if (selectedData) {
-        selectedDataVolName = selectedData.name;
-        // console.log(selectedDataVolName);
-      }
     }
     setPhoneNumber("");
     setAmount("");
     setNetwork(e.target.value);
     // console.log(e.target.value);
   };
-
   // handle two onchange props
   const handleNetworkAndInputValidation = (e) => {
     changeNetwork(e);
@@ -88,9 +78,7 @@ function BuyData() {
 
   const changeDataVol = (e) => {
     setDataVol(e.target.value);
-    const selectedDataVol = dataVols.find(
-      (ctr) => ctr.plan_code === e.target.value
-    );
+    const selectedDataVol = dataVols.find((ctr) => ctr.name === e.target.value);
     // check if selectedDataVol is undefined. if not checked it will throw an
     // error if user selects a value and later select the default value
     if (selectedDataVol) {
@@ -101,7 +89,6 @@ function BuyData() {
     setAmount("");
     // console.log(e.target.value);
   };
-
   // handle two onchange props
   const handleDataVolAndInputValidation = (e) => {
     changeDataVol(e);
@@ -131,69 +118,40 @@ function BuyData() {
     setModalIsOpen(false);
   };
 
-  // Track when modal is to leave the screen upon opening it
-  useEffect(() => {
-    let timer;
-    if (modalIsOpen) {
-      timer = setTimeout(() => {
-        closeModal();
-      }, 3000);
-    }
-
-    return () => clearTimeout(timer);
-  }, [modalIsOpen]);
-
   const confirmData = async () => {
     if (typeof window !== "undefined") {
       const user = JSON.parse(sessionStorage.getItem("user"));
       const id = user._id;
 
       try {
-        setFailed("")
         setLoading(true);
         setPhoneErr(false);
         setInsufficientBal(false);
         setUnauthorised(false);
-        setsSmsApiErrorMessage(false);
-        setErrorMessage(false);
-        setServerError(false);
         const response = await axios.post(
           `${BASE_URL}/${id}/purchase`,
-          { network: network, plan_code: dataVol, mobile: phoneNumber },
+          { network, dataVol, phoneNumber },
           {
             headers: authHeader(),
           }
         );
-        // console.log(response);
         if (response.data.code === "000") {
-          alert(response.data.message);
-          router.reload();
-          setLoading(false);
-        } else if (response.data.code === "010") {
           alert(response.data.message);
           router.reload();
           setLoading(false);
         }
       } catch (error) {
-        // console.log(error)
         if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
           setPhoneErr(true);
-        } else if (error.response.data.code === "011") {
         } else if (error.response.data.code === "001") {
-          setFailed(error.response.data.message);
-        } else if (error.response.data.code === "011") {
           setsSmsApiErrorMessage(true);
-        } else if (error.response.data.code === "010") {
-          setErrorMessage(true);
         } else if (error.response.data.code === "006") {
           setInsufficientBal(true);
-        } else if (error.response.data.code === "005") {
-          setServerError(true);
         } else {
           // console.log(error.response);
-          alert(`Something went wrong! If problem persist check your network`);
+          alert(`Something went wrong!`);
         }
         setLoading(false);
       }
@@ -221,34 +179,25 @@ function BuyData() {
   }
 
   return (
-    <div className="bg-slate-500 h-full md:h-screen xl:h-screen">
-      {loading && <Loader/>}
-      <div className="">
-      <Sidebar />
-      </div>
+    <div className="bg-slate-500 h-screen md:h-screen xl:h-full">
+        {loading && <Loader/>}
+        <div>
+            <Sidebar/>
+        </div>
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl p-5">Buy Data</h3>
+            <h3 className="text-black text-xl p-5">Buy Bulk Data</h3>
+            <p className="text-xs text-slate-200">Note: You can use all these esp. when subscribing for router/mifi or bulk data plan. Glo divides their data into day and night (night plans are not displayed when customer check balance however, it&apos;s there and can be used at night) The main data displayed on customer&apos;s balance can be used at any time</p>
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>
                   Please input a valid phone number.
                 </div>
               )}
-              {failed && (
-                <div className={styles.errorMessage}>
-                 {failed}
-                </div>
-              )}
               {insufficientBal && (
-                <div
-                  className={`${styles.errorMessage} item-center justify-center flex gap-2`}
-                >
-                  Fund your wallet now boss !
-                  <span className="fill-blue-800 stroke-yellow-600">
-                    <SmileIcon />
-                  </span>
+                <div className={styles.errorMessage}>
+                  Please fund your wallet.
                 </div>
               )}
               {unauthorised && (
@@ -257,19 +206,9 @@ function BuyData() {
                   authenticated.
                 </div>
               )}
-              {sSmsApiErrorMessage && (
+              {SsmsApiErrorMessage && (
                 <div className={styles.errorMessage}>
-                  Invalid network or plan
-                </div>
-              )}
-              {errorMessage && (
-                <div className={styles.errorMessage}>
-                  If problem persist kindly contact the admin !
-                </div>
-              )}
-              {serverError && (
-                <div className={styles.errorMessage}>
-                  Internal Server Error!
+                  {`Unable to Purchase ${dataVol} ${network} to ${phoneNumber} please try after some minutes`}
                 </div>
               )}
             </div>
@@ -280,7 +219,7 @@ function BuyData() {
               <option value={network}>--Choose Network--</option>
               {networkData.map((ctr) => (
                 <option value={ctr.network} key={ctr.network}>
-                  {ctr.variation_string}
+                  {ctr.network}
                 </option>
               ))}
             </select>
@@ -291,7 +230,7 @@ function BuyData() {
             >
               <option value={dataVol}>--Data Volume--</option>
               {dataVols.map((ctr) => (
-                <option value={ctr.plan_code} key={ctr.plan_code}>
+                <option value={ctr.name} key={ctr.name}>
                   {ctr.name}
                 </option>
               ))}
@@ -338,18 +277,17 @@ function BuyData() {
           </div>
         </div>
       </form>
-      <ConfirmDataModal
+      <ConfirmDataGiftModal
+        network={network}
+        dataVol={dataVol}
         phoneNumber={phoneNumber}
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
-        network={network}
-        // dataVol={dataVol}
         // value={buyData}
       />
-      <Footer />
     </div>
   );
 }
 
-export default BuyData;
+export default BuyDataMainGift;
