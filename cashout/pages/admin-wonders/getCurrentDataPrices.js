@@ -7,7 +7,7 @@ function GetCurrentDataPrices() {
   const [dataInfos, setDataInfos] = useState([]);
   const [error, setError] = useState(null);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await DataServices.getAllDataInfo();
@@ -16,7 +16,7 @@ function GetCurrentDataPrices() {
           setDataInfos(newData);
         }
       } catch (error) {
-        setError(error)
+        setError(error);
         // console.log(error);
       }
     };
@@ -34,10 +34,9 @@ function GetCurrentDataPrices() {
 
   return (
     <>
-    <CurrentDataPrices dataInfos={dataInfos}/>
+      <CurrentDataPrices dataInfos={dataInfos} />
     </>
-  )
-
+  );
 }
 
 export default withAuth(GetCurrentDataPrices);

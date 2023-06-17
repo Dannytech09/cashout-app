@@ -30,9 +30,9 @@ export default function Login() {
         await AuthService.signInAdmin(email, password)
           .then((response) => {
             if (response?.data.token && response?.data?.user.isAdmin === true) {
-            router.push("/admin/dashboard");
+            router.push("/admin-wonders/dashboard");
             } else {
-              router.push("/admin/login");
+              router.push("/admin-wonders/login");
             }
           })
           .catch((error) => {
@@ -41,7 +41,7 @@ export default function Login() {
               error.response?.status === 500
             ) {
               alert("Invalid Email and Password !");
-              router.reload("/admin/login");
+              router.reload("/admin-wonders/login");
             } else {
               alert("Something went Wrong! If problem persist please check your network..");
             }

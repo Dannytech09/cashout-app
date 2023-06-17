@@ -24,6 +24,7 @@ function BuyData() {
   const [sSmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [failed, setFailed] = useState("");
 
   const [network, setNetwork] = useState("--Choose Network--");
   const [dataVol, setDataVol] = useState("--Data Volume--");
@@ -148,6 +149,7 @@ function BuyData() {
       const id = user._id;
 
       try {
+        setFailed("")
         setLoading(true);
         setPhoneErr(false);
         setInsufficientBal(false);
@@ -173,10 +175,14 @@ function BuyData() {
           setLoading(false);
         }
       } catch (error) {
+        // console.log(error)
         if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
           setPhoneErr(true);
+        } else if (error.response.data.code === "011") {
+        } else if (error.response.data.code === "001") {
+          setFailed(error.response.data.message);
         } else if (error.response.data.code === "011") {
           setsSmsApiErrorMessage(true);
         } else if (error.response.data.code === "010") {
@@ -228,6 +234,11 @@ function BuyData() {
               {phoneErr && (
                 <div className={styles.errorMessage}>
                   Please input a valid phone number.
+                </div>
+              )}
+              {failed && (
+                <div className={styles.errorMessage}>
+                 {failed}
                 </div>
               )}
               {insufficientBal && (
