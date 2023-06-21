@@ -5,6 +5,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
+import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 
 function DeleteUser() {
   const [delUser, setDelUser] = useState();
@@ -48,6 +49,9 @@ function DeleteUser() {
 
   return (
     <div>
+      <div className="fixed top-0">
+        <SidebarAdmin/>
+      </div>
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="mt-20 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"

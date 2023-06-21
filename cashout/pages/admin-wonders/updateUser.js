@@ -6,6 +6,7 @@ import { getToken } from "../../Utils/Common";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
+import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 
 function UpdateUser() {
   const [user, setUser] = useState();
@@ -79,6 +80,9 @@ function UpdateUser() {
   };
   return (
     <div>
+      <div className="fixed top-0">
+        <SidebarAdmin/>
+      </div>
       {loading ? <p>Loading...</p> : null}
       <form
         onSubmit={handleSubmit(submitHandler)}

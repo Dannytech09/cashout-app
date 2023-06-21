@@ -120,7 +120,7 @@ export default function TvSub() {
           setRenderDueDate(response.data.data.content.Due_Date);
           setPurchaseBtn(true);
           setLoading(false);
-        //   console.log(response);
+          //   console.log(response);
           //   alert(response.data.message);
           //   router.reload();
         }
@@ -237,9 +237,9 @@ export default function TvSub() {
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-       {loading && <Loader />}
+      {loading && <Loader />}
       <div>
-      <Sidebar />
+        <Sidebar />
       </div>
       <form
         className={`${styles.form} bg-slate-500 h-full md:h-screen xl:h-screen`}
@@ -251,10 +251,14 @@ export default function TvSub() {
               Cable Subscription
             </h3>
             <div>
-            {insufficientBal && (
-                <div className={`${styles.errorMessage} item-center justify-center flex gap-2`}>
+              {insufficientBal && (
+                <div
+                  className={`${styles.errorMessage} item-center justify-center flex gap-2`}
+                >
                   Fund your wallet now boss !
-                  <span className="fill-blue-800 stroke-yellow-600"><SmileIcon/></span>
+                  <span className="fill-blue-800 stroke-yellow-600">
+                    <SmileIcon />
+                  </span>
                 </div>
               )}
               {unauthorised && (

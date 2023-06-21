@@ -5,10 +5,12 @@ import Header from "../../components/user/Header";
 import Layout from "../../components/user/Layout";
 import withAuth from "../../hocs/withAuth";
 import SubFooter from "@/components/user/SubFooter";
+import UseTokenExpiration from "@/components/utils/TokenExp";
 
 function Dashboard() {
-  // const me = sessionStorage.getItem("user");
-  // console.log(me.balance.$numberDecimal);
+
+  UseTokenExpiration();
+
 
   return (
     <div className="flex overflow-x-hidden">
@@ -22,9 +24,6 @@ function Dashboard() {
           <div className="">
             <Header />
           </div>
-          {/* <div className="">
-            <Main />
-          </div> */}
           <div className="">
             <SubMain/>
           </div>
