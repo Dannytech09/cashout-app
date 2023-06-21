@@ -6,19 +6,22 @@ import AllPurchases from "@/components/admin/GetAllHistory";
 function GetAllPurchases() {
   const [allPurchases, setAllDataPurchased] = useState([]);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const res = await DataServices.getAllPurchases();
 
       setAllDataPurchased(res.data.data);
       // console.log(res.data.data);
     } catch (error) {
-      if (error.response.data.error) {
+      if (error.response?.data?.error) {
         setError(true);
         // console.log(error);
       }
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -27,7 +30,7 @@ function GetAllPurchases() {
 
   return (
     <>
-      <AllPurchases error={error} allPurchases={allPurchases} />
+      <AllPurchases error={error} allPurchases={allPurchases} loading={loading}/>
     </>
   );
 }

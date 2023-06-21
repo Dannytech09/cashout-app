@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import AuthService from "../services/auth.Service";
 import { FaRegEye } from "react-icons/fa";
 import useAuthGuard from "../hooks/useAuthGuard";
+import Logo from "@/components/heroIcons/Logo";
 
 const Login = () => {
   useAuthGuard();
@@ -53,12 +54,16 @@ const Login = () => {
   return (
     <div>
       {loading ? <p className="mt-3 ml-3">Loading...</p> : null}
-
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-screen"
       >
-        <h1 className="sm:text-3xl mb-2 font-sans text-3xl">LOGIN</h1>
+        <div className="flex gap-3 ">
+          <p>
+            <Logo />
+          </p>
+          <h1 className="sm:text-3xl mb-2 font-sans text-3xl">LOGIN</h1>
+        </div>
         {errors.email?.message ? (
           <p className="text-center w-full max-w-[39ch] border border-solid border-rose-700 text-rose-300 py-2">
             {errors.email?.message}

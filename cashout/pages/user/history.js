@@ -6,9 +6,11 @@ import MyPurchases from "@/components/user/History";
 function History() {
   const [myPurchases, setMyPurchases] = useState([]);
   const [checkTransaction, setCheckTransaction] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const res = await DataServices.getMyPurchases();
 
       setMyPurchases(res.data.data);
@@ -18,6 +20,7 @@ function History() {
         setCheckTransaction(true);
       }
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -29,6 +32,7 @@ function History() {
       <MyPurchases
         checkTransaction={checkTransaction}
         myPurchases={myPurchases}
+        loading={loading}
       />
     </div>
   );

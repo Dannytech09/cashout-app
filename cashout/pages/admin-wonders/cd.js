@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { updateUserBalance } from "../api/cd";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
+import Loader from "@/components/utils/Loader";
 
 export default function HomePage() {
   const [email, setEmail] = useState("");
@@ -10,10 +11,12 @@ export default function HomePage() {
 
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       setError(false);
       setSuccessMessage(false);
       const response = await updateUserBalance(
@@ -32,10 +35,12 @@ export default function HomePage() {
     } catch (error) {
       throw new Error("Something went wrong");
     }
+    setLoading(false)
   };
 
   return (
     <div className="bg-black h-screen">
+      {loading && <Loader/>}
       <SidebarAdmin />{" "}
       <div className="container">
         <h1 className="text-white text-xs text-center p-5">

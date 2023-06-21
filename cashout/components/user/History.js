@@ -2,10 +2,12 @@ import React from "react";
 import SubFooter from "./SubFooter";
 import Sidebar from "./Sidebar";
 import To12HourFormat from "../utils/Time";
+import Loader from "../utils/Loader";
 
-function MyPurchases({ myPurchases, checkTransaction }) {
+function MyPurchases({ myPurchases, checkTransaction, loading }) {
   return (
     <div className="relative">
+      {loading && <Loader/>}
       <div className="fixed top-1 z-40">
         <Sidebar />
       </div>

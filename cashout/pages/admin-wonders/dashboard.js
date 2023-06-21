@@ -9,8 +9,10 @@ import Head from "next/head";
 import LayoutAdmin from "../../components/admin/Layout-Admin";
 import Greetings from "../../components/utils/Greetings";
 import withAuth from "../../hocs/withAuth";
+import UseTokenExpiration from "@/components/utils/TokenExp";
 
 const Dashboard = (users, totalBal, blocked) => {
+  UseTokenExpiration();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

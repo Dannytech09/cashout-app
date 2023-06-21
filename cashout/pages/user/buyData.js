@@ -38,9 +38,7 @@ function BuyData() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(
-          `${BASE_URL}/getData`
-        );
+        const response = await fetch(`${BASE_URL}/getData`);
         const res = await response.json();
         // console.log(res.networkData);
         setNetworkData(res.networkData);
@@ -149,7 +147,7 @@ function BuyData() {
       const id = user._id;
 
       try {
-        setFailed("")
+        setFailed("");
         setLoading(true);
         setPhoneErr(false);
         setInsufficientBal(false);
@@ -168,11 +166,9 @@ function BuyData() {
         if (response.data.code === "000") {
           alert(response.data.message);
           router.reload();
-          setLoading(false);
         } else if (response.data.code === "010") {
           alert(response.data.message);
           router.reload();
-          setLoading(false);
         }
       } catch (error) {
         // console.log(error)
@@ -195,9 +191,8 @@ function BuyData() {
           // console.log(error.response);
           alert(`Something went wrong! If problem persist check your network`);
         }
-        setLoading(false);
       }
-
+      setLoading(false);
       closeModal();
     }
   };
@@ -222,9 +217,9 @@ function BuyData() {
 
   return (
     <div className="bg-slate-500 h-full md:h-screen xl:h-screen">
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <div className="">
-      <Sidebar />
+        <Sidebar />
       </div>
       <form onSubmit={submit} className="">
         <div className="p-10">
@@ -236,11 +231,7 @@ function BuyData() {
                   Please input a valid phone number.
                 </div>
               )}
-              {failed && (
-                <div className={styles.errorMessage}>
-                 {failed}
-                </div>
-              )}
+              {failed && <div className={styles.errorMessage}>{failed}</div>}
               {insufficientBal && (
                 <div
                   className={`${styles.errorMessage} item-center justify-center flex gap-2`}

@@ -2,10 +2,12 @@ import React from "react";
 import HeadInPages from "./HeadInPages";
 import SidebarAdmin from "./Sidebar-Admin";
 import To12HourFormat from "../utils/Time";
+import Loader from "../utils/Loader";
 
-function AllPurchases({ error, allPurchases }) {
+function AllPurchases({ error, allPurchases, loading }) {
   return (
     <div className="relative">
+      {loading && <Loader/>}
       <div className="fixed top-0 z-40">
         <SidebarAdmin />
       </div>
@@ -30,43 +32,41 @@ function AllPurchases({ error, allPurchases }) {
                 User ID: {item.user}
               </p>
               {item.account_name && (
-                <h1 className="font-bold">
+                <p className="text-gray-700 text-[1.1ch]">
                   Full Name:{" "}
                   <span className="font-medium">{item.account_name}</span>
-                </h1>
+                </p>
               )}
-              {item.bank && (
-                <div className="flex-wrap text-[1.3ch]">
-                  <h1 className="font-bold">
-                    Bank: <span className="font-medium"> {item.bank}</span>
-                  </h1>
-                </div>
-              )}
-              {item.account_number && (
-                <h1 className="font-bold">
-                  Account Number:{" "}
-                  <span className="font-medium">{item.account_number}</span>
-                </h1>
-              )}
-              {item.paymentReference && (
-                <div className="flex-wrap text-[1.3ch]">
-                  <h1 className="font-bold">
-                    Payment Ref:{" "}
-                    <span className="font-medium">
-                      {" "}
-                      {item.paymentReference}
-                    </span>
-                  </h1>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <p className="text-gray-700 text-[1.1ch]">
+                 <p className="text-gray-700 text-[1.1ch]">
                   Email: {item.email}
                 </p>
                 <p className="text-gray-700 text-[1.1ch]">
                   Username: {item.username}
                 </p>
-              </div>
+                <hr className="border-1 border-black"/>
+              {item.bank && (
+                // <div className="flex-wrap text-[1.3ch]">
+                   <p className="text-gray-700 text-[1.1ch]">
+                    Bank: <span className="font-medium"> {item.bank}</span>
+                  </p>
+                // </div>
+              )}
+              {item.account_number && (
+                 <p className="text-gray-700 text-[1.1ch]">
+                  Account Number:{" "}
+                  <span className="font-medium">{item.account_number}</span>
+                </p>
+              )}
+              {item.paymentReference && (
+                   <p className="text-gray-700 text-[1.1ch]">
+                    Payment Ref:{" "}
+                    <span className="font-medium">
+                      {" "}
+                      {item.paymentReference}
+                    </span>
+                  </p>
+              )}
+              
               <div className="flex justify-between">
                 {item.product_name && (
                   <p className="text-gray-700 text-[1.1ch]">
@@ -95,16 +95,16 @@ function AllPurchases({ error, allPurchases }) {
                 </p>
               )}
               <div className="flex justify-between">
-                <p className="text-gray-700 text-[1.1ch]">
+                <p className="text-blue-700 text-[1.1ch]">
                   Amount: {item.amount}
                 </p>
                 {item.payment_fee && (
-                  <div className="flex-wrap text-[1.3ch]">
-                    <h1 className="font-bold">
+                  // <div className="flex-wrap text-[1.3ch]">
+                    <p className="text-gray-700 text-[1.1ch]">
                       Payment fee:{" "}
                       <span className="font-medium"> {item.payment_fee}</span>
-                    </h1>
-                  </div>
+                    </p>
+                  // </div>
                 )}
                 {item.cashback && (
                   <p className="text-gray-700 text-[1.1ch]">
@@ -121,14 +121,14 @@ function AllPurchases({ error, allPurchases }) {
                 </p>
               </div>
               {item.message && (
-                <p className="text-gray-700 text-[1.1ch]">
+                <p className="text-blue-700 text-[1.1ch]">
                   Message: {item.message}
                 </p>
               )}
               <p className="text-gray-700 text-[1.1ch]">
                 Tracking ID: {item.transaction_id}
               </p>
-              <p className="text-gray-700 text-[1.1ch]">
+              <p className="text-blue-700 text-[1.1ch]">
                 Status: {item.transaction_status}
               </p>
               <p className="text-gray-700 text-[1.1ch]">
