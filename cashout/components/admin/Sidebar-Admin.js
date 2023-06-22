@@ -58,6 +58,12 @@ const menuItems = [
   },
   {
     id: 12,
+    label: "Lock A-Data",
+    icon: Airtime2Cash,
+    link: "/admin-wonders/lockData",
+  },
+  {
+    id: 13,
     label: "Admin's Info",
     icon: ProfileIcon,
     link: "/admin-wonders/profile",

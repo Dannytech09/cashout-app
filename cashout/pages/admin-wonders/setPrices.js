@@ -9,7 +9,7 @@ const ADMIN_BASE_URL = `${API_BASE_URL}/admin`;
 
 // A
 export default function PatchForm() {
-  const [network, setNetwork] = useState("");
+  const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ name: "", amount: "" }]);
   const [loading, setLoading] = useState(false);
 
@@ -24,7 +24,7 @@ export default function PatchForm() {
           Authorization: "Bearer " + getToken(),
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ network, data }),
+        body: JSON.stringify({ variation_string, data }),
       });
 
       // console.log(response)
@@ -32,7 +32,7 @@ export default function PatchForm() {
         alert("Data updated successfully");
       }
     } catch (error) {
-      // console.log(error.message)
+      console.log(error.message)
       alert(`Error updating data: ${error.message}`);
     }
     setLoading(false);
@@ -40,7 +40,7 @@ export default function PatchForm() {
 
   const handleNetworkChange = (e) => {
     const inputValue = e.target.value;
-    setNetwork(inputValue);
+    setVariation_string(inputValue);
     console.log(inputValue);
   };
 
@@ -79,14 +79,14 @@ export default function PatchForm() {
           Network:
         </label>
         <select
-          id="network"
-          name="network"
-          value={network}
+          id="variation_string"
+          name="variation_string"
+          value={variation_string}
           onChange={handleNetworkChange}
           className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option value="">Select network</option>
-          <option value="MTN">MTN</option>
+          <option value="MTN-SME">MTN-SME</option>
           <option value="MTN-CG">MTN-CG</option>
           <option value="GLO-CG">GLO-CG</option>
           <option value="AIRTEL-CG">AIRTEL-CG</option>
