@@ -32,7 +32,7 @@ export default function PatchForm() {
         alert("Data updated successfully");
       }
     } catch (error) {
-      console.log(error.message)
+      // console.log(error.message)
       alert(`Error updating data: ${error.message}`);
     }
     setLoading(false);
@@ -41,7 +41,7 @@ export default function PatchForm() {
   const handleNetworkChange = (e) => {
     const inputValue = e.target.value;
     setVariation_string(inputValue);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   const handleDataChange = (event, index) => {
@@ -51,7 +51,7 @@ export default function PatchForm() {
       newData[index][event.target.name] = event.target.value.replace(/\D/, "");
     }
     setData(newData);
-    console.log(newData);
+    // console.log(newData);
   };
 
   const handleAddData = () => {
