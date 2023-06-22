@@ -59,7 +59,7 @@ function BuyData() {
   const changeNetwork = (e) => {
     const selectedNetwork = networkData.find(
       (ctr) => ctr.network === e.target.value
-    );
+      );
     if (selectedNetwork) {
       setDataVols(selectedNetwork.dataVol);
 
