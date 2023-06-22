@@ -3,36 +3,45 @@ import classNames from "classnames";
 import API_BASE_URL from "@/apiConfig";
 import { getToken } from "@/Utils/Common";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
+import Loader from "@/components/utils/Loader";
 
 const ADMIN_BASE_URL = `${API_BASE_URL}/admin`;
 
+// A
 export default function PatchForm() {
-  const [network, setNetwork] = useState("");
+  const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ name: "", amount: "" }]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
-    const response = await fetch(`${ADMIN_BASE_URL}/update-price`, {
-      method: "PATCH",
-      headers: {
-        Authorization: "Bearer " + getToken(),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ network, data }),
-    });
+    try {
+      const response = await fetch(`${ADMIN_BASE_URL}/update-price`, {
+        method: "PATCH",
+        headers: {
+          Authorization: "Bearer " + getToken(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ variation_string, data }),
+      });
 
-    if (response.ok) {
-      alert("Data updated successfully");
-    } else {
-      const error = await response.json();
+      // console.log(response)
+      if (response.ok || response.status === 204) {
+        alert("Data updated successfully");
+      }
+    } catch (error) {
+      // console.log(error.message)
       alert(`Error updating data: ${error.message}`);
     }
+    setLoading(false);
   };
 
   const handleNetworkChange = (e) => {
     const inputValue = e.target.value;
-    setNetwork(inputValue);
+    setVariation_string(inputValue);
+    // console.log(inputValue);
   };
 
   const handleDataChange = (event, index) => {
@@ -42,6 +51,7 @@ export default function PatchForm() {
       newData[index][event.target.name] = event.target.value.replace(/\D/, "");
     }
     setData(newData);
+    // console.log(newData);
   };
 
   const handleAddData = () => {
@@ -57,6 +67,7 @@ export default function PatchForm() {
       onSubmit={handleSubmit}
       className="text-center border border-black-300 bg-black h-screen"
     >
+      {loading && <Loader />}
       <div>
         <SidebarAdmin />
       </div>
@@ -68,14 +79,15 @@ export default function PatchForm() {
           Network:
         </label>
         <select
-          id="network"
-          name="network"
-          value={network}
+          id="variation_string"
+          name="variation_string"
+          value={variation_string}
           onChange={handleNetworkChange}
           className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option value="">Select network</option>
-          <option value="MTN">MTN</option>
+          <option value="MTN-SME">MTN-SME</option>
+          <option value="MTN-CG">MTN-CG</option>
           <option value="GLO-CG">GLO-CG</option>
           <option value="AIRTEL-CG">AIRTEL-CG</option>
           <option value="9MOBILE-CG">9MOBILE-CG</option>

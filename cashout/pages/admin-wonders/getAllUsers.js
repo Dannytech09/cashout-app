@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import Users from "../../components/admin/Users";
 import withAuth from "../../hocs/withAuth";
 import HeadInPages from "@/components/admin/HeadInPages";
+import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 // import Pagination from "../../components/utils/Pagination";
 
 function GetAllUsers() {
@@ -39,6 +40,9 @@ function GetAllUsers() {
 
   return (
     <div className="relative">
+      <div className="fixed top-0 z-40">
+        <SidebarAdmin/>
+      </div>
       <div className="p-2 fixed top-0 w-full border border-solid border-slate-500 bg-slate-900">
         <h1 className="mt-2 text-center text-slate-200 font-extrabold text-2xl">
           All Users

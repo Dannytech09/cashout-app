@@ -5,6 +5,7 @@ import { getToken } from "../../Utils/Common";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
+import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 
 
 function CreateUser() {
@@ -74,7 +75,11 @@ function CreateUser() {
   };
 
   return (
-    <form
+    <div>
+      <div className="fixed top-0">
+        <SidebarAdmin/>
+      </div>
+      <form
       onSubmit={handleSubmit(submitHandler)}
       className="mt-4 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"
     >
@@ -244,6 +249,7 @@ function CreateUser() {
         </div>
       </div>
     </form>
+    </div>
   );
 }
 

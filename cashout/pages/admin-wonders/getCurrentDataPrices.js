@@ -2,6 +2,7 @@ import DataServices from "@/services/data.services";
 import React, { useState, useEffect } from "react";
 import withAuth from "../../hocs/withAuth";
 import CurrentDataPrices from "@/components/admin/GetCurrentDataPrices";
+import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 
 function GetCurrentDataPrices() {
   const [dataInfos, setDataInfos] = useState([]);
@@ -34,6 +35,9 @@ function GetCurrentDataPrices() {
 
   return (
     <>
+    <div className="fixed top-0 z-40">
+      <SidebarAdmin/>
+    </div>
       <CurrentDataPrices dataInfos={dataInfos} />
     </>
   );

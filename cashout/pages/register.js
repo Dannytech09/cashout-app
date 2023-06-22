@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import AuthService from "../services/auth.Service";
+import Logo from "@/components/heroIcons/Logo";
 
 export default function SignUp() {
   const [apiError, setApiError] = useState("");
@@ -58,7 +59,11 @@ export default function SignUp() {
       onSubmit={handleSubmit(submitHandler)}
       className="select-none text-xs justify-center flex flex-col gap-4 sm:gap-6 items-center h-screen"
     >
-      <h1 className="sm:text-3xl mb-2 font-sans">REGISTER</h1>
+      <div className="flex gap-3">
+      <Logo/>
+      <h1 className="sm:text-3xl font-bold mb-2 font-sans">REGISTER</h1>
+
+      </div>
       {/* {successMessage && (
         <div className="text-center w-full max-w-[39ch] border border-solid border-green-400 text-green-900 py-2">
           {successMessage}

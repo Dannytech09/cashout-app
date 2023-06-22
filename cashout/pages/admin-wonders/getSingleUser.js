@@ -6,6 +6,7 @@ import { getToken } from "../../Utils/Common";
 import Link from "next/link";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
+import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 
 function GetSingleUser() {
   const [user, setUser] = useState(false);
@@ -55,6 +56,9 @@ function GetSingleUser() {
   return (
     <div>
       {/* {loading ? <p>Loading...</p> : null} */}
+      <div className="fixed top-0">
+        <SidebarAdmin/>
+      </div>
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="mt-20 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"
