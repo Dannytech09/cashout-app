@@ -6,6 +6,7 @@ import AuthService from "../services/auth.Service";
 import { FaRegEye } from "react-icons/fa";
 import useAuthGuard from "../hooks/useAuthGuard";
 import Logo from "@/components/heroIcons/Logo";
+import SubFooter from "@/components/user/SubFooter";
 
 const Login = () => {
   useAuthGuard();
@@ -137,6 +138,7 @@ const Login = () => {
           </div>
         </div>
       </form>
+      <SubFooter/>
     </div>
   );
 };

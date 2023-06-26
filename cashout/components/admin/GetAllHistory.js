@@ -4,7 +4,7 @@ import SidebarAdmin from "./Sidebar-Admin";
 import To12HourFormat from "../utils/Time";
 import Loader from "../utils/Loader";
 
-function AllPurchases({ error, allPurchases, loading }) {
+function AllPurchases({ error, allPurchases, loading, count, rCount }) {
   return (
     <div className="relative">
       {loading && <Loader/>}
@@ -19,6 +19,10 @@ function AllPurchases({ error, allPurchases, loading }) {
       </div>
       <div>{error && <p>Error: {error}</p>}</div>
       <div className="mt-[10ch]">
+        { count && (
+
+        <p className=" mx-auto mt-[11ch] text-xs p-3 mb-[-2ch]">Total Count - {count} Returned count - {rCount}</p>)
+        }
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
           {allPurchases.map((item) => (
             <div

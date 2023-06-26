@@ -19,7 +19,7 @@ const Dashboard = (users, totalBal, blocked) => {
   const logoutHandler = async () => {
     setLoading(true);
     await AuthService.logout();
-    router.push("/admin/login");
+    router.push("/admin-wonders/login");
     setLoading(false);
   };
 
