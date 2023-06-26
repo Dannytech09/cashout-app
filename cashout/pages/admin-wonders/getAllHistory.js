@@ -7,6 +7,8 @@ function GetAllPurchases() {
   const [allPurchases, setAllDataPurchased] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState('');
+  const [ rCount, setRCount] = useState('');
 
   const fetchData = async () => {
     try {
@@ -14,7 +16,8 @@ function GetAllPurchases() {
       const res = await DataServices.getAllPurchases();
 
       setAllDataPurchased(res.data.data);
-      // console.log(res.data.data);
+      setRCount(res.data.returnedCount);
+      setCount(res.data.totalCount);
     } catch (error) {
       if (error.response?.data?.error) {
         setError(true);
@@ -30,7 +33,7 @@ function GetAllPurchases() {
 
   return (
     <>
-      <AllPurchases error={error} allPurchases={allPurchases} loading={loading}/>
+      <AllPurchases error={error} allPurchases={allPurchases} loading={loading} count={count} rCount={rCount}/>
     </>
   );
 }

@@ -33,37 +33,43 @@ const menuItems = [
   },
   {
     id: 7,
+    label: "Query Tranx",
+    icon: ProfileIcon,
+    link: "/admin-wonders/queryTranx",
+  },
+  {
+    id: 8,
     label: "Update User",
     icon: ProfileIcon,
     link: "/admin-wonders/updateUser",
   },
   {
-    id: 8,
+    id: 9,
     label: "Upgrade User",
     icon: FundWalletIcon,
     link: "/admin-wonders/upgrade",
   },
-  { id: 9, label: "Block User", icon: AirtimeIcon, link: "/admin-wonders/blockUser" },
+  { id: 10, label: "Block User", icon: AirtimeIcon, link: "/admin-wonders/blockUser" },
   {
-    id: 10,
+    id: 11,
     label: "Create User",
     icon: FundWalletIcon,
     link: "/admin-wonders/createUser",
   },
   {
-    id: 11,
+    id: 12,
     label: "Delete User",
     icon: Airtime2Cash,
     link: "/admin-wonders/delUser",
   },
   {
-    id: 12,
+    id: 13,
     label: "Lock A-Data",
     icon: Airtime2Cash,
     link: "/admin-wonders/lockData",
   },
   {
-    id: 13,
+    id: 14,
     label: "Admin's Info",
     icon: ProfileIcon,
     link: "/admin-wonders/profile",
@@ -76,7 +82,7 @@ const SidebarAdmin = () => {
   const router = useRouter();
 
   const wrapperClasses = classNames(
-    "h-screen flex absolute mt-10 px-4 pt-3 flex flex-col z-30",
+    "h-screen flex absolute mt-10 px-4 pt-3 flex flex-col z-30 overflow-y-auto",
     {
       ["hidden"]: !toggle,
       [" bg-gray-200"]: toggle,
@@ -169,7 +175,7 @@ const SidebarAdmin = () => {
         <button
           onClick={logoutHandler}
           className={
-            "flex items-center py-2 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
+            "flex mb-10 mt-3 border border-2-red items-center py-2 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
           }
         >
           {toggle && (
