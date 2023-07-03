@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import Link from "next/link";
-const { useRouter } = require("next/router");
+import { useRouter } from "next/router";
 import API_BASE_URL from "@/apiConfig";
 
 function ResetPassword() {
