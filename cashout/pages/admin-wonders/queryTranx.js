@@ -20,24 +20,25 @@ function QueryTranx() {
     formState: { errors }, // formState
   } = useForm({
     defaultValues: {
-        identifier: "",
+      identifier: "",
     },
-});
+  });
 
-const submitHandler = (data) => {
-
+  const submitHandler = (data) => {
     setLoading(true);
     const { identifier } = data;
     const payload = {};
 
-    if (identifier.includes('@')) {
+    if (identifier.includes("@")) {
       payload.email = identifier;
     } else {
       payload.userId = identifier;
     }
     axios
-    .post(`${ADMIN_BASE_URL}/purchases/getSingleUserPurchases`,  payload, {headers: authHeader(),})
-    .then((res) => {
+      .post(`${ADMIN_BASE_URL}/purchases/getSingleUserPurchases`, payload, {
+        headers: authHeader(),
+      })
+      .then((res) => {
         alert("Query Successful");
         // console.log(res.data.data);
         setSingleUserPurchases(res.data.data);
@@ -50,7 +51,7 @@ const submitHandler = (data) => {
           error.response?.status === 500 ||
           error.response?.status === 401
         ) {
-          alert("User not found or Server Error");
+          alert("User not found, Server Error or not authorised");
           // window.location.reload("/admin-wonders/getSingleUser");
         }
       });
@@ -65,7 +66,7 @@ const submitHandler = (data) => {
     <div>
       {/* {loading ? <p>Loading...</p> : null} */}
       <div className="fixed top-0">
-        <SidebarAdmin/>
+        <SidebarAdmin />
       </div>
       <form
         onSubmit={handleSubmit(submitHandler)}
@@ -112,10 +113,10 @@ const submitHandler = (data) => {
       <hr />
 
       {singleUserPurchases.length === 0 ? (
-  <div className="text-center m-5 text-red-500">Awaiting Query..</div>
-) : (
-  <AllPurchases allPurchases={singleUserPurchases} />
-)}
+        <div className="text-center m-5 text-red-500">Awaiting Query..</div>
+      ) : (
+        <AllPurchases allPurchases={singleUserPurchases} />
+      )}
     </div>
   );
 }
