@@ -8,8 +8,8 @@ export default function ContainerBlock({ children, ...customMeta }) {
   const router = useRouter();
 
   const meta = {
-    title: "data",
-    description: `The Best Online Recharge & Subscriptions Platform`,
+    title: "Buy Data and Airtime for all Network. Make payment for DSTV, GOTV, PHCN other services",
+    description: `The Best Online Recharge & Subscriptions Platform. Buy Cheap Internet Data Plan and Airtime Recharge for Airtel, 9mobile, GLO, MTN, Pay DSTV, GOTV, PHCN`,
     image: "/hero.jpg",
     width: 900,
     height: 900,

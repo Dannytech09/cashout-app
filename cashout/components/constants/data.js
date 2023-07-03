@@ -46,8 +46,8 @@ description: [
     },
     {
       id: 4,
-      title: "Balo",
-      company: "Balo Data.",
+      title: "Prisca",
+      company: "Prisca Data.",
       year: "2023",
       companyLink: "https://wondersdata.com",
       desc: "Wondersdata is the best company. Customer service is superb.",

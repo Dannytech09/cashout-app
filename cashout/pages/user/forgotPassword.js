@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { setUserSession } from "../../Utils/Common";
 import Link from "next/link";
 import API_BASE_URL from "@/apiConfig";
+// const { useRouter } = require("next/router");
 
-export default function Login() {
+export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
+
+  // const router = useRouter();
 
   const submitHandler = () => {
     if (!email) {
@@ -19,9 +21,7 @@ export default function Login() {
         email: email,
       })
       .then((response) => {
-        // console.log("response >>> ", response);
-        setUserSession(response.data.token);
-        window.location = "/user/resetPassword";
+        alert("Check your email for reset token")
       })
       .catch((error) => {
         if (
@@ -60,9 +60,9 @@ export default function Login() {
       />
       <button
         onClick={submitHandler}
-        className="relative after:absolute after:top-0 after:right-full after:bg-white after:z-10 after:w-full after:h-full overflow-hidden hover:after:translate-x-full after:duration-300 hover:text-slate-900
-      duration-300 w-full max-w-[39ch] border border-white border-solid uppercase py-2 px-2 text-white"
-      >
+        className="relative hover:after:translate-x-full after:absolute after:top-0 after:right-full after:bg-blue-600 after:z-10 after:w-full after:h-full overflow-hidden after:duration-300 hover:text-slate-900
+        duration-300 w-full max-w-[39ch] border border-sky-500 border-solid uppercase py-2 px-2 text-cyan-900"
+           >
         <h2 className="relative z-30"> Recover Password</h2>
       </button>
       <div className="py-1 px-1 font-sans bg-hover:red font-bold text-1xl text-slate-200 bg-cyan-700">

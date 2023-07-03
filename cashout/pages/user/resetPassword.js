@@ -1,28 +1,33 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { setUserSession } from "../../Utils/Common";
 import Link from "next/link";
-import withAuth from "../../hocs/withAuth";
+const { useRouter } = require("next/router");
 import API_BASE_URL from "@/apiConfig";
 
-function Login() {
+function ResetPassword() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const router = useRouter();
+
+  const { resetToken } = router.query;
+
   const submitHandler = () => {
     if (!password) {
-      setError("Please enter a new password (minimum of 6 digits) !");
+      setError("Please enter a new password (minimum of 8 digits) !");
       return;
     }
     setError(null);
     axios
-      .put(`${API_BASE_URL}/api/v1/auth/resetpassword`, {
+      .put(`${API_BASE_URL}/api/v1/auth/resetpassword/${resetToken}`, {
         password: password,
       })
       .then((response) => {
         // console.log("response >>> ", response);
-        setUserSession(response.data.token);
-        window.location = "/login";
+        if(response.success === true || response.data.success === true) {
+          alert("Password Reset Successfully")
+          router.push("/login")
+        }
       })
       .catch((error) => {
         if (
@@ -61,9 +66,9 @@ function Login() {
       />
       <button
         onClick={submitHandler}
-        className="relative after:absolute after:top-0 after:right-full after:bg-white after:z-10 after:w-full after:h-full overflow-hidden hover:after:translate-x-full after:duration-300 hover:text-slate-900
-      duration-300 w-full max-w-[39ch] border border-white border-solid uppercase py-2 px-2 text-white"
-      >
+        className="relative hover:after:translate-x-full after:absolute after:top-0 after:right-full after:bg-blue-600 after:z-10 after:w-full after:h-full overflow-hidden after:duration-300 hover:text-slate-900
+        duration-300 w-full max-w-[39ch] border border-sky-500 border-solid uppercase py-2 px-2 text-cyan-900"
+           >
         <h2 className="relative z-30"> Reset Password</h2>
       </button>
       <div className="py-1 px-1 font-sans bg-hover:red font-bold text-1xl text-slate-200 bg-cyan-700">
@@ -73,4 +78,4 @@ function Login() {
   );
 }
 
-export default withAuth(Login)
+export default ResetPassword;
