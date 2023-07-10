@@ -42,6 +42,7 @@ const Login = () => {
         router.push("/user/dashboard");
       }
     } catch (error) {
+      // console.log(error)
       // invalid credentials
       if (error.response.data.error === "Invalid credentials") {
         setMessage("Invalid email or password !");
@@ -138,7 +139,7 @@ const Login = () => {
           </div>
         </div>
       </form>
-      <SubFooter/>
+      <SubFooter />
     </div>
   );
 };

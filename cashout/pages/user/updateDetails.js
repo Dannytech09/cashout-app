@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Sidebar from "../../components/user/Sidebar";
-import User from "../../components/admin/User";
+import User from "../../components/user/User";
 import { getToken } from "../../Utils/Common";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
+import Loader from "@/components/utils/Loader";
 
 function UpdateUser() {
   const [user, setUser] = useState();
@@ -26,10 +27,11 @@ function UpdateUser() {
     // mode: "onchange"
   });
 
-  const submitHandler = ({ firstName, lastName, phoneNumber }) => {
-    setLoading(true);
-    {
-      axios
+  const submitHandler = async ({ firstName, lastName, phoneNumber }) => {
+
+    try {
+      setLoading(true);
+      const res = await axios
         .put(
           API_URL,
           {
@@ -44,32 +46,31 @@ function UpdateUser() {
             },
           }
         )
-        .then((res) => {
-          if (res.data.data === null) {
-            alert("Invalid User ID");
-          }
-          alert("User Updated Successfully !");
-          setUser(res.data.data);
-        })
-        .catch((error) => {
-          if (
-            error.response?.status === 401 ||
-            error.response?.status === 500
-          ) {
-            alert("Not Authorised to access this resource or Server Error");
-          } else if (error.response?.status === 400) {
-            alert("User already exist or Duplicate field entered");
-          } else {
-            alert("Something went wrong");
-          }
-        });
+        if (res.data.data === null) {
+          alert("Invalid User ID");
+        }
+        alert("User Updated Successfully !");
+        setUser(res.data.data);
+        // console.log(res.data.data)
+        setLoading(false);
+    } catch (error) {
+      if (
+        error.response?.status === 401 ||
+        error.response?.status === 500
+      ) {
+        alert("Not Authorised to access this resource or Server Error");
+      } else if (error.response?.status === 400) {
+        alert("User already exist or Duplicate field entered");
+      } else {
+        alert("Something went wrong");
+      }
       setLoading(false);
     }
-  };
+  }
 
   return (
     <div>
-      {loading ? <p>Loading...</p> : null}
+      {loading && <Loader/> }
       <div className="flex absolute mt-[-2ch]">
         <Sidebar />
       </div>

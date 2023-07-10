@@ -1,12 +1,15 @@
+import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { getToken } from "../../Utils/Common";
 import { useForm } from "react-hook-form";
 import withAuth from "../../hocs/withAuth";
 import Sidebar from "../../components/user/Sidebar";
+import Loader from "@/components/utils/Loader";
 import API_BASE_URL from "@/apiConfig";
 
 function UpdateUser() {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const API_URL = `${API_BASE_URL}/api/v1/auth/update-password`;
@@ -23,9 +26,10 @@ function UpdateUser() {
     // mode: "onchange"
   });
 
-  const submitHandler = ({ currentPassword, newPassword }) => {
-    {
-      axios
+  const submitHandler = async ({ currentPassword, newPassword }) => {
+    try {
+      setLoading(true);
+      const res = await axios
         .put(
           API_URL,
           {
@@ -39,14 +43,12 @@ function UpdateUser() {
             },
           }
         )
-        .then((res) => {
           if (res.data.data === null) {
             alert("Invalid User ID");
           }
           alert("Password Updated Successfully !");
           router.push("/user/dashboard");
-        })
-        .catch((error) => {
+        } catch (error) {
           if (
             error.response?.status === 401 ||
             error.response?.status === 500
@@ -55,12 +57,13 @@ function UpdateUser() {
           } else if (error.response?.status === 400) {
             alert("Duplicate field entered");
           }
-        });
+          setLoading(false);
     }
   };
 
   return (
     <div>
+       {loading && <Loader/> }
       <div className="flex absolute mt-[-2ch]">
         <Sidebar />
       </div>
@@ -71,7 +74,7 @@ function UpdateUser() {
         <h1 className="sm:text-3xl mb-2 font-sans text-2xl">Change Password</h1>
 
         <p className="text-center">
-          Dear user, kindly change your password if you think your account has
+          Dear user, kindly change your password if you feel your account has
           been compromised
         </p>
         <input
