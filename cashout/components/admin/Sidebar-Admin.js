@@ -15,52 +15,64 @@ import AuthService from "../../services/auth.Service";
 
 // Using array for nav items
 const menuItems = [
-  { id: 1, label: "Admin Board", icon: HomeIcon, link: "/admin/dashboard" },
-  { id: 2, label: "Fund Wallet", icon: FundWalletIcon, link: "/admin/cd" },
-  { id: 3, label: "All Payment", icon: ProfileIcon, link: "/admin/getAllPayment" },
-  { id: 4, label: "Get All Users", icon: DataIcon, link: "/admin/getAllUsers" },
+  { id: 1, label: "Admin Board", icon: HomeIcon, link: "/admin-wonders/dashboard" },
+  { id: 2, label: "Fund Wallet", icon: FundWalletIcon, link: "/admin-wonders/cd" },
+  { id: 3, label: "Tranx History", icon: FundWalletIcon, link: "/admin-wonders/getAllHistory" },
   {
-    id: 5,
-    label: "LookUp User",
-    icon: ProfileIcon,
-    link: "/admin/getSingleUser",
+    id: 4,
+    label: "Data component",
+    icon: FundWalletIcon,
+    link: "/admin-wonders/dataComponent",
   },
+  { id: 5, label: "Get All Users", icon: DataIcon, link: "/admin-wonders/getAllUsers" },
   {
     id: 6,
-    label: "Update User",
+    label: "LookUp User",
     icon: ProfileIcon,
-    link: "/admin/updateUser",
+    link: "/admin-wonders/getSingleUser",
   },
-  { id: 7, label: "Block User", icon: AirtimeIcon, link: "/admin/blockUser" },
+  {
+    id: 7,
+    label: "Query Tranx",
+    icon: ProfileIcon,
+    link: "/admin-wonders/queryTranx",
+  },
   {
     id: 8,
-    label: "Create User",
-    icon: FundWalletIcon,
-    link: "/admin/createUser",
+    label: "Update User",
+    icon: ProfileIcon,
+    link: "/admin-wonders/updateUser",
   },
   {
     id: 9,
-    label: "Delete User",
-    icon: Airtime2Cash,
-    link: "/admin/delUser",
-  },
-  {
-    id: 10,
-    label: "Admin's Info",
-    icon: ProfileIcon,
-    link: "/admin/profile",
-  },
-  {
-    id: 11,
     label: "Upgrade User",
     icon: FundWalletIcon,
-    link: "/admin/upgrade",
+    link: "/admin-wonders/upgrade",
+  },
+  { id: 10, label: "Block User", icon: AirtimeIcon, link: "/admin-wonders/blockUser" },
+  {
+    id: 11,
+    label: "Create User",
+    icon: FundWalletIcon,
+    link: "/admin-wonders/createUser",
   },
   {
     id: 12,
-    label: "Data component",
-    icon: FundWalletIcon,
-    link: "/admin/dataComponent",
+    label: "Delete User",
+    icon: Airtime2Cash,
+    link: "/admin-wonders/delUser",
+  },
+  {
+    id: 13,
+    label: "Lock A-Data",
+    icon: Airtime2Cash,
+    link: "/admin-wonders/lockData",
+  },
+  {
+    id: 14,
+    label: "Admin's Info",
+    icon: ProfileIcon,
+    link: "/admin-wonders/profile",
   },
 ];
 
@@ -70,7 +82,7 @@ const SidebarAdmin = () => {
   const router = useRouter();
 
   const wrapperClasses = classNames(
-    "h-screen flex absolute mt-10 px-4 pt-3 flex flex-col z-30",
+    "h-screen flex absolute mt-10 px-4 pt-3 flex flex-col z-30 overflow-y-auto",
     {
       ["hidden"]: !toggle,
       [" bg-gray-200"]: toggle,
@@ -79,7 +91,7 @@ const SidebarAdmin = () => {
 
   const logoutHandler = async () => {
     await AuthService.logout();
-    router.push("/admin/login");
+    router.push("/admin-wonders/login");
   };
 
   const handleSideBarToggle = () => {
@@ -163,7 +175,7 @@ const SidebarAdmin = () => {
         <button
           onClick={logoutHandler}
           className={
-            "flex items-center py-2 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
+            "flex mb-10 mt-3 border border-2-red items-center py-2 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
           }
         >
           {toggle && (

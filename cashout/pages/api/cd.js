@@ -1,4 +1,3 @@
-// pages/api/api.js
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
 import authHeader from "@/services/auth-Header";

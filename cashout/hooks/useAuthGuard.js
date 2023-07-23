@@ -8,7 +8,7 @@ const useAuthGuard = () => {
     const isAdmin = user && user.isAdmin;
 
    if (token && isAdmin) {
-      router.push("/admin/dashboard");
+      router.push("/admin-wonders/dashboard");
     } else if (token && router.pathname === "/login") {
       router.push("/user/dashboard");
     }

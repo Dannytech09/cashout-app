@@ -24,11 +24,11 @@ const withAuth = (WrappedComponent) => {
         if (
           !isAuthenticated &&
           currentPath !== "/login" &&
-          currentPath !== "/admin/login"
+          currentPath !== "/admin-wonders/login"
         ) {
           Router.push("/login");
-        } else if (isAdmin !== true && currentPath.startsWith("/admin")) {
-          Router.push("/admin/login");
+        } else if (isAdmin !== true && currentPath.startsWith("/admin-wonders")) {
+          Router.push("/admin-wonders/login");
         }
       }
     }

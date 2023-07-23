@@ -22,8 +22,8 @@ export default function Main() {
       <span className="fill-blue-900 h-8 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
           <InfoIcon/>
         </span>
-        <Link href={"/user/paymentHistory"}>
-        <h3 className="font-extrabold text-sm pt-3">Payment History</h3>
+        <Link href={"/user/buyData-mainGift"}>
+        <h3 className="font-extrabold text-sm pt-3">NormalGift/Bulk Data</h3>
         </Link>
       </div>
     </Card>

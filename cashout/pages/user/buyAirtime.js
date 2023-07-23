@@ -133,7 +133,7 @@ function BuyAirtime() {
           setMax(true);
         } else {
           alert(`Something went wrong!`);
-          console.log(error.response);
+          // console.log(error.response);
         }
         setLoading(false);
       }

@@ -5,7 +5,7 @@ export default function Custom404() {
   return (
     <>
       <Head>
-        <title>Page Not Found | Cashout Plug</title>
+        <title>Page Not Found | Wondersdata</title>
       </Head>
       <div className="flex flex-col items-center h-screen bg-slate-800 justify-center gap-5">
         <h1 className="text-red-300 font-bold">404 - Page Not Found</h1>
