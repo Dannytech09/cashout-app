@@ -5,8 +5,8 @@ export default function SubFooter() {
   return (
     <div>
       <div className="h-10 text-center text-sm font-extrabold p-2">
-        <Link href={"https://www.facebook.com/jaywon349"}>
-          &copy; Dannytech {new Date().getFullYear()}
+        <Link href={"https://facebook.com/wondersdataplug"} target="_blank">
+          Developed By: Dannytech {new Date().getFullYear()}
         </Link>
       </div>
     </div>

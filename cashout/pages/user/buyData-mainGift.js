@@ -188,7 +188,7 @@ function BuyDataMainGift() {
         <div className="p-10">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Bulk Data</h3>
-            <p className="text-xs text-slate-200">Note: You can use all these esp. when subscribing for router/mifi or bulk data plan. Glo divides their data into day and night (night plans are not displayed when customer check balance however, it&apos;s there and can be used at night) The main data displayed on customer&apos;s balance can be used at any time</p>
+            <p className="text-xs text-slate-200">Note: Mtn sme on this page is to serve as alternative to the mtn sme on the main data page. For other networks, kindly use them when subscribing for router/mifi or bulk data plan. Glo divides their data into day and night.</p>
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>

@@ -3,7 +3,9 @@ import API_BASE_URL from "@/apiConfig";
 import { getToken } from "../../Utils/Common";
 import Loader from '@/components/utils/Loader';
 import SidebarAdmin from '@/components/admin/Sidebar-Admin';
+import withAuth from '@/hocs/withAuth';
 
+// A
 const LockData = () => {
   const [variationString, setVariationString] = useState('MTN-SME');
   const [visibility, setVisibility] = useState(true);
@@ -42,7 +44,7 @@ const LockData = () => {
         <SidebarAdmin />
       </div>
       <p className="mb-4">{message}</p>
-      <h1 className='text-center m-5 p-5'>Lock and On Data Services</h1>
+      <h1 className='text-center m-5 p-5'>Lock and On Data Services - A</h1>
       <div className='justify-center text-center'>
         <div>
       <select

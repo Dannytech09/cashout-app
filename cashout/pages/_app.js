@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import { ThemeProvider } from "next-themes";
 // import Layout from '../components/Layout'
 // import Loader from "../components/utils/Loader";
 
@@ -6,9 +7,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       {/* <Loader /> */}
-      <Component {...pageProps} />
+      <ThemeProvider defaultTheme="light" attribute="class">
+        <Component {...pageProps} />
+      </ThemeProvider>
     </>
   );
 }
 
-export default (MyApp);
+export default MyApp;

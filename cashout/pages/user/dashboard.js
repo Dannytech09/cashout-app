@@ -6,6 +6,7 @@ import Layout from "../../components/user/Layout";
 import withAuth from "../../hocs/withAuth";
 import SubFooter from "@/components/user/SubFooter";
 import UseTokenExpiration from "@/components/utils/TokenExp";
+import Link from "next/link";
 
 function Dashboard() {
 
@@ -16,6 +17,8 @@ function Dashboard() {
     <div className="flex overflow-x-hidden">
       <Head>
         <title>My Dashboard</title>
+        <meta name="description" content="Best Data and airtime Website" />
+        <Link rel="icon" href="/favicon.png"/>
       </Head>
 
       <div className="sm:w-40">

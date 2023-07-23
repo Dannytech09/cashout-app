@@ -40,7 +40,6 @@ function QueryTranx() {
     e.preventDefault();
     setCheckSubmit(false);
 
-    const header = authHeader();
     const user = JSON.parse(sessionStorage.getItem("user"));
     const id = user._id;
 
@@ -51,7 +50,7 @@ function QueryTranx() {
       .post(
         `${BASE_URL}/${id}`,
         { request_id: inputValue },
-        { headers: header }
+        { headers: authHeader() }
       )
       .then((response) => {
         setTransactions(response.data.data);

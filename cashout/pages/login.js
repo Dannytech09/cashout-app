@@ -6,6 +6,7 @@ import AuthService from "../services/auth.Service";
 import { FaRegEye } from "react-icons/fa";
 import useAuthGuard from "../hooks/useAuthGuard";
 import Logo from "@/components/heroIcons/Logo";
+import SubFooter from "@/components/user/SubFooter";
 
 const Login = () => {
   useAuthGuard();
@@ -41,6 +42,7 @@ const Login = () => {
         router.push("/user/dashboard");
       }
     } catch (error) {
+      // console.log(error)
       // invalid credentials
       if (error.response.data.error === "Invalid credentials") {
         setMessage("Invalid email or password !");
@@ -137,6 +139,7 @@ const Login = () => {
           </div>
         </div>
       </form>
+      <SubFooter />
     </div>
   );
 };
