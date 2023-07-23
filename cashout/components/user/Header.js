@@ -94,7 +94,7 @@ export default function Header() {
           </div>
             )}
       </div>
-      <MotionText text="Updated codes - Data balance checkers- MTN-SME - *321*3*3#, MTN-CG - *460*260#, Glo - *127*0#, Airtel - *323#, 9mobile SME - *917*9#, 9mobile gifting - *228#. All transactions can now be viewed from transaction history. " />
+      <MotionText text="Data balance checkers- MTN-SME - *312*4*3*3# or *461*4#, MTN-CG - *460*260# or *460*4*4#, Glo - *127*0#, Airtel - *140#, 9mobile SME - *917*9#, 9mobile gifting - *228#. Promo on affiliate or standalone website creation is on going. Grab the offer now ! " />
     </div>
     // </div>
   );

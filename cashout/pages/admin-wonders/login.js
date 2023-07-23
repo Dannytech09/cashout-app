@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import AuthService from "../../services/auth.Service";
 import Logo from "@/components/heroIcons/Logo";
-import SubFooter from "@/components/user/SubFooter";
+// import SubFooter from "@/components/user/SubFooter";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -131,7 +131,7 @@ export default function Login() {
           <h2 className="relative z-30"> Submit</h2>
         </button>
       </form>
-      <SubFooter/>
+      {/* <SubFooter/> */}
     </div>
   );
 }
