@@ -40,8 +40,9 @@ function BuyData() {
       try {
         const response = await fetch(`${BASE_URL}/getData`);
         const res = await response.json();
-        // console.log(res.networkData);
-        setNetworkData(res.networkData);
+        // console.log(res.networkDataS);
+        // setNetworkData(res.networkData);             // SALD
+        setNetworkData(res.networkDataS);               // SWD
         setLoading(false);
         return;
       } catch (error) {
