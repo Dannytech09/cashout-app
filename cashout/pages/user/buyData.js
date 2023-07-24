@@ -43,7 +43,7 @@ function BuyData() {
         const res = await response.json();
         // console.log(res.networkDataS);
         // setNetworkData(res.networkData);             // SALD
-        setNetworkData(res.networkDataS); // SWD
+        setNetworkData(res.networkDataS);               // SWD
         setLoading(false);
         return;
       } catch (error) {
