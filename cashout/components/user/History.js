@@ -90,7 +90,7 @@ function MyPurchases({ myPurchases, checkTransaction, loading }) {
                 </p>
               </div>
               {item.message && (
-                <p className="text-gray-700 text-[1.1ch]">
+                <p className="text-gray-700 text-[1ch]">
                   Message: {item.message}
                 </p>
               )}

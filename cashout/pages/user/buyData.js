@@ -53,37 +53,33 @@ function BuyData() {
     fetchData();
   }, []);
 
-  // if (loading) {
-  //   return <div className="bg-slate-100">Loading...</div>;
-  // }
-
   const changeNetwork = (e) => {
+    const selectedVariationString = e.target.value;
+
     const selectedNetwork = networkData.find(
-      (ctr) => ctr.network === e.target.value
-      );
+     (ctr) => ctr.variation_string === selectedVariationString
+    );
     if (selectedNetwork) {
       setDataVols(selectedNetwork.dataVol);
 
-      const selectedData = selectedNetwork.dataVol.find(
-        (vol) => vol.name === e.target.value
-      );
-
-      if (selectedData) {
-        selectedDataVolName = selectedData.name;
-        // console.log(selectedDataVolName);
-      }
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(selectedNetwork.network); // Set the network based on the found network
+    } else {
+      setDataVols([]); // Clear the dataVols state when the network is not found (optional)
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
     }
-    setPhoneNumber("");
-    setAmount("");
-    setNetwork(e.target.value);
-    // console.log(e.target.value);
+    console.log("Selected Network:", selectedNetwork);
+    console.log("Data Vols:", dataVols);
   };
 
-  // handle two onchange props
-  const handleNetworkAndInputValidation = (e) => {
-    changeNetwork(e);
-    handleInputField(e);
-  };
+// handle two onchange props
+const handleNetworkAndInputValidation = (e) => {
+  changeNetwork(e);
+  handleInputField(e);
+};
 
   const changeDataVol = (e) => {
     setDataVol(e.target.value);
@@ -271,7 +267,7 @@ function BuyData() {
             >
               <option value={network}>--Choose Network--</option>
               {networkData.map((ctr) => (
-                <option value={ctr.network} key={ctr.network}>
+                <option value={ctr.variation_string} key={ctr._id}>
                   {ctr.variation_string}
                 </option>
               ))}
