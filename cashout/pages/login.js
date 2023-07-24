@@ -47,7 +47,7 @@ const Login = () => {
       if (error.response.data.error === "Invalid credentials") {
         setMessage("Invalid email or password !");
       } else {
-      setMessage("Something went wrong !");
+        setMessage("Something went wrong !");
       }
     }
     setLoading(false);
