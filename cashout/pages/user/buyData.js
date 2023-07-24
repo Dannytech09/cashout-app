@@ -34,7 +34,6 @@ function BuyData() {
   const [amounts, setAmounts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
-  const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -54,39 +53,30 @@ function BuyData() {
     fetchData();
   }, []);
 
-  // const changeNetwork = (e) => {
-  //   const selectedNetwork = networkData.find(
-  //     (ctr) => ctr.network === e.target.value
-  //     );
-  //   if (selectedNetwork) {
-  //     setDataVols(selectedNetwork.dataVol);
-  //   }
-  //   setPhoneNumber("");
-  //   setAmount("");
-  //   setNetwork(e.target.value);
-  //   console.log(e.target.value);
-  // };
+  // if (loading) {
+  //   return <div className="bg-slate-100">Loading...</div>;
+  // }
 
   const changeNetwork = (e) => {
-    const selectedVariationString = e.target.value;
     const selectedNetwork = networkData.find(
-      (ctr) => ctr.variation_string === selectedVariationString
-    );
-
+      (ctr) => ctr.network === e.target.value
+      );
     if (selectedNetwork) {
       setDataVols(selectedNetwork.dataVol);
-      setPhoneNumber("");
-      setAmount("");
-      setNetwork(selectedNetwork.network); // Set the network based on the found network
-    } else {
-      setDataVols([]); // Clear the dataVols state when the network is not found (optional)
-      setPhoneNumber("");
-      setAmount("");
-      setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
-    }
 
-    console.log("Selected Network:", selectedNetwork);
-    console.log("Data Vols:", dataVols);
+      const selectedData = selectedNetwork.dataVol.find(
+        (vol) => vol.name === e.target.value
+      );
+
+      if (selectedData) {
+        selectedDataVolName = selectedData.name;
+        // console.log(selectedDataVolName);
+      }
+    }
+    setPhoneNumber("");
+    setAmount("");
+    setNetwork(e.target.value);
+    // console.log(e.target.value);
   };
 
   // handle two onchange props
@@ -101,18 +91,14 @@ function BuyData() {
       (ctr) => ctr.plan_code === e.target.value
     );
     // check if selectedDataVol is undefined. if not checked it will throw an
-    // error if the user selects a value and later selects the default value
+    // error if user selects a value and later select the default value
     if (selectedDataVol) {
       setAmounts(selectedDataVol);
       setAmountPlaceHolder(false);
-    } else {
-      // Handle the case when the selectedDataVol is not found (optional)
-      setAmounts({}); // Clear the previous amount data
-      setAmountPlaceHolder(true);
     }
     setPhoneNumber("");
     setAmount("");
-    console.log(e.target.value);
+    // console.log(e.target.value);
   };
 
   // handle two onchange props
@@ -124,17 +110,7 @@ function BuyData() {
   // handle two onchange props
   const handlePhoneNumberAndInputValidation = (e) => {
     const inputValue = e.target.value;
-
-    // Remove non-numeric characters from the input
-    const numericPhoneNumber = inputValue.replace(/\D/g, "");
-    setPhoneNumber(numericPhoneNumber);
-
-    // Regex pattern to match Nigerian phone numbers
-    const regex = /^(\+?234|0)[789]\d{9}$/;
-
-    const isValidPhoneNumber = regex.test(inputValue);
-    setIsValid(isValidPhoneNumber);
-
+    setPhoneNumber(inputValue);
     handleInputField(e);
     // console.log(e.target.value);
   };
@@ -187,7 +163,7 @@ function BuyData() {
             headers: authHeader(),
           }
         );
-        console.log(response);
+        // console.log(response);
         if (response.data.code === "000") {
           alert(response.data.message);
           router.reload();
@@ -196,7 +172,7 @@ function BuyData() {
           router.reload();
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error)
         if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
@@ -213,7 +189,7 @@ function BuyData() {
         } else if (error.response.data.code === "005") {
           setServerError(true);
         } else {
-          console.log(error.response);
+          // console.log(error.response);
           alert(`Something went wrong! If problem persist check your network`);
         }
       }
@@ -292,11 +268,10 @@ function BuyData() {
             <select
               className={`${styles.formControl} input-field`}
               onChange={handleNetworkAndInputValidation}
-              // value={network} // Set the selected network value
             >
               <option value={network}>--Choose Network--</option>
               {networkData.map((ctr) => (
-                <option value={ctr.variation_string} key={ctr._id}>
+                <option value={ctr.network} key={ctr.network}>
                   {ctr.variation_string}
                 </option>
               ))}
@@ -305,16 +280,14 @@ function BuyData() {
             <select
               className={`${styles.formControl} input-field`}
               onChange={handleDataVolAndInputValidation}
-              value={dataVol} // Set the selected dataVol value
             >
-              <option value="">--Data Volume--</option>
+              <option value={dataVol}>--Data Volume--</option>
               {dataVols.map((ctr) => (
                 <option value={ctr.plan_code} key={ctr.plan_code}>
                   {ctr.name}
                 </option>
               ))}
             </select>
-
             <br />
             <input
               placeholder="Phone number"
@@ -322,9 +295,6 @@ function BuyData() {
               value={phoneNumber}
               onChange={handlePhoneNumberAndInputValidation}
             />
-               <div className="text-xs mr-40 mt-[-2ch] text-red-600">
-              {!isValid ? <p>Invalid Phone Number</p> : null }
-            </div>
             <br />
             <div className={styles.amountBtn}>
               <div
