@@ -18,11 +18,8 @@ export default function Notification() {
       setLoading(true);
       setError(false);
       setSuccessMessage(false);
-      const response = await notification(
-        bank,
-        amount,
-        narration
-      );
+      const response = await notification(bank, amount, narration);
+      console.log(response);
       if (response.code === "002") {
         setError(response.message);
       } else if (response.code === "009") {
@@ -34,15 +31,15 @@ export default function Notification() {
       }
       setLoading(false);
     } catch (error) {
-        throw new Error("An error occurred.");
-      
+      console.log(error);
+      throw new Error("An error occurred.");
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
     <div className="bg-black h-screen">
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <div className="container">
         <h1 className="text-white text-xs text-center p-5">
           Payment Notification
@@ -61,18 +58,21 @@ export default function Notification() {
               <p className="text-white text-center">{successMessage}</p>
             </div>
           )}
-             <label className="text-red-400 mt-[2ch]">Bank</label>
+          <label className="text-red-400 mt-[2ch]">Bank</label>
           <select
             className="mt-[-5ch]"
             value={bank}
-            onChange={(e) => setBank(e.target.value)}
+            onChange={(e) => {
+              // console.log(e.target.value)
+              setBank(e.target.value);
+            }}
           >
             <option value="">Select Bank</option>
             <option value="Opay - 9066560771">Opay</option>
             <option value="Kuda - 1101725915">Kuda</option>
-            <option value="GTB - 0449785257">GTB</option>
-            <option value="Zenith Bank - 2209469444">Zenith Bank</option>
-            <option value="Access Bank - 1415440070">Access Bank</option>
+            <option value="GT - 0449785257">GTB</option>
+            <option value="Zenith - 2209469444">Zenith Bank</option>
+            <option value="Access - 1415440070">Access Bank</option>
           </select>
           <br />
           <label className="text-red-400 mt-[2ch]">Amount:</label>
@@ -80,17 +80,21 @@ export default function Notification() {
             className="mt-[-5ch]"
             type="number"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => {
+              // console.log(e.target.value)
+              setAmount(e.target.value);
+            }}
           />
           <br />
-          <label className="text-red-400 mt-[2ch] text-sm">
-            Narration
-          </label>
+          <label className="text-red-400 mt-[2ch] text-sm">Narration</label>
           <input
             className="mt-[-5ch]"
             type="text"
             value={narration}
-            onChange={(e) => setNarration(e.target.value)}
+            onChange={(e) => {
+              // console.log(e.target.value)
+              setNarration(e.target.value);
+            }}
           />
           <br />
           <br />
@@ -139,8 +143,8 @@ export default function Notification() {
         `}</style>
       </div>
       <div className="flex justify-center">
-          <Image src="/banks-logo.jpg" alt="logo" width={300} height={300} />
-          </div>
+        <Image src="/banks-logo.jpg" alt="logo" width="300" height="300" />
+      </div>
     </div>
   );
 }

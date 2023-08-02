@@ -23,7 +23,7 @@ export default function Main() {
           <InfoIcon/>
         </span>
         <Link href={"/user/buyData-mainGift"}>
-        <h3 className="font-extrabold text-sm pt-3">Buy Data || NormalGift/Bulk</h3>
+        <h3 className="font-extrabold text-sm pt-3">NormalGift/Bulk Data</h3>
         </Link>
       </div>
     </Card>

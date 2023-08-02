@@ -54,9 +54,10 @@ export default function SignUp() {
           if (error.response?.data.message) {
             setApiError(error.response?.data.message);
           } else {
-            alert("Something went wrong !");
+            alert("Something went wrong or User Registered Already !");
           }
         };
+        setLoading(false);
   };
 
   return (
