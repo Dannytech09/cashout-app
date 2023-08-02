@@ -10,8 +10,8 @@ export default function SubFooter() {
           <Image
             src="/whatsapp.png"
             alt="whatsapp icon"
-            width="50"
-            height="50"
+            width="30"
+            height="30"
           />
         </Link>
       </div>
