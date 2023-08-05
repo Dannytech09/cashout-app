@@ -14,6 +14,7 @@ function Dashboard() {
 
   return (
     <div className="flex overflow-x-hidden">
+       <Layout>
       <Head>
         <title>My Dashboard</title>
         <meta name="description" content="Best Data and airtime Website" />
@@ -21,7 +22,7 @@ function Dashboard() {
       </Head>
 
       <div className="sm:w-40">
-        <Layout>
+       
           <div className="">
             <div className="">
               <Header />
@@ -39,8 +40,8 @@ function Dashboard() {
               <Footer />
             </div>
           </div>
-        </Layout>
       </div>
+        </Layout>
     </div>
   );
 }
