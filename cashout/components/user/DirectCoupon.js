@@ -10,10 +10,11 @@ import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
+import { getCoupon } from "@/pages/api/directCoupon";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
 
-function BuyData() {
+function DirectCoupon() {
   const router = useRouter();
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -38,10 +39,10 @@ function BuyData() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${BASE_URL}/getData`);
-        const res = await response.json();
-        // console.log(res.networkData);
-        setNetworkData(res.networkData);
+        const response = await getCoupon();
+        console.log(response);
+      
+        setNetworkData(resp.dataCoupon);
         setLoading(false);
         return;
       } catch (error) {
@@ -224,7 +225,7 @@ function BuyData() {
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl p-5">Buy Data</h3>
+            <h3 className="text-black text-xl p-5">MTN DIRECT COUPON</h3>
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>
@@ -343,4 +344,4 @@ function BuyData() {
   );
 }
 
-export default BuyData;
+export default DirectCoupon;
