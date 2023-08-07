@@ -1,5 +1,6 @@
 import React from 'react'
 import DirectCoupon from "../../components/user/DirectCoupon";
+import withAuth from '@/hocs/withAuth';
 
 
 const DirectCouponPage = () => {
@@ -11,4 +12,4 @@ const DirectCouponPage = () => {
 }
 
 
-export default DirectCouponPage;
+export default withAuth(DirectCouponPage);

@@ -6,15 +6,14 @@ import Layout from "../../components/user/Layout";
 import withAuth from "../../hocs/withAuth";
 import Footer from "@/components/user/Footer";
 import Section from "@/components/user/Section";
-// import UseTokenExpiration from "@/components/utils/TokenExp";
+import UseTokenExpiration from "@/components/utils/TokenExp";
 import Link from "next/link";
 
 function Dashboard() {
-  // UseTokenExpiration();
+  UseTokenExpiration();
 
   return (
     <div className="flex overflow-x-hidden">
-       <Layout>
       <Head>
         <title>My Dashboard</title>
         <meta name="description" content="Best Data and airtime Website" />
@@ -22,7 +21,7 @@ function Dashboard() {
       </Head>
 
       <div className="sm:w-40">
-       
+        <Layout>
           <div className="">
             <div className="">
               <Header />
@@ -40,8 +39,8 @@ function Dashboard() {
               <Footer />
             </div>
           </div>
-      </div>
         </Layout>
+      </div>
     </div>
   );
 }

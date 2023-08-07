@@ -1,82 +1,48 @@
 import React, { useState, useEffect } from "react";
-import authHeader from "../../services/auth-Header";
-import axios from "axios";
 import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Sidebar from "@/components/user/Sidebar";
 import Footer from "../../components/user/SubMain";
-import SmileIcon from "@/components/heroIcons/SmileIcon";
-import ConfirmDataModal from "../../components/user/ConfirmDataModal";
-import API_BASE_URL from "@/apiConfig";
+import ConfirmDataModal from "./ConfirmDataModal";
 import Loader from "@/components/utils/Loader";
-import { getCoupon } from "@/pages/api/directCoupon";
-
-const BASE_URL = `${API_BASE_URL}/vend`;
+import { getCoupon, directCoupon } from "@/pages/api/directCoupon";
 
 function DirectCoupon() {
   const router = useRouter();
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [phoneErr, setPhoneErr] = useState(false);
-  const [insufficientBal, setInsufficientBal] = useState(false);
-  const [unauthorised, setUnauthorised] = useState(false);
-  const [sSmsApiErrorMessage, setsSmsApiErrorMessage] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [serverError, setServerError] = useState(false);
-  const [failed, setFailed] = useState("");
 
-  const [network, setNetwork] = useState("--Choose Network--");
+  const [network, setNetwork] = useState("MTN DATA COUPON");
   const [dataVol, setDataVol] = useState("--Data Volume--");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [amount, setAmount] = useState("");
-  const [dataVols, setDataVols] = useState([]);
   const [amounts, setAmounts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
+  const [name, setName] = useState("");
 
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await getCoupon();
-        console.log(response);
-      
-        setNetworkData(resp.dataCoupon);
+        // console.log(response.dataCoupon);
+
+        setNetworkData(response.dataCoupon);
         setLoading(false);
         return;
       } catch (error) {
-        // console.error(error);
+        console.error(error);
         alert("Not authorised or server error");
       }
     }
     fetchData();
   }, []);
 
-  // if (loading) {
-  //   return <div className="bg-slate-100">Loading...</div>;
-  // }
-
   const changeNetwork = (e) => {
-    const selectedNetwork = networkData.find(
-      (ctr) => ctr.network === e.target.value
-    );
-    if (selectedNetwork) {
-      setDataVols(selectedNetwork.dataVol);
-
-      const selectedData = selectedNetwork.dataVol.find(
-        (vol) => vol.name === e.target.value
-      );
-
-      if (selectedData) {
-        selectedDataVolName = selectedData.name;
-        // console.log(selectedDataVolName);
-      }
-    }
-    setPhoneNumber("");
-    setAmount("");
-    setNetwork(e.target.value);
-    // console.log(e.target.value);
+    const inputValue = e.target.value;
+    setNetwork(inputValue);
+    // console.log(inputValue);
   };
 
   // handle two onchange props
@@ -86,19 +52,33 @@ function DirectCoupon() {
   };
 
   const changeDataVol = (e) => {
-    setDataVol(e.target.value);
-    const selectedDataVol = dataVols.find(
-      (ctr) => ctr.plan_code === e.target.value
+    const selectedPlanCode = e.target.value;
+    const selectedDataVol = networkData.find((ctr) =>
+      ctr.dataVol.some((item) => item.plan_code === selectedPlanCode)
     );
-    // check if selectedDataVol is undefined. if not checked it will throw an
-    // error if user selects a value and later select the default value
+    // console.log("selected =>>", selectedDataVol);
+
     if (selectedDataVol) {
-      setAmounts(selectedDataVol);
+      setDataVol(selectedPlanCode);
+      setAmounts(selectedDataVol.dataVol);
       setAmountPlaceHolder(false);
+
+      const selectedName = selectedDataVol.dataVol.find(
+        (item) => item.plan_code === selectedPlanCode
+      )?.name;
+
+      console.log(selectedName);
+
+      // Pass the selectedName to the network
+      setName(selectedName);
+    } else {
+      setDataVol("");
+      setAmounts([]);
+      setAmountPlaceHolder(true);
+      setNetwork(""); // If no data is selected, clear the network value
     }
+
     setPhoneNumber("");
-    setAmount("");
-    // console.log(e.target.value);
   };
 
   // handle two onchange props
@@ -144,54 +124,21 @@ function DirectCoupon() {
 
   const confirmData = async () => {
     if (typeof window !== "undefined") {
-      const user = JSON.parse(sessionStorage.getItem("user"));
-      const id = user._id;
-
       try {
-        setFailed("");
         setLoading(true);
-        setPhoneErr(false);
-        setInsufficientBal(false);
-        setUnauthorised(false);
-        setsSmsApiErrorMessage(false);
-        setErrorMessage(false);
-        setServerError(false);
-        const response = await axios.post(
-          `${BASE_URL}/${id}/purchase`,
-          { network: network, plan_code: dataVol, mobile: phoneNumber },
-          {
-            headers: authHeader(),
-          }
-        );
-        // console.log(response);
-        if (response.data.code === "000") {
-          alert(response.data.message);
+        const response = await directCoupon(network, dataVol, phoneNumber);
+        // console.log("c", response);
+        if (response.code === "000") {
+          alert(response.message);
           router.reload();
-        } else if (response.data.code === "010") {
-          alert(response.data.message);
+        } else if (response) {
+          alert(response.message);
           router.reload();
         }
       } catch (error) {
-        // console.log(error)
-        if (error.response.data.error) {
-          setUnauthorised(true);
-        } else if (error.response.data.code === "003") {
-          setPhoneErr(true);
-        } else if (error.response.data.code === "011") {
-        } else if (error.response.data.code === "001") {
-          setFailed(error.response.data.message);
-        } else if (error.response.data.code === "011") {
-          setsSmsApiErrorMessage(true);
-        } else if (error.response.data.code === "010") {
-          setErrorMessage(true);
-        } else if (error.response.data.code === "006") {
-          setInsufficientBal(true);
-        } else if (error.response.data.code === "005") {
-          setServerError(true);
-        } else {
-          // console.log(error.response);
-          alert(`Something went wrong! If problem persist check your network`);
-        }
+        console.log(error);
+        // console.log(error.response);
+        alert(`Something went wrong! If problem persist check your network`);
       }
       setLoading(false);
       closeModal();
@@ -225,68 +172,34 @@ function DirectCoupon() {
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl p-5">MTN DIRECT COUPON</h3>
-            <div>
-              {phoneErr && (
-                <div className={styles.errorMessage}>
-                  Please input a valid phone number.
-                </div>
-              )}
-              {failed && <div className={styles.errorMessage}>{failed}</div>}
-              {insufficientBal && (
-                <div
-                  className={`${styles.errorMessage} item-center justify-center flex gap-2`}
-                >
-                  Fund your wallet now boss !
-                  <span className="fill-blue-800 stroke-yellow-600">
-                    <SmileIcon />
-                  </span>
-                </div>
-              )}
-              {unauthorised && (
-                <div className={styles.errorMessage}>
-                  Not authorized to access this route! Please get yourself
-                  authenticated.
-                </div>
-              )}
-              {sSmsApiErrorMessage && (
-                <div className={styles.errorMessage}>
-                  Invalid network or plan
-                </div>
-              )}
-              {errorMessage && (
-                <div className={styles.errorMessage}>
-                  If problem persist kindly contact the admin !
-                </div>
-              )}
-              {serverError && (
-                <div className={styles.errorMessage}>
-                  Internal Server Error!
-                </div>
-              )}
+            <h3 className="text-black bg-violet-400 border-slate-200 rounded-2xl text-xl p-5">MTN DIRECT COUPON</h3>
+            <div className="text-xs p-0 m-2">
+              <p>Dial *323*4# or *323*1# to check balance</p>
+              <p>You might be unable to check balance atimes due to network</p>
+              <p>Hence, confirm final status via your history</p>
             </div>
+
             <select
               className={`${styles.formControl} input-field`}
               onChange={handleNetworkAndInputValidation}
             >
-              <option value={network}>--Choose Network--</option>
-              {networkData.map((ctr) => (
-                <option value={ctr.network} key={ctr.network}>
-                  {ctr.variation_string}
-                </option>
-              ))}
+              <option>--Choose Network--</option>
+              <option value={33}>MTN DATA COUPON</option>
             </select>
             <br />
             <select
               className={`${styles.formControl} input-field`}
               onChange={handleDataVolAndInputValidation}
+              value={dataVol}
             >
-              <option value={dataVol}>--Data Volume--</option>
-              {dataVols.map((ctr) => (
-                <option value={ctr.plan_code} key={ctr.plan_code}>
-                  {ctr.name}
-                </option>
-              ))}
+              <option>--Data Volume--</option>
+              {networkData.map((ctr) =>
+                ctr.dataVol.map((data) => (
+                  <option value={data.plan_code} key={data.plan_code}>
+                    {data.name}
+                  </option>
+                ))
+              )}
             </select>
             <br />
             <input
@@ -300,12 +213,13 @@ function DirectCoupon() {
               <div
                 className={`${styles.formControl} border border-white bg-white input-field`}
               >
-                {amountPlaceHolder ? (
-                  "amount"
-                ) : (
-                  <h2 value={amount}> {amounts.amount}</h2>
-                )}
+                {amountPlaceHolder
+                  ? "amount"
+                  : amounts.map((data) => (
+                      <h2 key={data.plan_code}>{data.amount}</h2>
+                    ))}
               </div>
+
               <br />
               <div
                 className={`${styles.btn} border border-white bg-white text-center hover:cursor-pointer`}
@@ -335,9 +249,7 @@ function DirectCoupon() {
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
-        network={network}
-        // dataVol={dataVol}
-        // value={buyData}
+        network={name}
       />
       <Footer />
     </div>

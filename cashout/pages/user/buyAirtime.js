@@ -10,6 +10,7 @@ import Footer from "@/components/user/SubMain";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
+import withAuth from "@/hocs/withAuth";
 
 const BASE_URL = `${API_BASE_URL}/buyAirtime`;
 
@@ -268,4 +269,4 @@ function BuyAirtime() {
   );
 }
 
-export default BuyAirtime;
+export default withAuth(BuyAirtime);

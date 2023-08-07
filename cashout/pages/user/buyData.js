@@ -10,6 +10,7 @@ import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
+import withAuth from "@/hocs/withAuth";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
 
@@ -343,4 +344,4 @@ function BuyData() {
   );
 }
 
-export default BuyData;
+export default withAuth(BuyData);
