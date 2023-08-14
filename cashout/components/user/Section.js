@@ -20,7 +20,7 @@ export default function Section() {
       <div className="flex justify-evenly bg-slate-100 p-2 rounded-b-xl">
       <div className="flex gap-4 hover:bg-slate-500 hover:text-blue-300 items-center justify-center max-sm:w-30 text-center h-[6ch] bg-violet-400 border-2 border-slate-200 rounded-2xl w-[40%]">
         <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><WifiDataIcon/></span>
-          <Link href={""} className="text-slate-100 text-md">Data Card</Link>
+          <Link href={""} className="text-slate-100 text-md">Edu Pin</Link>
         </div>
         <div className="flex gap-4 hover:bg-slate-500 hover:text-blue-300 items-center justify-center max-sm:w-30 text-center h-[6ch] bg-violet-400 border-2 border-slate-200 rounded-2xl w-[40%]">
         <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><WifiDataIcon/></span>

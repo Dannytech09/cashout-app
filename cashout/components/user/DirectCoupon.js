@@ -24,17 +24,16 @@ function DirectCoupon() {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const response = await getCoupon();
         // console.log(response.dataCoupon);
-
         setNetworkData(response.dataCoupon);
-        setLoading(false);
-        return;
       } catch (error) {
-        console.error(error);
-        alert("Not authorised or server error");
+        // console.error(error);
+        alert("Service Unavailable, please check back later !");
       }
+      setLoading(false);
     }
     fetchData();
   }, []);
@@ -67,7 +66,7 @@ function DirectCoupon() {
         (item) => item.plan_code === selectedPlanCode
       )?.name;
 
-      console.log(selectedName);
+      // console.log(selectedName);
 
       // Pass the selectedName to the network
       setName(selectedName);

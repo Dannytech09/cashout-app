@@ -172,7 +172,7 @@ function BuyData() {
           router.reload();
         }
       } catch (error) {
-        // console.log(error)
+        // console.log(error.response.data)
         if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
@@ -189,7 +189,6 @@ function BuyData() {
         } else if (error.response.data.code === "005") {
           setServerError(true);
         } else {
-          // console.log(error.response);
           alert(`Something went wrong! If problem persist check your network`);
         }
       }
