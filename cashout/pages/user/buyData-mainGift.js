@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import API_BASE_URL from "@/apiConfig";
 import Sidebar from "@/components/user/Sidebar";
 import Loader from "@/components/utils/Loader";
+import withAuth from "@/hocs/withAuth";
 
 const BASE_URL = `${API_BASE_URL}/pay`;
 
@@ -290,4 +291,4 @@ function BuyDataMainGift() {
   );
 }
 
-export default BuyDataMainGift;
+export default withAuth(BuyDataMainGift);

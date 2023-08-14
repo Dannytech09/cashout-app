@@ -85,4 +85,4 @@ const LockData = () => {
   
 };
 
-export default LockData;
+export default withAuth(LockData);

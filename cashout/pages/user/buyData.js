@@ -5,11 +5,12 @@ import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Sidebar from "@/components/user/Sidebar";
-import Footer from "../../components/user/Footer";
+import Footer from "../../components/user/SubMain";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
+import withAuth from "@/hocs/withAuth";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
 
@@ -59,7 +60,7 @@ function BuyData() {
   const changeNetwork = (e) => {
     const selectedNetwork = networkData.find(
       (ctr) => ctr.network === e.target.value
-      );
+    );
     if (selectedNetwork) {
       setDataVols(selectedNetwork.dataVol);
 
@@ -171,7 +172,7 @@ function BuyData() {
           router.reload();
         }
       } catch (error) {
-        // console.log(error)
+        // console.log(error.response.data)
         if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
@@ -188,7 +189,6 @@ function BuyData() {
         } else if (error.response.data.code === "005") {
           setServerError(true);
         } else {
-          // console.log(error.response);
           alert(`Something went wrong! If problem persist check your network`);
         }
       }
@@ -343,4 +343,4 @@ function BuyData() {
   );
 }
 
-export default BuyData;
+export default withAuth(BuyData);

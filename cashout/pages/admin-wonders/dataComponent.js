@@ -9,6 +9,23 @@ function dataComponent() {
     <>
       <SidebarAdmin />
       <div className="flex flex-col gap-4 p-4 text-center">
+      <div className="border rounded-md bg-blue-100 p-4">
+          <Link
+            href={"/admin-wonders/setCouponPrices"}
+            className="text-gray-600 hover:text-gray-800 font-medium"
+          >
+            Set Data Coupon Prices
+          </Link>
+        </div>
+      <div className="border rounded-md bg-red-300 p-4">
+          <Link
+            href={"/admin-wonders/lockCoupon"}
+            className="text-gray-600 hover:text-gray-800 font-medium"
+          >
+            Data Coupon I/O
+          </Link>
+        </div>
+        <hr className="border border-black"/>
         <div className="border rounded-md bg-blue-100 p-4">
           <Link
             href={"/admin-wonders/getAllHistory"}
@@ -17,6 +34,7 @@ function dataComponent() {
             All History
           </Link>
         </div>
+        <hr className="border border-black"/>
         <div className="border rounded-md bg-green-100 p-4">
           <Link
             href={"/admin-wonders/getDataPrices"}
@@ -33,6 +51,7 @@ function dataComponent() {
             Update Prices - A
           </Link>
         </div>
+        <hr className="border border-black"/>
         <div className="border rounded-md bg-green-100 p-4">
           <Link
             href={"/admin-wonders/getCurrentDataPrices"}
