@@ -4,9 +4,9 @@ import AuthService from "@/services/auth.Service";
 import Greetings from "../utils/Greetings";
 import styles from "../../styles/dashboard.module.css";
 import SmileIcon from "../heroIcons/SmileIcon";
-import LogoutIcon from "../heroIcons/LogoutIcon";
 import Link from "next/link";
 import MotionText from "./MotionText";
+import Logout from "./Logout";
 
 export default function Header() {
   const router = useRouter();
@@ -21,18 +21,18 @@ export default function Header() {
       })
       .catch((error) => {
         // console.log(error)
-        setError(error);
-        // console.log("Error 1:", error);
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/login");
+        } else {
+          setError(error);
+        }
       });
   }, []);
 
-  const logoutHandler = async () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("buttonClicked");
-    }
-    await AuthService.logout();
-    router.push("/login");
-  };
   // useEffect(() => {
   //   const user = JSON.parse(sessionStorage.getItem("user"));
   //   setUser(user);
@@ -52,12 +52,7 @@ export default function Header() {
               {error && <p>Error fetching balance</p>}
             </div>
           )}
-          <div
-            onClick={logoutHandler}
-            className="fixed-right sm:mr-4 md:mr-4 z-50 border-red-2 p-2 mr-4 h-10 w-10 bg-red-500"
-          >
-            <LogoutIcon />
-          </div>
+          <Logout />
         </div>
         <div className="flex justify-center text-center lg:mt-[-2ch]">
           <h1 className="text-lg">
@@ -89,12 +84,16 @@ export default function Header() {
               </div>
             </div>
             <div className="pt-3 mt-2 ">
-              <p className="text-slate-100"> Acct Type: <span>{user.accountType}</span></p>
+              <p className="text-slate-100">
+                {" "}
+                Acct Type: <span>{user.accountType}</span>
+              </p>
             </div>
           </div>
-            )}
+        )}
       </div>
-      <MotionText text="Data balance checkers- MTN-SME - *312*4*3*3# or *461*4#, MTN-CG - *460*260# or *460*4*4#, Glo - *127*0#, Airtel - *140#, 9mobile SME - *917*9#, 9mobile gifting - *228#. Promo on affiliate or standalone website creation is on going. Grab the offer now ! " />    </div>
+      <MotionText text="Data balance checkers- MTN-SME - *312*4*3*3# or *461*4#, MTN-CG - *460*260# or *460*4*4#, Glo - *127*0#, Airtel - *140#, 9mobile SME - *917*9#, 9mobile gifting - *228#. Promo on affiliate or standalone website creation is on going. Grab the offer now ! " />{" "}
+    </div>
     // </div>
   );
 }

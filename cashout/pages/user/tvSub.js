@@ -219,6 +219,7 @@ function TvSub() {
           router.reload();
         }
       } catch (error) {
+        // console.log(error)
         if (error.response?.data?.error) {
           setUnauthorised(true);
         } else if (error.response?.data?.code === "006") {
@@ -228,8 +229,7 @@ function TvSub() {
         } else {
           alert("Something went wrong !");
         }
-        // console.log(error);
-        // setLoading(false);
+        setLoading(false);
       }
 
       closeModal();
