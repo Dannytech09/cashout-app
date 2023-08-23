@@ -11,7 +11,13 @@ export default function TotalUser() {
           setUsers(res.data?.count);
         })
         .catch((error) => {
-          if(error) {
+          if (
+            error.response.data.error === "Invalid token." ||
+            error.response.data.error === "Token expired."
+          ) {
+            sessionStorage.clear();
+            router.push("/admin-wonders/login");
+          } else if(error) {
             return <p>{Error}: Data is undefined or missing</p>;
           }
         });
