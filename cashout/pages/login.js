@@ -47,6 +47,10 @@ const Login = () => {
       // invalid credentials
       if (error.response.data.error === "Invalid credentials") {
         setMessage("Invalid email or password !");
+      } else if (error.response.data.message === "Request Exceeded, please try again later") {
+        alert("Request Exceeded, please try again later");
+        // sessionStorage.clear();
+        // router.push("/login");
       } else {
         setMessage("Something went wrong !");
       }

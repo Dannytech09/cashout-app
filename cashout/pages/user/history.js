@@ -27,10 +27,9 @@ function History() {
       } else if (error?.response?.data?.code === "002") {
         setCheckTransaction(true);
       } else {
-        alert("Something went wrong")
-      }
-      setLoading(false);
+        alert("Something went wrong");      }
     }
+    setLoading(false);
   };
 
   useEffect(() => {

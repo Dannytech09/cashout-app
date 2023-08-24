@@ -27,7 +27,7 @@ export default function TotalUser() {
 
   useEffect(() => {
     fetch();
-  });
+  }, [router]);
 
   return <div className="text-green-400 ml-2 pt-1">{users}</div>;
 }

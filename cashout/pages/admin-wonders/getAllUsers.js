@@ -36,7 +36,7 @@ function GetAllUsers() {
 
   useEffect(() => {
     fetch();
-  }, []);
+  }, [router]);
 
   //  // Get current posts
   //  const indexOfLastPost = currentPage * postsPerPage;

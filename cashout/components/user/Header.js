@@ -20,13 +20,17 @@ export default function Header() {
         // console.log(response.data);
       })
       .catch((error) => {
-        // console.log(error)
+        console.log(error);
         if (
           error.response.data.error === "Invalid token." ||
           error.response.data.error === "Token expired."
         ) {
           sessionStorage.clear();
           // eslint-disable-next-line react-hooks/exhaustive-deps
+          router.push("/login");
+        } else if (error.response.data.message === "Request Exceeded, please try again later") {
+          alert("Request Exceeded, please try again later");
+          sessionStorage.clear();
           router.push("/login");
         } else {
           setError(error);

@@ -39,7 +39,7 @@ function TotalBalance() {
     }
 
     fetchTotalBalance();
-  });
+  }, [router]);
 
   if (loading) {
     return <p>Loading...</p>;

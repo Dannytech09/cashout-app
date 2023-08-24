@@ -33,7 +33,7 @@ function GetCurrentDataPrices() {
     };
 
     fetchData();
-  }, [dataPrices]);
+  }, [router]);
 
   if (error) {
     return (

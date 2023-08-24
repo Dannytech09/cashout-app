@@ -9,8 +9,8 @@ function GetAllPurchases() {
   const [allPurchases, setAllDataPurchased] = useState([]);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [count, setCount] = useState('');
-  const [ rCount, setRCount] = useState('');
+  const [count, setCount] = useState("");
+  const [rCount, setRCount] = useState("");
 
   const fetchData = async () => {
     try {
@@ -37,11 +37,17 @@ function GetAllPurchases() {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [router]);
 
   return (
     <>
-      <AllPurchases error={error} allPurchases={allPurchases} loading={loading} count={count} rCount={rCount}/>
+      <AllPurchases
+        error={error}
+        allPurchases={allPurchases}
+        loading={loading}
+        count={count}
+        rCount={rCount}
+      />
     </>
   );
 }
