@@ -4,9 +4,11 @@ import Users from "../../components/admin/Users";
 import withAuth from "../../hocs/withAuth";
 import HeadInPages from "@/components/admin/HeadInPages";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
+import { useRouter } from "next/router";
 // import Pagination from "../../components/utils/Pagination";
 
 function GetAllUsers() {
+  const router = useRouter();
   const [users, setUsers] = useState([]);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [postsPerPage] = useState(10);
@@ -18,6 +20,12 @@ function GetAllUsers() {
       })
       .catch((error) => {
         if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/admin-wonders/login");
+        } else if (
           error.response.data.status === 401 ||
           error.response.data.status === 400
         ) {
@@ -28,7 +36,7 @@ function GetAllUsers() {
 
   useEffect(() => {
     fetch();
-  }, []);
+  }, [router]);
 
   //  // Get current posts
   //  const indexOfLastPost = currentPage * postsPerPage;

@@ -19,7 +19,7 @@ export default function Notification() {
       setError(false);
       setSuccessMessage(false);
       const response = await notification(bank, amount, narration);
-      console.log(response);
+      // console.log(response);
       if (response.code === "002") {
         setError(response.message);
       } else if (response.code === "009") {

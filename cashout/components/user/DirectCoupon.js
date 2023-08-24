@@ -135,9 +135,16 @@ function DirectCoupon() {
           router.reload();
         }
       } catch (error) {
-        console.log(error);
         // console.log(error.response);
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/login");
+        } else {
         alert(`Something went wrong! If problem persist check your network`);
+        }
       }
       setLoading(false);
       closeModal();

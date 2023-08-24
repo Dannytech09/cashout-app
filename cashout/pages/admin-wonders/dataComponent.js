@@ -9,6 +9,23 @@ function dataComponent() {
     <>
       <SidebarAdmin />
       <div className="flex flex-col gap-4 p-4 text-center">
+      <div className="border rounded-md bg-blue-400 p-4">
+          <Link
+            href={"/admin-wonders/dataPricesS"}
+            className="text-gray-600 hover:text-gray-800 font-medium"
+          >
+            Set Data Prices - SS
+          </Link>
+        </div>
+      <div className="border rounded-md bg-blue-400 p-4">
+          <Link
+            href={"/admin-wonders/lockDataS"}
+            className="text-gray-600 hover:text-gray-800 font-medium"
+          >
+            Lock Data - SS
+          </Link>
+        </div>
+        <hr className="border border-black"/>
       <div className="border rounded-md bg-blue-100 p-4">
           <Link
             href={"/admin-wonders/setCouponPrices"}

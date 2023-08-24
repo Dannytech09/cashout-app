@@ -1,34 +1,40 @@
 import { useState } from "react";
 import classNames from "classnames";
-import API_BASE_URL from "@/apiConfig";
-import { getToken } from "@/Utils/Common";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
-import withAuth from "@/hocs/withAuth";
+import Loader from "@/components/utils/Loader";
+import { SetDataPricesHandler } from "@/pages/api/admin/setDataPrices";
 
-const ADMIN_BASE_URL = `${API_BASE_URL}/admin`;
-
-function PatchForm() {
-  const [network, setNetwork] = useState("");
+// SS
+export default function UpdatePrices() {
+  const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ name: "", amount: "" }]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
-    const response = await fetch(`${ADMIN_BASE_URL}/price/update-price`, {
-      method: "PUT",
-      headers: {
-        Authorization: "Bearer " + getToken(),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ network, data }),
-    });
+    try {
+      const response = await SetDataPricesHandler(variation_string, data);
 
-    if (response.ok) {
-      alert("Data updated successfully");
-    } else {
-      const error = await response.json();
-      alert(`Error updating data: ${error.message}`);
+      // console.log(response)
+      if (response.success === true || response.status === 204) {
+        alert("Data updated successfully");
+      } else if (response.message) {
+        alert(response.message);
+      }
+    } catch (error) {
+      if (error.response.message) {
+        alert(error.response.message);
+      }
     }
+    setLoading(false);
+  };
+
+  const handleNetworkChange = (e) => {
+    const inputValue = e.target.value;
+    setVariation_string(inputValue);
+    // console.log(inputValue);
   };
 
   const handleDataChange = (event, index) => {
@@ -38,6 +44,7 @@ function PatchForm() {
       newData[index][event.target.name] = event.target.value.replace(/\D/, "");
     }
     setData(newData);
+    // console.log(newData);
   };
 
   const handleAddData = () => {
@@ -51,30 +58,32 @@ function PatchForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="text-center border border-black-300 bg-black h-screen"
+      className="text-center border border-black-300 bg-blue-400 h-screen"
     >
+      {loading && <Loader />}
       <div>
         <SidebarAdmin />
       </div>
       <div className="mb-4 max-w-screen-md flex-col w-screen text-center">
         <h1 className="m-5 p-2 border border-green-400 bg-green-400 text-white ">
-          Update Data Prices - self
+          Update Data Prices - SS
         </h1>
         <label htmlFor="network" className="block text-white font-bold mb-2">
           Network:
         </label>
         <select
-          id="network"
-          name="network"
-          value={network}
-          onChange={(event) => setNetwork(event.target.value)}
+          id="variation_string"
+          name="variation_string"
+          value={variation_string}
+          onChange={handleNetworkChange}
           className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         >
           <option value="">Select network</option>
-          <option value="mtn">MTN</option>
-          <option value="glo">Glo</option>
-          <option value="airtel">Airtel</option>
-          <option value="9mobile">9mobile</option>
+          <option value="MTN-SME">MTN-SME</option>
+          <option value="MTN-CG">MTN-CG</option>
+          <option value="GLO-CG">GLO-CG</option>
+          <option value="AIRTEL-CG">AIRTEL-CG</option>
+          <option value="9MOBILE-CG">9MOBILE-CG</option>
         </select>
       </div>
       <div className="mb-4">
@@ -135,5 +144,3 @@ function PatchForm() {
     </form>
   );
 }
-
-export default withAuth(PatchForm);

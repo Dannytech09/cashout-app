@@ -17,21 +17,26 @@ export default function Header() {
     AuthService.getLoggedInUser()
       .then((response) => {
         setUser(response.data.data);
-        // console.log(response.data.data);
+        // console.log(response.data);
       })
       .catch((error) => {
-        // console.log(error)
+        console.log(error);
         if (
           error.response.data.error === "Invalid token." ||
           error.response.data.error === "Token expired."
         ) {
+          sessionStorage.clear();
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          router.push("/login");
+        } else if (error.response.data.message === "Request Exceeded, please try again later") {
+          alert("Request Exceeded, please try again later");
           sessionStorage.clear();
           router.push("/login");
         } else {
           setError(error);
         }
       });
-  }, []);
+  }, [router]);
 
   // useEffect(() => {
   //   const user = JSON.parse(sessionStorage.getItem("user"));

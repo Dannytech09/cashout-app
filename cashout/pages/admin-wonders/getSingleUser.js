@@ -7,8 +7,10 @@ import Link from "next/link";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
+import { useRouter } from "next/router";
 
 function GetSingleUser() {
+  const router = useRouter();
   const [user, setUser] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -38,6 +40,12 @@ function GetSingleUser() {
       })
       .catch((error) => {
         if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/admin-wonders/login");
+        } else if (
           error.response?.status === 404 ||
           error.response?.status === 500 ||
           error.response?.status === 401

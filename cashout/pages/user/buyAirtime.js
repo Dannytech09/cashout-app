@@ -122,7 +122,13 @@ function BuyAirtime() {
           // console.log(response)
         }
       } catch (error) {
-        if (error.response.data.error) {
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/login");
+        } else if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
           setPhoneErr(true);

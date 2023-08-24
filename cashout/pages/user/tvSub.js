@@ -220,7 +220,13 @@ function TvSub() {
         }
       } catch (error) {
         // console.log(error)
-        if (error.response?.data?.error) {
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/login");
+        } else if (error.response?.data?.error) {
           setUnauthorised(true);
         } else if (error.response?.data?.code === "006") {
           setInsufficientBal(true);

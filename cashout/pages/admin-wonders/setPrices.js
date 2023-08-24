@@ -4,11 +4,12 @@ import API_BASE_URL from "@/apiConfig";
 import { getToken } from "@/Utils/Common";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 import Loader from "@/components/utils/Loader";
+import withAuth from "@/hocs/withAuth";
 
 const ADMIN_BASE_URL = `${API_BASE_URL}/admin`;
 
 // A
-export default function PatchForm() {
+function PatchFormUpdate() {
   const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ name: "", amount: "" }]);
   const [loading, setLoading] = useState(false);
@@ -151,3 +152,5 @@ export default function PatchForm() {
     </form>
   );
 }
+
+export default withAuth(PatchFormUpdate);
