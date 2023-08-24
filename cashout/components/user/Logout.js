@@ -2,8 +2,8 @@ import React from "react";
 import { useRouter } from "next/router";
 import AuthService from "@/services/auth.Service";
 import LogoutIcon from "../heroIcons/LogoutIcon";
-import Theme from "../homePage/Theme";
 import { ThemeProvider } from "next-themes";
+import Theme from "../homePage/Theme";
 
 export default function Logout() {
   const router = useRouter();
@@ -19,8 +19,8 @@ export default function Logout() {
   return (
     <div className="flex">
       {/* <div> */}
-      <ThemeProvider defaultTheme="light" attribute="class">
-        <Theme />
+      <ThemeProvider>
+        <Theme/>
       </ThemeProvider>
       <div
         onClick={logoutHandler}

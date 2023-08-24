@@ -41,6 +41,7 @@ const Login = () => {
       if (response?.data?.token && typeof window !== "undefined") {
         router.push("/user/dashboard");
       }
+      setLoading(false);
     } catch (error) {
       // console.log(error)
       // invalid credentials

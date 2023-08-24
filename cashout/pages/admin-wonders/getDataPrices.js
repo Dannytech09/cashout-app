@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 import withAuth from "../../hocs/withAuth";
 import CurrentPrices from "@/components/admin/GetDataPrices";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
+import { useRouter } from "next/router";
 
 function GetCurrentDataPrices() {
+  const router = useRouter();
   const [dataPrices, setDataPrices] = useState([]);
   const [error, setError] = useState(null);
 
@@ -17,7 +19,15 @@ function GetCurrentDataPrices() {
           setDataPrices(newData);
         }
       } catch (error) {
-        setError(error);
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/admin-wonders/login");
+        } else {
+          setError(error);
+        }
         // console.log(error);
       }
     };
@@ -28,7 +38,7 @@ function GetCurrentDataPrices() {
   if (error) {
     return (
       <div>
-      <p>An error occurred: {error.message}, http client or server error</p>
+        <p>An error occurred: {error.message}, http client or server error</p>
       </div>
     );
   }
@@ -36,8 +46,8 @@ function GetCurrentDataPrices() {
   return (
     <>
       <div className="fixed top-0 z-40">
-          <SidebarAdmin/>
-        </div>
+        <SidebarAdmin />
+      </div>
       <CurrentPrices dataPrices={dataPrices} />
     </>
   );

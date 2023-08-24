@@ -50,6 +50,12 @@ function UpdateUser() {
           router.push("/user/dashboard");
         } catch (error) {
           if (
+            error.response.data.error === "Invalid token." ||
+            error.response.data.error === "Token expired."
+          ) {
+            sessionStorage.clear();
+            router.push("/login");
+          } else if (
             error.response?.status === 401 ||
             error.response?.status === 500
           ) {

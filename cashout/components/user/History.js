@@ -1,5 +1,5 @@
 import React from "react";
-import SubFooter from "./Footer";
+import Footer from "./Footer";
 import Sidebar from "./Sidebar";
 import To12HourFormat from "../utils/Time";
 import Loader from "../utils/Loader";
@@ -115,7 +115,7 @@ function MyPurchases({ myPurchases, checkTransaction, loading }) {
         </div>
       </div>
       <div className="fixed bottom-0 left-0 right-0">
-        <SubFooter />
+        <Footer />
       </div>
     </div>
   );

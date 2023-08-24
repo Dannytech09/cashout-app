@@ -13,6 +13,7 @@ import Loader from "@/components/utils/Loader";
 import withAuth from "@/hocs/withAuth";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
+let name;
 
 function BuyDataS() {
   const router = useRouter();
@@ -72,7 +73,8 @@ function BuyDataS() {
       setAmount("");
       setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
     }
-    // console.log("Selected Network:", selectedNetwork);
+    name = selectedNetwork.variation_string;
+    // console.log("Selected Network:", variation);
     // console.log("Data Vols:", dataVols);
   };
 
@@ -338,7 +340,7 @@ function BuyDataS() {
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
-        network={network}
+        network={name}
         // dataVol={dataVol}
         // value={buyData}
       />
