@@ -40,7 +40,7 @@ const signIn = async (email, password) => {
       password,
     })
     .then(async (response) => {
-      // console.log(response);
+      // console.log(response?.data);
       if (
         response?.data?.user.isAdmin === false &&
         typeof window !== "undefined"

@@ -143,7 +143,7 @@ function DirectCoupon() {
           sessionStorage.clear();
           router.push("/login");
         } else {
-        alert(`Something went wrong! If problem persist check your network`);
+          alert(`Something went wrong! If problem persist check your network`);
         }
       }
       setLoading(false);
@@ -178,7 +178,9 @@ function DirectCoupon() {
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black bg-violet-400 border-slate-200 rounded-2xl text-xl p-5">MTN DIRECT COUPON</h3>
+            <h3 className="text-black bg-violet-400 border-slate-200 rounded-2xl text-xl p-5">
+              MTN DIRECT COUPON
+            </h3>
             <div className="text-xs p-0 m-2">
               <p>Dial *323*4# or *323*1# to check balance</p>
               <p>You might be unable to check balance atimes due to network</p>
