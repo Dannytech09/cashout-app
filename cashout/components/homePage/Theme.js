@@ -23,7 +23,7 @@ export default function Theme() {
             viewBox="0 0 24 24"
             fill="currentColor"
             stroke="currentColor"
-            className="w-4 h-4 text-red-500 dark:text-yellow-500"
+            className="w-4 h-4 text-red-500 dark:text-yellow-500 hover:scale-110"
           >
             {theme === "dark" ? (
               <path

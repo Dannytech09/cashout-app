@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false);
 
   // show password logic
   const showPassword = () => {
@@ -35,24 +36,55 @@ const Login = () => {
   const router = useRouter();
 
   const submitHandler = async ({ email, password }) => {
+    setIsDisabled(true);
     setLoading(true);
     try {
       const response = await AuthService.signIn(email, password);
-      if (response?.data?.token && typeof window !== "undefined") {
+      // console.log(response)
+      if (
+        response?.data.user.blocked === true &&
+        typeof window !== "undefined"
+      ) {
+        sessionStorage.clear();
+        alert(
+          "You have been restricted from this page. Kindly contact admin if you feel it was done unduly !"
+        );
+        router.push("/login");
+        setIsDisabled(true);
+      } else if (
+        response?.data?.token &&
+        response?.data.user.blocked === false &&
+        typeof window !== "undefined"
+      ) {
+        setLoading(false);
+        setIsDisabled(true);
         router.push("/user/dashboard");
       }
-      setLoading(false);
     } catch (error) {
-      // console.log(error)
-      // invalid credentials
-      if (error.response.data.error === "Invalid credentials") {
+      // console.error(error);
+      if (error.response?.data.error === "Invalid credentials") {
         setMessage("Invalid email or password !");
-      } else if (error.response.data.message === "Request Exceeded, please try again later") {
+        setIsDisabled(false);
+      } else if (
+        error.response?.data.message ===
+        "Request Exceeded, please try again later"
+      ) {
         alert("Request Exceeded, please try again later");
-        // sessionStorage.clear();
-        // router.push("/login");
+        sessionStorage.clear();
+        router.push("/login");
+        setIsDisabled(false);
+      } else if (
+        error.message.includes("Network Error") ||
+        error.code === "ERR_NETWORK" ||
+        error.message === "timeout exceeded"
+      ) {
+        alert(
+          "Slow Network detected. Check your network and try again later !"
+        );
+        setIsDisabled(false);
       } else {
         setMessage("Something went wrong !");
+        setIsDisabled(false);
       }
     }
     setLoading(false);
@@ -127,11 +159,11 @@ const Login = () => {
             {errors.password?.message}
           </p>
         )}
-
         <button
+          disabled={isDisabled}
           type="submit"
-          className="relative hover:after:translate-x-full after:absolute after:top-0 after:right-full after:bg-blue-600 after:z-10 after:w-full after:h-full overflow-hidden after:duration-300 hover:text-slate-900
-     duration-300 w-full max-w-[39ch] border border-sky-500 border-solid uppercase py-2 px-2 text-cyan-900"
+          className={`relative hover:after:translate-x-full after:absolute after:top-0 after:right-full after:bg-blue-600 after:z-10 after:w-full after:h-full overflow-hidden after:duration-300 hover:text-slate-900
+     duration-300 w-full max-w-[39ch] border border-sky-500 border-solid uppercase py-2 px-2 text-cyan-900`}
         >
           <h2 className="relative z-30"> Submit</h2>
         </button>

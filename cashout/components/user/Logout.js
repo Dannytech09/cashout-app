@@ -18,13 +18,14 @@ export default function Logout() {
 
   return (
     <div className="flex">
-      {/* <div> */}
+      <div className="mr-0 border-slate-200 bg-white hover:bg-blue-500">
       <ThemeProvider>
         <Theme/>
       </ThemeProvider>
+      </div>
       <div
         onClick={logoutHandler}
-        className="fixed-right sm:mr-7 md:mr-7 z-50 border-red-2 p-2 mr-6 h-10 w-10 bg-red-500"
+        className="fixed-right sm:mr-6 md:mr-6 z-50 border-red-2 p-2 mr h-10 w-10 bg-red-500"
       >
         <LogoutIcon />
       </div>

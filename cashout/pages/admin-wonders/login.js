@@ -30,19 +30,41 @@ export default function Login() {
       if (email && password) {
         await AuthService.signInAdmin(email, password)
           .then((response) => {
-            if (response?.data.token && response?.data?.user.isAdmin === true) {
+            if (
+              response?.data.user.blocked === true &&
+              typeof window !== "undefined"
+            ) {
+              sessionStorage.clear();
+              alert(
+                "You have been restricted from this page. Kindly contact admin if you feel it was done unduly !"
+              );
+              router.push("/login");
+            } else if (
+              response?.data.token &&
+              response?.data?.user.isAdmin === true
+            ) {
               router.push("/admin-wonders/dashboard");
             } else {
               router.push("/admin-wonders/login");
             }
           })
           .catch((error) => {
+            // console.log(error.response.data.error);
             if (
               error.response?.status === 401 ||
               error.response?.status === 500
             ) {
               alert("Invalid Email and Password !");
               router.reload("/admin-wonders/login");
+            } else if (
+              error.response?.data.error ===
+              "You have been restricted from this page, kindly contact the admin"
+            ) {
+              alert(
+                "You have been restricted from this page, kindly contact the admin"
+              );
+              sessionStorage.clear();
+              router.push("/login");
             } else {
               alert(
                 "Something went Wrong! If problem persist please check your network.."

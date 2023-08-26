@@ -173,7 +173,7 @@ function BuyData() {
         }
       } catch (error) {
         // console.log(error.response.data)
-         if (
+        if (
           error.response.data.error === "Invalid token." ||
           error.response.data.error === "Token expired."
         ) {
@@ -231,6 +231,13 @@ function BuyData() {
         <div className="p-10">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Data</h3>
+            <div className="border rounded-2xl border-dotted bg-yellow-300 m-2 p-2 w-60 text-xs mx-auto">
+              <div>
+                <p className="mb-2">Network Needed is not on the list ?</p>
+                <p>Checkout Data2. Thank You !</p>
+              </div>
+            </div>
+
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>

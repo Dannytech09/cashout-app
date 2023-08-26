@@ -230,7 +230,13 @@ function BuyDataS() {
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl p-5">Buy Data</h3>
+            <h3 className="text-black text-xl p-5">Buy Data 2</h3>
+            <div className="border rounded-2xl border-dotted bg-green-300 m-2 p-2 w-60 text-xs mx-auto">
+              <div className="">
+                <p className="mb-2">Network Needed is not on the list ?</p>
+                <p>Checkout Data. Thank You !</p>
+              </div>
+            </div>
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>

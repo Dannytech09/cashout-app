@@ -20,7 +20,7 @@ export default function Header() {
         // console.log(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         if (
           error.response.data.error === "Invalid token." ||
           error.response.data.error === "Token expired."
@@ -30,6 +30,15 @@ export default function Header() {
           router.push("/login");
         } else if (error.response.data.message === "Request Exceeded, please try again later") {
           alert("Request Exceeded, please try again later");
+          sessionStorage.clear();
+          router.push("/login");
+        } else if (
+          error.response.data.error ===
+          "You have been restricted from this page, kindly contact the admin"
+        ) {
+          alert(
+            "You have been restricted from this page, kindly contact the admin"
+          );
           sessionStorage.clear();
           router.push("/login");
         } else {

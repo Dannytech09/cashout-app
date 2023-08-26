@@ -32,8 +32,10 @@ export async function directCoupon(network_id, plan_code, mobile) {
     );
     return response.data;
   } catch (error) {
-    console.log(error);
-    if (error.response.data.code === "001") {
+    // console.log(error);
+    if (error.response.data.code === "017") {
+      return error.response.data;
+    } else if (error.response.data.code === "001") {
       return error.response.data;
     } else if (error.response.data.code === "013") {
       return error.response.data;
