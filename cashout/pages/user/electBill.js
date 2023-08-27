@@ -103,7 +103,7 @@ function ElectBill() {
           setIsEditable(false);
           setPurchaseBtn(true);
           setLoading(false);
-            // console.log(response);
+          // console.log(response);
         }
       } catch (error) {
         if (error.response?.data?.error) {
@@ -121,8 +121,8 @@ function ElectBill() {
         }
         // console.log(error);
       }
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const handleFormValidation = useCallback(() => {
@@ -192,10 +192,11 @@ function ElectBill() {
         if (response.data.code === "000") {
           alert(response.data.message);
           setLoading(false);
-            router.reload();
-            // console.log(response);
+          router.reload();
+          // console.log(response);
         }
       } catch (error) {
+        console.log(error)
         if (error.response.data.code === "009") {
           setInvalidAmount(true);
         } else if (error.response?.data?.error) {
@@ -208,19 +209,18 @@ function ElectBill() {
           alert("Something went wrong !");
         }
         // console.log(error);
-        // setLoading(false);
       }
-
+      setLoading(false);
       closeModal();
     }
   };
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-    {loading && <Loader />}
-   <div>
-   <Sidebar />
-   </div>
+      {loading && <Loader />}
+      <div>
+        <Sidebar />
+      </div>
       <form
         className={`${styles.form} bg-slate-500 h-full md:h-screen xl:h-screen`}
         onSubmit={handleFormSubmit}
@@ -262,7 +262,7 @@ function ElectBill() {
               {invalidAmount && (
                 <div className={`${styles.errorMessage} text-center`}>
                   {" "}
-                  Amount cannot be below/above 500 and 10,000 respectively !
+                  Amount cannot be below/above 1000 and 10,000 respectively !
                 </div>
               )}
             </div>
@@ -393,4 +393,4 @@ function ElectBill() {
   );
 }
 
-export default withAuth(ElectBill)
+export default withAuth(ElectBill);

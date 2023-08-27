@@ -47,7 +47,7 @@ function BuyData() {
         return;
       } catch (error) {
         // console.error(error);
-        alert("Not authorised or server error");
+        alert("Network or Server error");
       }
     }
     fetchData();
