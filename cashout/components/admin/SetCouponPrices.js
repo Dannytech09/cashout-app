@@ -6,6 +6,7 @@ import { SetPricesHandler } from "@/pages/api/admin/setCouponPrices";
 
 // 1
 export default function SetCouponPrices() {
+  const [accountType, setAccountType] = useState("");
   const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ plan_code: "", name: "", amount: "" }]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ export default function SetCouponPrices() {
     setLoading(true);
 
     try {
-      const response = await SetPricesHandler(variation_string, data);
+      const response = await SetPricesHandler(accountType, variation_string, data);
       // console.log(response.message);
       if (response.success === true || response.status === 204) {
         alert("Data updated successfully");
@@ -31,10 +32,16 @@ export default function SetCouponPrices() {
     setLoading(false);
   };
 
+  const handleAccountTypeChange = (e) => {
+    const inputValue = e.target.value;
+    setAccountType(inputValue);
+    console.log(inputValue);
+  };
+
   const handleNetworkChange = (e) => {
     const inputValue = e.target.value;
     setVariation_string(inputValue);
-    // console.log(inputValue);
+    console.log(inputValue);
   };
 
   const handleDataChange = (event, index) => {
@@ -49,7 +56,7 @@ export default function SetCouponPrices() {
     }
 
     setData(newData);
-    // console.log(newData);
+    console.log(newData);
   };
 
   const handleAddData = () => {
@@ -73,6 +80,21 @@ export default function SetCouponPrices() {
         <h1 className="m-5 p-2 border border-green-400 bg-green-400 text-white ">
           Update Coupon Prices - 1
         </h1>
+        <label htmlFor="network" className="block text-white font-bold mb-2">
+          Account Type:
+        </label>
+        <select
+          id="accountType"
+          name="accountType"
+          value={accountType}
+          onChange={handleAccountTypeChange}
+          className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        >
+          <option value="">Select Account</option>
+          <option value="apiUser">Api User</option>
+          <option value="partner">Partner</option>
+          <option value="corporate">Corporate</option>
+        </select>
         <label htmlFor="network" className="block text-white font-bold mb-2">
           Network: e.g., MTN Direct Coupon(1 month)
         </label>

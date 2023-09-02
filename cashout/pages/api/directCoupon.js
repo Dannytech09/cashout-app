@@ -1,13 +1,17 @@
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
 import authHeader from "@/services/auth-Header";
-import { getUser } from "@/Utils/Common";
+import { getUser } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
+let user;
+let id;
 
 export async function getCoupon() {
+  user = getUser();
+  id = user._id;
   try {
-    const response = await axios.get(`${BASE_URL}/directCoupon`);
+    const response = await axios.get(`${BASE_URL}/${id}/directCoupon`);
     return response.data;
   } catch (error) {
     if (error.response.data.code === "005") {
@@ -18,8 +22,8 @@ export async function getCoupon() {
 }
 
 export async function directCoupon(network_id, plan_code, mobile) {
-  const user = getUser();
-  const id = user._id;
+  user = getUser();
+  id = user._id;
   try {
     const response = await axios.post(
       `${BASE_URL}/${id}/directCoupon`,

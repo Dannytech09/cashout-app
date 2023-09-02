@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { getToken } from "../../Utils/Common";
+import { getToken } from "../../Utils/authCookies";
 import Link from "next/link";
 import React, { useState } from "react";
 import withAuth from "../../hocs/withAuth";
@@ -50,7 +50,7 @@ function DeleteUser() {
   return (
     <div>
       <div className="fixed top-0">
-        <SidebarAdmin/>
+        <SidebarAdmin />
       </div>
       <form
         onSubmit={handleSubmit(submitHandler)}

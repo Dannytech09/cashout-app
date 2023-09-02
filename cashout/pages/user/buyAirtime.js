@@ -8,9 +8,9 @@ import styles from "../../styles/BuyAirtime.module.css";
 import Sidebar from "@/components/user/Sidebar";
 import Footer from "@/components/user/SubMain";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
-import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
 import withAuth from "@/hocs/withAuth";
+import API_BASE_URL from "@/apiConfig";
 
 const BASE_URL = `${API_BASE_URL}/buyAirtime`;
 

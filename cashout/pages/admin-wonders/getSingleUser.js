@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import User from "../../components/admin/User";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { getToken } from "../../Utils/Common";
+import { getToken } from "../../Utils/authCookies";
 import Link from "next/link";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
@@ -65,7 +65,7 @@ function GetSingleUser() {
     <div>
       {/* {loading ? <p>Loading...</p> : null} */}
       <div className="fixed top-0">
-        <SidebarAdmin/>
+        <SidebarAdmin />
       </div>
       <form
         onSubmit={handleSubmit(submitHandler)}

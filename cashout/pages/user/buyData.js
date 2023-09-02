@@ -11,6 +11,7 @@ import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
 import withAuth from "@/hocs/withAuth";
+import { getUser } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
 
@@ -38,8 +39,10 @@ function BuyData() {
 
   useEffect(() => {
     async function fetchData() {
+      const user = getUser();
+      const userId = user._id;
       try {
-        const response = await fetch(`${BASE_URL}/getData`);
+        const response = await fetch(`${BASE_URL}/${userId}/getData`);
         const res = await response.json();
         // console.log(res.networkData);
         setNetworkData(res.networkData);
@@ -174,6 +177,11 @@ function BuyData() {
       } catch (error) {
         // console.log(error.response.data)
         if (
+          error.response.data.error ===
+          "Right-hand side of 'instanceof' is not an object"
+        ) {
+          alert("Please fill all forms correctly !");
+        } else if (
           error.response.data.error === "Invalid token." ||
           error.response.data.error === "Token expired."
         ) {

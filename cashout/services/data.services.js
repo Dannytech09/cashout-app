@@ -1,7 +1,7 @@
 import axios from "axios";
 import authHeader from "./auth-Header";
 import API_BASE_URL from "@/apiConfig";
-import { getUser } from "@/Utils/Common";
+import { getUser } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/pay`;
 const A_BASE_URL = `${API_BASE_URL}/vend`;
@@ -54,7 +54,7 @@ const DataServices = {
   setDataPrices,
   getAllPurchases,
   purchaseData,
-  getMyPurchases
+  getMyPurchases,
 };
 
 export default DataServices;

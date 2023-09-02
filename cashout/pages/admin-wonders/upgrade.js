@@ -2,7 +2,7 @@ import { useState } from "react";
 import User from "../../components/admin/User";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { getToken } from "../../Utils/Common";
+import { getToken } from "../../Utils/authCookies";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
@@ -17,19 +17,19 @@ function Upgrade() {
     formState: { errors }, // formState
   } = useForm({
     defaultValues: {
-      id: "",
+      email: "",
       accountType: "",
     },
     // mode: "onchange"
   });
 
-  const submitHandler = ({ id, accountType }) => {
+  const submitHandler = ({ email, accountType }) => {
     {
-      const url = `${API_BASE_URL}/api/v1/users/${id}`;
+      const url = `${API_BASE_URL}/api/v1/users`;
       axios
         .put(
           url,
-          { accountType },
+          { email, accountType },
           {
             headers: {
               Authorization: "Bearer " + getToken(),
@@ -39,7 +39,7 @@ function Upgrade() {
         )
         .then((res) => {
           if (res.data.data === null) {
-            alert("Invalid User ID");
+            alert("Invalid Email");
           }
           alert("User Upgraded Successfully !");
           setUser(res.data.data);
@@ -70,24 +70,24 @@ function Upgrade() {
       >
         <h1 className="sm:text-3xl mb-2 font-sans text-2xl">Upgrade User</h1>
         <input
-          {...register("id", {
-            required: "Please enter user's ID!",
-            pattern: {
-              value: /^[a-z0-9]+$/i,
-              message: "Alphanumeric only",
-            },
+          {...register("email", {
+            required: "Please enter user's email !",
+            // pattern: {
+            //   value: /^[a-z0-9]+$/i,
+            //   message: "Alphanumeric only",
+            // },
           })}
           autoComplete="on"
           className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
-          placeholder="Please enter user's ID !"
-          aria-invalid={errors.id ? "true" : "false"}
+          placeholder="Please enter user's email !"
+          aria-invalid={errors.email ? "true" : "false"}
         />
-        {errors.id && (
+        {errors.email && (
           <p
             className="w-full max-w-[39ch] text-rose-300 mt-[-2ch]"
             role="alert"
           >
-            {errors.id?.message}
+            {errors.email?.message}
           </p>
         )}
         <select
@@ -106,6 +106,11 @@ function Upgrade() {
           //   value={partner}
           >
             partner
+          </option>
+          <option
+          //   value={partner}
+          >
+            apiUser
           </option>
         </select>
         {errors.accountType && (

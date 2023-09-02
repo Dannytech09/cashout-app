@@ -6,6 +6,7 @@ import { SetDataPricesHandler } from "@/pages/api/admin/setDataPrices";
 
 // SS
 export default function UpdatePrices() {
+  const [accountType, setAccountType] = useState("");
   const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ name: "", amount: "" }]);
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ export default function UpdatePrices() {
     setLoading(true);
 
     try {
-      const response = await SetDataPricesHandler(variation_string, data);
+      const response = await SetDataPricesHandler(accountType, variation_string, data);
 
       // console.log(response)
       if (response.success === true || response.status === 204) {
@@ -29,6 +30,12 @@ export default function UpdatePrices() {
       }
     }
     setLoading(false);
+  };
+
+  const handleAccountTypeChange = (e) => {
+    const inputValue = e.target.value;
+    setAccountType(inputValue);
+    // console.log(inputValue);
   };
 
   const handleNetworkChange = (e) => {
@@ -69,6 +76,21 @@ export default function UpdatePrices() {
           Update Data Prices - SS
         </h1>
         <label htmlFor="network" className="block text-white font-bold mb-2">
+          Account Type:
+        </label>
+        <select
+          id="accountType"
+          name="accountType"
+          value={accountType}
+          onChange={handleAccountTypeChange}
+          className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        >
+          <option value="">Select Account</option>
+          <option value="apiUser">Api User</option>
+          <option value="partner">Partner</option>
+          <option value="corporate">Corporate</option>
+        </select>
+        <label htmlFor="network" className="block text-white font-bold mb-2 mt-3">
           Network:
         </label>
         <select

@@ -11,6 +11,7 @@ import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
 import withAuth from "@/hocs/withAuth";
+import { getUser } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
 let name;
@@ -39,8 +40,10 @@ function BuyDataS() {
 
   useEffect(() => {
     async function fetchData() {
+      const user = getUser();
+      const id = user._id;
       try {
-        const response = await fetch(`${BASE_URL}/getDatas`);
+        const response = await fetch(`${BASE_URL}/${id}/getDatas`);
         const res = await response.json();
         // console.log(res.networkDataS);
         // setNetworkData(res.networkData);             // S

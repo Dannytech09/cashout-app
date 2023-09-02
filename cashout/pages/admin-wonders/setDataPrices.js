@@ -1,7 +1,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import API_BASE_URL from "@/apiConfig";
-import { getToken } from "@/Utils/Common";
+import { getToken } from "@/Utils/authCookies";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 import withAuth from "@/hocs/withAuth";
 

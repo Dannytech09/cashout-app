@@ -1,7 +1,7 @@
 import { useState } from "react";
 import classNames from "classnames";
 import API_BASE_URL from "@/apiConfig";
-import { getToken } from "@/Utils/Common";
+import { getToken } from "@/Utils/authCookies";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 import Loader from "@/components/utils/Loader";
 import withAuth from "@/hocs/withAuth";
@@ -10,6 +10,7 @@ const ADMIN_BASE_URL = `${API_BASE_URL}/admin`;
 
 // A
 function PatchFormUpdate() {
+  const [accountType, setAccountType] = useState("");
   const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ name: "", amount: "" }]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +26,7 @@ function PatchFormUpdate() {
           Authorization: "Bearer " + getToken(),
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ variation_string, data }),
+        body: JSON.stringify({ accountType, variation_string, data }),
       });
 
       // console.log(response)
@@ -37,6 +38,12 @@ function PatchFormUpdate() {
       alert(`Error updating data: ${error.message}`);
     }
     setLoading(false);
+  };
+
+  const handleAccountTypeChange = (e) => {
+    const inputValue = e.target.value;
+    setAccountType(inputValue);
+    // console.log(inputValue);
   };
 
   const handleNetworkChange = (e) => {
@@ -77,6 +84,24 @@ function PatchFormUpdate() {
           Update Data Prices - A
         </h1>
         <label htmlFor="network" className="block text-white font-bold mb-2">
+          Account Type:
+        </label>
+        <select
+          id="accountType"
+          name="accountType"
+          value={accountType}
+          onChange={handleAccountTypeChange}
+          className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        >
+          <option value="">Select Account</option>
+          <option value="apiUser">Api User</option>
+          <option value="partner">Partner</option>
+          <option value="corporate">Corporate</option>
+        </select>
+        <label
+          htmlFor="network"
+          className="block text-white font-bold mb-2 mt-3"
+        >
           Network:
         </label>
         <select

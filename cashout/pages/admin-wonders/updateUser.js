@@ -2,7 +2,7 @@ import { useState } from "react";
 import User from "../../components/admin/User";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { getToken } from "../../Utils/Common";
+import { getToken } from "../../Utils/authCookies";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
@@ -81,7 +81,7 @@ function UpdateUser() {
   return (
     <div>
       <div className="fixed top-0">
-        <SidebarAdmin/>
+        <SidebarAdmin />
       </div>
       {loading ? <p>Loading...</p> : null}
       <form

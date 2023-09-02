@@ -222,4 +222,4 @@ const logoutHandler = async () => {
   );
 };
 
-export default withAuth(Sidebar);
+export default Sidebar;

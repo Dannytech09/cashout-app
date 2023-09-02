@@ -1,57 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import AuthService from "@/services/auth.Service";
 import Greetings from "../utils/Greetings";
 import styles from "../../styles/dashboard.module.css";
 import SmileIcon from "../heroIcons/SmileIcon";
 import Link from "next/link";
 import MotionText from "./MotionText";
-import Logout from "./Logout";
+import {Logout} from "./Logout";
 
-export default function Header() {
-  const router = useRouter();
-  const [user, setUser] = useState();
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    AuthService.getLoggedInUser()
-      .then((response) => {
-        setUser(response.data.data);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        // console.log(error);
-        if (
-          error.response.data.error === "Invalid token." ||
-          error.response.data.error === "Token expired."
-        ) {
-          sessionStorage.clear();
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          router.push("/login");
-        } else if (error.response.data.message === "Request Exceeded, please try again later") {
-          alert("Request Exceeded, please try again later");
-          sessionStorage.clear();
-          router.push("/login");
-        } else if (
-          error.response.data.error ===
-          "You have been restricted from this page, kindly contact the admin"
-        ) {
-          alert(
-            "You have been restricted from this page, kindly contact the admin"
-          );
-          sessionStorage.clear();
-          router.push("/login");
-        } else {
-          setError(error);
-        }
-      });
-  }, [router]);
-
-  // useEffect(() => {
-  //   const user = JSON.parse(sessionStorage.getItem("user"));
-  //   setUser(user);
-  //   console.log(user)
-  // }, []);
+export default function Header({ user }) {
 
   return (
     // <div>
@@ -63,7 +19,7 @@ export default function Header() {
               <h2 className="text-sm sm:text-xs font-bold">
                 &#8358; {user.bal.$numberDecimal}
               </h2>
-              {error && <p>Error fetching balance</p>}
+              {/* {error && <p>Error fetching balance</p>} */}
             </div>
           )}
           <Logout />
@@ -111,3 +67,46 @@ export default function Header() {
     // </div>
   );
 }
+
+// useEffect(() => {
+//   AuthService.getLoggedInUser()
+//     .then((response) => {
+//       setUser(response.data.data);
+//       // console.log(response.data);
+//     })
+//     .catch((error) => {
+//       // console.log(error);
+//       if (
+//         error.response.data.error === "Invalid token." ||
+//         error.response.data.error === "Token expired."
+//       ) {
+//         sessionStorage.clear();
+//         // eslint-disable-next-line react-hooks/exhaustive-deps
+//         router.push("/login");
+//       } else if (
+//         error.response.data.message ===
+//         "Request Exceeded, please try again later"
+//       ) {
+//         alert("Request Exceeded, please try again later");
+//         sessionStorage.clear();
+//         router.push("/login");
+//       } else if (
+//         error.response.data.error ===
+//         "You have been restricted from this page, kindly contact the admin"
+//       ) {
+//         alert(
+//           "You have been restricted from this page, kindly contact the admin"
+//         );
+//         sessionStorage.clear();
+//         router.push("/login");
+//       } else {
+//         setError(error);
+//       }
+//     });
+// }, [router]);
+
+// useEffect(() => {
+//   const user = JSON.parse(sessionStorage.getItem("user"));
+//   setUser(user);
+//   console.log(user)
+// }, [])

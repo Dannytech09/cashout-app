@@ -1,5 +1,5 @@
 export const getUser = () => {
-  if(typeof window !== "undefined") {
+  if (typeof window !== "undefined") {
     return JSON.parse(sessionStorage.getItem("user"));
   }
 };

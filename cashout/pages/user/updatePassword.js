@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { getToken } from "../../Utils/Common";
+import { getToken } from "../../Utils/authCookies";
 import { useForm } from "react-hook-form";
 import withAuth from "../../hocs/withAuth";
 import Sidebar from "../../components/user/Sidebar";
@@ -29,47 +29,46 @@ function UpdateUser() {
   const submitHandler = async ({ currentPassword, newPassword }) => {
     try {
       setLoading(true);
-      const res = await axios
-        .put(
-          API_URL,
-          {
-            currentPassword: currentPassword,
-            newPassword: newPassword,
+      const res = await axios.put(
+        API_URL,
+        {
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + getToken(),
+            "Content-Type": "application/json; charset=utf8",
           },
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-              "Content-Type": "application/json; charset=utf8",
-            },
-          }
-        )
-          if (res.data.data === null) {
-            alert("Invalid User ID");
-          }
-          alert("Password Updated Successfully !");
-          router.push("/user/dashboard");
-        } catch (error) {
-          if (
-            error.response.data.error === "Invalid token." ||
-            error.response.data.error === "Token expired."
-          ) {
-            sessionStorage.clear();
-            router.push("/login");
-          } else if (
-            error.response?.status === 401 ||
-            error.response?.status === 500
-          ) {
-            alert(error.response.data.error);
-          } else if (error.response?.status === 400) {
-            alert("Duplicate field entered");
-          }
-          setLoading(false);
+        }
+      );
+      if (res.data.data === null) {
+        alert("Invalid User ID");
+      }
+      alert("Password Updated Successfully !");
+      router.push("/user/dashboard");
+    } catch (error) {
+      if (
+        error.response.data.error === "Invalid token." ||
+        error.response.data.error === "Token expired."
+      ) {
+        sessionStorage.clear();
+        router.push("/login");
+      } else if (
+        error.response?.status === 401 ||
+        error.response?.status === 500
+      ) {
+        alert(error.response.data.error);
+      } else if (error.response?.status === 400) {
+        alert("Duplicate field entered");
+      }
+      setLoading(false);
     }
   };
 
   return (
     <div>
-       {loading && <Loader/> }
+      {loading && <Loader />}
       <div className="flex absolute mt-[-2ch]">
         <Sidebar />
       </div>

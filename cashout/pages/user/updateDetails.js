@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "../../components/user/Sidebar";
 import User from "../../components/user/User";
-import { getToken } from "../../Utils/Common";
+import { getToken } from "../../Utils/authCookies";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import withAuth from "../../hocs/withAuth";
@@ -30,31 +30,29 @@ function UpdateUser() {
   });
 
   const submitHandler = async ({ firstName, lastName, phoneNumber }) => {
-
     try {
       setLoading(true);
-      const res = await axios
-        .put(
-          API_URL,
-          {
-            firstName: firstName,
-            lastName: lastName,
-            phoneNumber: phoneNumber,
+      const res = await axios.put(
+        API_URL,
+        {
+          firstName: firstName,
+          lastName: lastName,
+          phoneNumber: phoneNumber,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + getToken(),
+            "Content-Type": "application/json; charset=utf8",
           },
-          {
-            headers: {
-              Authorization: "Bearer " + getToken(),
-              "Content-Type": "application/json; charset=utf8",
-            },
-          }
-        )
-        if (res.data.data === null) {
-          alert("Invalid User ID");
         }
-        alert("User Updated Successfully !");
-        setUser(res.data.data);
-        // console.log(res.data.data)
-        setLoading(false);
+      );
+      if (res.data.data === null) {
+        alert("Invalid User ID");
+      }
+      alert("User Updated Successfully !");
+      setUser(res.data.data);
+      // console.log(res.data.data)
+      setLoading(false);
     } catch (error) {
       if (
         error.response.data.error === "Invalid token." ||
@@ -74,11 +72,11 @@ function UpdateUser() {
       }
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div>
-      {loading && <Loader/> }
+      {loading && <Loader />}
       <div className="flex absolute mt-[-2ch]">
         <Sidebar />
       </div>
