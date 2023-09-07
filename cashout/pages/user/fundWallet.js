@@ -1,10 +1,11 @@
 import React from "react";
-import withAuth from "../../hocs/withAuth";
 import Link from "next/link";
 import Sidebar from "@/components/user/Sidebar";
+import { authGuard } from "@/Utils/authGuard";
 
 // This page is being routed to different pages
 function FundWallet() {
+  authGuard();
   return (
     <div className="bg-gray-300 h-screen">
       <Sidebar />
@@ -31,4 +32,4 @@ function FundWallet() {
   );
 }
 
-export default withAuth(FundWallet);
+export default FundWallet;

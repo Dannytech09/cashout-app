@@ -4,7 +4,8 @@ import LogoutIcon from "../heroIcons/LogoutIcon";
 import { ThemeProvider } from "next-themes";
 import Theme from "../homePage/Theme";
 import { LogoutHandler } from "@/pages/api/user/logout";
-import nookies from "nookies";
+import { expireSessionAndRedirect } from "@/Utils/authCookies";
+import { removeUserSession } from "@/Utils/Common";
 
 export const Logout = ({ ctx }) => {
   const router = useRouter();
@@ -16,13 +17,9 @@ export const Logout = ({ ctx }) => {
         const message = response.error;
         alert(message);
       } else if (response.success === true) {
-        const pathsToDelete = ["/", "/user"];
-
-        for (const path of pathsToDelete) {
-          // Delete the token cookie for each path
-          nookies.destroy(ctx, "token", { path });
-        }
-        router.push("/login");
+        localStorage.clear("buttonClicked");
+        removeUserSession();
+        expireSessionAndRedirect(ctx, router);
       }
     } catch (error) {
       if (error) {

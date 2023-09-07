@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState } from "react";
 import classNames from "classnames";
 import CollapseBtn from "../heroIcons/CollapseBtn";
 import Logo from "../heroIcons/Logo";
@@ -11,10 +11,11 @@ import LogoutIcon from "../heroIcons/LogoutIcon";
 import ProfileIcon from "../heroIcons/ProfileIcon";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import AuthService from "../../services/auth.Service";
-import withAuth from "../../hocs/withAuth";
 import UserPlusIcon from "../heroIcons/UserPlusIcon";
 import LockPassIcon from "../heroIcons/LockPassIcon";
+import { LogoutHandler } from "@/pages/api/user/logout";
+import { expireSessionAndRedirect } from "@/Utils/authCookies";
+import { removeUserSession } from "@/Utils/Common";
 
 // Using array for nav items
 const menuItems = [
@@ -73,9 +74,8 @@ const menuItems = [
 ];
 
 const Sidebar = () => {
-  const [toggle, setToggle] = useState(false);
-
   const router = useRouter();
+  const [toggle, setToggle] = useState(false);
 
   const wrapperClasses = classNames(
     "z-30 h-screen text-slate-800 mt-10 px-4 pt-3 flex absolute flex-col",
@@ -87,13 +87,23 @@ const Sidebar = () => {
     }
   );
 
-const logoutHandler = async () => {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem("buttonClicked");
-  }
-  await AuthService.logout();
-  router.push("/login");
-};
+  const logoutHandler = async (ctx) => {
+    try {
+      const response = await LogoutHandler();
+      if (response.error) {
+        const message = response.error;
+        alert(message);
+      } else if (response.success === true) {
+        localStorage.clear("buttonClicked");
+        removeUserSession();
+        expireSessionAndRedirect(ctx, router);
+      }
+    } catch (error) {
+      // console.log(error);
+        throw new Error(`An error occured ${error}`);
+    }
+  };
+
   const handleSideBarToggle = () => {
     setToggle(!toggle);
   };
@@ -202,7 +212,6 @@ const logoutHandler = async () => {
               "flex items-center hover:bg-blue-200 py-4 px-3 cursor-pointer bg-gray-200  rounded w-full overflow-hidden whitespace-nowrap"
             }
           >
-            
             {toggle && (
               <h5
                 className={classNames(

@@ -10,30 +10,33 @@ import Header from "@/components/user/Header";
 import Layout from "@/components/user/Layout";
 import API_BASE_URL from "@/apiConfig";
 import axios from "axios";
-import nookies from "nookies";
+import {
+  expireSessionAndRedirect,
+  getUserIdAndToken,
+} from "@/Utils/authCookies";
+import { removeUserSession } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/auth`;
 
-function Dashboard({ user, error }) {
+function Dashboard({ ctx, user, error }) {
   const router = useRouter();
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     // Check if there's an error
-    if (error) {
-      alert(error);
-      // After 5sec edirect to the login
-      const redirectTimeout = setTimeout(() => {
-        setRedirecting(true);
-        router.push("/login");
-      }, 1000);
-      // Clear the timeout
-      return () => clearTimeout(redirectTimeout);
+    if (
+      error === "Invalid token." ||
+      error === "Token has been revoked or expired."
+    ) {
+      removeUserSession();
+      expireSessionAndRedirect(ctx, router);
+      // console.log(error)
+      setRedirecting(true);
     }
   }, [error, router]);
 
   if (redirecting) {
-    return <p className="text-sm">Redirecting to login...</p>;
+    return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
   }
 
   return (
@@ -74,20 +77,9 @@ function Dashboard({ user, error }) {
 export default Dashboard;
 
 export async function getServerSideProps(ctx) {
-  const cookies = nookies.get(ctx);
-  const token = cookies.token || null;
-  const currentPath = ctx.req.url;
+  const { token } = getUserIdAndToken(ctx);
 
-  if (token) {
-    if (currentPath !== "/user/dashboard") {
-      return {
-        redirect: {
-          destination: "/user/dashbord",
-          permanent: false,
-        },
-      };
-    }
-  } else if (!token) {
+  if (!token) {
     return {
       redirect: {
         destination: "/login",
@@ -102,8 +94,8 @@ export async function getServerSideProps(ctx) {
         Authorization: `Bearer ${token}`,
       },
     });
-    // console.log("serverRes", response.data.data);
     const user = response.data.data;
+    // console.log(user)
     return {
       props: {
         user,
@@ -111,7 +103,7 @@ export async function getServerSideProps(ctx) {
       },
     };
   } catch (error) {
-    // console.error(error.response.data.error);
+    // console.error(error);
     return {
       props: {
         user: null,

@@ -1,15 +1,11 @@
 import React from 'react'
-import DirectCoupon from "../../components/user/DirectCoupon";
-import withAuth from '@/hocs/withAuth';
+import DirectCouponComp from '@/components/user/DirectCoupon'
 
 
-const DirectCouponPage = () => {
+export default function DirectCouponPage () {
   return (
     <div>
-   <DirectCoupon/>
+   <DirectCouponComp/>
     </div>
   )
 }
-
-
-export default withAuth(DirectCouponPage);

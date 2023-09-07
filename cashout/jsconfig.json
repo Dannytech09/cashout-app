@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "baseUrl": "./", // Set the base URL to the root of your project
     "paths": {
-      "@/*": ["./src/*"] // Modify the path alias as needed
+      "@/*": ["./*"]
     }
-  },
-  "exclude": ["node_modules", ".next"]
+  }
 }

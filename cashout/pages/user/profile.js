@@ -2,7 +2,6 @@ import Head from "next/head";
 import Sidebar from "../../components/user/Sidebar";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
-import withAuth from "../../hocs/withAuth";
 import Layout from "../../components/user/Layout";
 
 function Profile() {
@@ -70,4 +69,4 @@ function Profile() {
   );
 }
 
-export default withAuth(Profile);
+export default Profile;

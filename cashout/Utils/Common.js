@@ -1,6 +1,8 @@
 export const getUser = () => {
   if (typeof window !== "undefined") {
-    return JSON.parse(sessionStorage.getItem("user"));
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    const userId = user ? user.id : null;
+    return userId;
   }
 };
 
@@ -8,12 +10,10 @@ export const getToken = () => {
   return sessionStorage.getItem("token") || null;
 };
 
-export const setUserSession = (token, user) => {
-  sessionStorage.setItem("token", token);
+export const setUserSession = (user) => {
   sessionStorage.setItem("user", user);
 };
 
 export const removeUserSession = () => {
-  sessionStorage.removeItem("token");
   sessionStorage.removeItem("user");
 };

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { getCoupon, directCoupon } from "@/pages/api/user/directCoupon";
+import { buyDataSHandler, buyDataSGetHandler } from "@/pages/api/user/buydatas";
+import BuyDataS from "./userJsx/BuyDataS";
 import { expireSessionAndRedirect, getUserIdAndToken } from "@/Utils/authCookies";
 import { getUser, removeUserSession } from "@/Utils/Common";
-import DirectCoupon from "./userJsx/DirectCoupon";
 
-function DirectCouponComp(ctx) {
+let name;
+
+function BuyDataSComp(ctx) {
   const router = useRouter();
   const userId = getUser();
   const { token } = getUserIdAndToken(ctx)
@@ -17,13 +19,14 @@ function DirectCouponComp(ctx) {
   const [errorMessage, setErrorMessage] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
 
-  const [network, setNetwork] = useState("MTN DATA COUPON");
+  const [network, setNetwork] = useState("--Choose Network--");
   const [dataVol, setDataVol] = useState("--Data Volume--");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [amount, setAmount] = useState("");
+  const [dataVols, setDataVols] = useState([]);
   const [amounts, setAmounts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
-  const [name, setName] = useState("");
 
   useEffect(() => {
     if (!userId || !token) {
@@ -32,26 +35,46 @@ function DirectCouponComp(ctx) {
     }
 
     async function fetchData() {
-      setLoading(true);
       try {
-        const response = await getCoupon();
-        // console.log(response.dataCoupon);
-        setNetworkData(response.dataCoupon);
+        setLoading(true);
+        const response = await buyDataSGetHandler();
+        // console.log(response);
+        setNetworkData(response.networkDataS);
+        setLoading(false);
       } catch (error) {
-        // console.error(error);
-        alert("Service Unavailable, please check back later !");
+        // console.log("err", error)
+        alert(error.response.error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     }
+
     if (userId) {
       fetchData();
     }
-  }, [userId, token]);
+  }, [userId]);
 
   const changeNetwork = (e) => {
-    const inputValue = e.target.value;
-    setNetwork(inputValue);
-    // console.log(inputValue);
+    const selectedVariationString = e.target.value;
+
+    const selectedNetwork = networkData.find(
+      (ctr) => ctr.variation_string === selectedVariationString
+    );
+    if (selectedNetwork) {
+      setDataVols(selectedNetwork.dataVol);
+
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(selectedNetwork.network); // Set the network based on the found network
+    } else {
+      setDataVols([]); // Clear the dataVols state when the network is not found (optional)
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
+    }
+    name = selectedNetwork.variation_string;
+    // console.log("Selected Network:", variation);
+    // console.log("Data Vols:", dataVols);
   };
 
   // handle two onchange props
@@ -61,33 +84,19 @@ function DirectCouponComp(ctx) {
   };
 
   const changeDataVol = (e) => {
-    const selectedPlanCode = e.target.value;
-    const selectedDataVol = networkData.find((ctr) =>
-      ctr.dataVol.some((item) => item.plan_code === selectedPlanCode)
+    setDataVol(e.target.value);
+    const selectedDataVol = dataVols.find(
+      (ctr) => ctr.plan_code === e.target.value
     );
-    // console.log("selected =>>", selectedDataVol);
-
+    // check if selectedDataVol is undefined. if not checked it will throw an
+    // error if user selects a value and later select the default value
     if (selectedDataVol) {
-      setDataVol(selectedPlanCode);
-      setAmounts(selectedDataVol.dataVol);
+      setAmounts(selectedDataVol);
       setAmountPlaceHolder(false);
-
-      const selectedName = selectedDataVol.dataVol.find(
-        (item) => item.plan_code === selectedPlanCode
-      )?.name;
-
-      // console.log(selectedName);
-
-      // Pass the selectedName to the network
-      setName(selectedName);
-    } else {
-      setDataVol("");
-      setAmounts([]);
-      setAmountPlaceHolder(true);
-      setNetwork(""); // If no data is selected, clear the network value
     }
-
     setPhoneNumber("");
+    setAmount("");
+    // console.log(e.target.value);
   };
 
   // handle two onchange props
@@ -123,6 +132,10 @@ function DirectCouponComp(ctx) {
     setModalIsOpen(false);
   };
 
+  const onRequestClose = () => {
+    setModalIsOpen(false);
+  };
+
   // Track when modal is to leave the screen upon opening it
   useEffect(() => {
     let timer;
@@ -131,7 +144,6 @@ function DirectCouponComp(ctx) {
         closeModal();
       }, 3000);
     }
-
     return () => clearTimeout(timer);
   }, [modalIsOpen]);
 
@@ -139,8 +151,15 @@ function DirectCouponComp(ctx) {
     if (typeof window !== "undefined") {
       try {
         setLoading(true);
-        const response = await directCoupon(ctx, network, dataVol, phoneNumber);
-        // console.log("c", response);
+        setRedirecting(false);
+        setErrorMessage(null);
+        const response = await buyDataSHandler(
+          ctx,
+          network,
+          dataVol,
+          phoneNumber
+        );
+        // console.log("res", response);
         if (
           response.error === "Invalid token." ||
           response.error === "Token has been revoked or expired."
@@ -151,13 +170,20 @@ function DirectCouponComp(ctx) {
         } else if (response.error) {
           setErrorMessage(response.error);
         } else if (response.code === "000") {
+          setErrorMessage(null);
           alert(response.message);
-          router.reload();
-        } 
+          //   router.reload();
+          const buyAgain = window.confirm("Do you wish to buy again ?");
+          if (buyAgain) {
+            router.push("/user/buyDataS");
+          } else {
+            router.push("/user/dashboard");
+          }
+        }
         setLoading(false);
         setRedirecting(false);
       } catch (error) {
-        // console.log(error.response);
+        // console.log(error);
         throw new Error(`An error occurred ${error}`); // server error - nextjs
       } finally {
         setLoading(false);
@@ -170,7 +196,6 @@ function DirectCouponComp(ctx) {
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
   }
-
 
   function handleInputField() {
     const inputFields = document.querySelectorAll(".input-field");
@@ -192,30 +217,34 @@ function DirectCouponComp(ctx) {
 
   return (
     <div className="bg-slate-500 h-full md:h-screen xl:h-screen">
-     <DirectCoupon
-     networkData={networkData}
-     amountPlaceHolder={amountPlaceHolder}
-     loading={loading}
-     dataVol={dataVol}
-     phoneNumber={phoneNumber}
-     amounts={amounts}
-     modalIsOpen={modalIsOpen}
-     allSelected={allSelected}
-     name={name}
-     handleNetworkAndInputValidation={handleNetworkAndInputValidation}
-     handleDataVolAndInputValidation={handleDataVolAndInputValidation}
-     handlePhoneNumberAndInputValidation={handlePhoneNumberAndInputValidation}
-     submit={submit}
-     openModal={openModal}
-     closeModal={closeModal}
-     confirmData={confirmData}
-     setModalIsOpen={setModalIsOpen}
-     error={error}
-     errorMessage={errorMessage}
-
-     />
+      <BuyDataS
+        amountPlaceHolder={amountPlaceHolder}
+        loading={loading}
+        errorMessage={errorMessage}
+        amount={amount}
+        amounts={amounts}
+        handleNetworkAndInputValidation={handleNetworkAndInputValidation}
+        handleDataVolAndInputValidation={handleDataVolAndInputValidation}
+        handlePhoneNumberAndInputValidation={
+          handlePhoneNumberAndInputValidation
+        }
+        submit={submit}
+        confirmData={confirmData}
+        networkData={networkData}
+        network={network}
+        dataVol={dataVol}
+        dataVols={dataVols}
+        phoneNumber={phoneNumber}
+        modalIsOpen={modalIsOpen}
+        allSelected={allSelected}
+        openModal={openModal}
+        closeModal={closeModal}
+        onRequestClose={onRequestClose}
+        name={name}
+        error={error}
+      />
     </div>
   );
 }
 
-export default DirectCouponComp;
+export default BuyDataSComp;

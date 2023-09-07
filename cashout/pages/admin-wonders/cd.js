@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { updateUserBalance } from "../api/cd";
+import { updateUserBalance } from "../api/admin/cd";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 import Loader from "@/components/utils/Loader";
 

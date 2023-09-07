@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import API_BASE_URL from "@/apiConfig";
 import Sidebar from "@/components/user/Sidebar";
 import Loader from "@/components/utils/Loader";
-import withAuth from "@/hocs/withAuth";
+import { useSelector } from "react-redux";
 
 const BASE_URL = `${API_BASE_URL}/pay`;
 
@@ -30,6 +30,9 @@ function BuyDataMainGift() {
   const [amounts, setAmounts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
+
+  // const user = useSelector((state) => state.user.id);
+  // console.log("userId", user.id);
 
   useEffect(() => {
     async function fetchData() {
@@ -121,8 +124,8 @@ function BuyDataMainGift() {
 
   const confirmData = async () => {
     if (typeof window !== "undefined") {
-      const user = JSON.parse(sessionStorage.getItem("user"));
-      const id = user._id;
+      // const user = JSON.parse(sessionStorage.getItem("user"));
+      // const id = user._id;
 
       try {
         setLoading(true);
@@ -181,15 +184,20 @@ function BuyDataMainGift() {
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-full">
-        {loading && <Loader/>}
-        <div>
-            <Sidebar/>
-        </div>
+      {loading && <Loader />}
+      <div>
+        <Sidebar />
+      </div>
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Bulk Data</h3>
-            <p className="text-xs text-slate-200">Note: Mtn sme on this page is to serve as alternative to the mtn sme on the main data page. For other networks, kindly use them when subscribing for router/mifi or bulk data plan. Glo divides their data into day and night.</p>
+            <p className="text-xs text-slate-200">
+              Note: Mtn sme on this page is to serve as alternative to the mtn
+              sme on the main data page. For other networks, kindly use them
+              when subscribing for router/mifi or bulk data plan. Glo divides
+              their data into day and night.
+            </p>
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>
@@ -291,4 +299,4 @@ function BuyDataMainGift() {
   );
 }
 
-export default withAuth(BuyDataMainGift);
+export default BuyDataMainGift;
