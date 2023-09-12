@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import BuyData from "./userJsx/BuyData";
-import { buyDataGetHandler, buyDataHandler } from "@/pages/api/user/buydata";
+import { getUser, removeUserSession } from "@/Utils/Common";
 import {
   expireSessionAndRedirect,
   getUserIdAndToken,
 } from "@/Utils/authCookies";
-import { getUser, removeUserSession } from "@/Utils/Common";
+import {
+  buyDataGetMainGiftHandler,
+  buyDataMainGiftHandler,
+} from "@/pages/api/user/buydatamaingift";
+import BuyDataMainGift from "./userJsx/BuyDataMainGift";
 // import { useSelector } from "react-redux";
 
-function BuyDataComp(ctx) {
+function BuyDataMainGiftComp(ctx) {
   const router = useRouter();
   const userId = getUser();
   const { token } = getUserIdAndToken(ctx);
-  //   const { userId } = getUserIdAndToken(ctx);
 
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -31,6 +33,9 @@ function BuyDataComp(ctx) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
 
+  // const user = useSelector((state) => state.user.id);
+  // console.log("userId", user.id);
+
   useEffect(() => {
     if (!userId || !token) {
       removeUserSession();
@@ -40,7 +45,7 @@ function BuyDataComp(ctx) {
     async function fetchData() {
       try {
         setLoading(true);
-        const response = await buyDataGetHandler();
+        const response = await buyDataGetMainGiftHandler();
         // console.log(response);
         setNetworkData(response.networkData);
         setLoading(false);
@@ -51,13 +56,11 @@ function BuyDataComp(ctx) {
         setLoading(false);
       }
     }
-
     if (userId) {
       fetchData();
     }
   }, [userId]);
 
-  //   if this  is enabled it can cause: Rendered more hooks than during the previous ...
   // if (loading) {
   //   return <div className="bg-slate-100">Loading...</div>;
   // }
@@ -68,22 +71,12 @@ function BuyDataComp(ctx) {
     );
     if (selectedNetwork) {
       setDataVols(selectedNetwork.dataVol);
-
-      const selectedData = selectedNetwork.dataVol.find(
-        (vol) => vol.name === e.target.value
-      );
-
-      if (selectedData) {
-        selectedDataVolName = selectedData.name;
-        // console.log(selectedDataVolName);
-      }
     }
     setPhoneNumber("");
     setAmount("");
     setNetwork(e.target.value);
     // console.log(e.target.value);
   };
-
   // handle two onchange props
   const handleNetworkAndInputValidation = (e) => {
     changeNetwork(e);
@@ -92,11 +85,7 @@ function BuyDataComp(ctx) {
 
   const changeDataVol = (e) => {
     setDataVol(e.target.value);
-    const selectedDataVol = dataVols.find(
-      (ctr) => ctr.plan_code === e.target.value
-    );
-    // check if selectedDataVol is undefined. if not checked it will throw an
-    // error if user selects a value and later select the default value
+    const selectedDataVol = dataVols.find((ctr) => ctr.name === e.target.value);
     if (selectedDataVol) {
       setAmounts(selectedDataVol);
       setAmountPlaceHolder(false);
@@ -105,7 +94,6 @@ function BuyDataComp(ctx) {
     setAmount("");
     // console.log(e.target.value);
   };
-
   // handle two onchange props
   const handleDataVolAndInputValidation = (e) => {
     changeDataVol(e);
@@ -131,6 +119,7 @@ function BuyDataComp(ctx) {
       openModal();
     }
   };
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -139,35 +128,20 @@ function BuyDataComp(ctx) {
     setModalIsOpen(false);
   };
 
-  const onRequestClose = () => {
-    setModalIsOpen(false);
-  };
-
-  // Track when modal is to leave the screen upon opening it
-  useEffect(() => {
-    let timer;
-    if (modalIsOpen) {
-      timer = setTimeout(() => {
-        closeModal();
-      }, 3000);
-    }
-
-    return () => clearTimeout(timer);
-  }, [modalIsOpen]);
-
   const confirmData = async () => {
     if (typeof window !== "undefined") {
       try {
         setLoading(true);
         setRedirecting(false);
         setErrorMessage(null);
-        const response = await buyDataHandler(
+        setError(null);
+        const response = await buyDataMainGiftHandler(
           ctx,
           network,
           dataVol,
           phoneNumber
         );
-        // console.log("res", response);
+        // console.log(response);
         if (
           response.error === "Invalid token." ||
           response.error === "Token has been revoked or expired."
@@ -183,7 +157,7 @@ function BuyDataComp(ctx) {
           //   router.reload();
           const buyAgain = window.confirm("Do you wish to buy again ?");
           if (buyAgain) {
-            router.push("/user/buyData");
+            router.push("/user/buyData-mainGift");
           } else {
             router.push("/user/dashboard");
           }
@@ -191,12 +165,8 @@ function BuyDataComp(ctx) {
         setLoading(false);
         setRedirecting(false);
       } catch (error) {
-        // console.log(error);
-        if (error) {
-          throw new Error(`An error occurred ${error}`); // handle error from the above try block (server Error - nextjs)
-        }
+        throw new Error(`An error occurred ${error}`);
       } finally {
-        setRedirecting(false);
         setLoading(false);
         closeModal();
       }
@@ -226,8 +196,8 @@ function BuyDataComp(ctx) {
   }
 
   return (
-    <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-      <BuyData
+    <div className="bg-slate-500 h-screen md:h-screen xl:h-full">
+      <BuyDataMainGift
         amountPlaceHolder={amountPlaceHolder}
         loading={loading}
         errorMessage={errorMessage}
@@ -249,11 +219,11 @@ function BuyDataComp(ctx) {
         allSelected={allSelected}
         openModal={openModal}
         closeModal={closeModal}
-        onRequestClose={onRequestClose}
         error={error}
+        setModalIsOpen={setModalIsOpen}
       />
     </div>
   );
 }
 
-export default BuyDataComp;
+export default BuyDataMainGiftComp;

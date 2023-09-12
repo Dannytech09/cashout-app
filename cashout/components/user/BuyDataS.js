@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { buyDataSHandler, buyDataSGetHandler } from "@/pages/api/user/buydatas";
 import BuyDataS from "./userJsx/BuyDataS";
-import { expireSessionAndRedirect, getUserIdAndToken } from "@/Utils/authCookies";
+import {
+  expireSessionAndRedirect,
+  getUserIdAndToken,
+} from "@/Utils/authCookies";
 import { getUser, removeUserSession } from "@/Utils/Common";
 
 let name;
@@ -10,7 +13,7 @@ let name;
 function BuyDataSComp(ctx) {
   const router = useRouter();
   const userId = getUser();
-  const { token } = getUserIdAndToken(ctx)
+  const { token } = getUserIdAndToken(ctx);
 
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -114,6 +117,7 @@ function BuyDataSComp(ctx) {
       handleInputField(e);
     } else {
       setError("Phone number must be 11 digits long");
+      setPhoneNumber("");
     }
   };
 

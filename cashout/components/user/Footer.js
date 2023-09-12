@@ -1,18 +1,13 @@
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import WhatsappIcon from "../utils/Whatsapp";
 
 export default function Footer() {
   return (
-    <div>
-      <div className="absolute bottom-0 right-0 border border-r-0 border-l-0 bg-white opacity-100 hover:scale-110 skew-y-10 skew-x-2 transition-transform duration-500">
+    <div className="">
+      <div className="fixed bottom-0 right-1 opacity-100 hover:scale-110 skew-y-10 skew-x-5 transition-transform duration-500">
         <Link href="https://wa.me/message/7YDZIMHGFFROD1">
-          <Image
-            src="/whatsapp.png"
-            alt="whatsapp icon"
-            width="30"
-            height="30"
-          />
+          <WhatsappIcon />
         </Link>
       </div>
       <div className=" h-10 text-center text-sm font-extrabold p-2 bottom-0">

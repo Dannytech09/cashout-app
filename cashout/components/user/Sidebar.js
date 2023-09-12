@@ -94,7 +94,7 @@ const Sidebar = () => {
         const message = response.error;
         alert(message);
       } else if (response.success === true) {
-        localStorage.clear("buttonClicked");
+        localStorage.removeItem("buttonClicked");
         removeUserSession();
         expireSessionAndRedirect(ctx, router);
       }
@@ -232,3 +232,74 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+
+// import React, { useState, useRef } from 'react';
+// import CollapseBtn from '../heroIcons/CollapseBtn';
+
+// const Sidebar = () => {
+//   const [isOpen, setIsOpen] = useState(false);
+//   const mainContentRef = useRef(null);
+
+//   const toggleSidebar = () => {
+//     setIsOpen(!isOpen);
+//   };
+
+//   const handleMainContentClick = () => {
+//     setIsOpen(!isOpen); // Toggle the sidebar state
+//   };
+
+//   return (
+//     <>
+//       <div
+//         className={`fixed top-0 left-0 h-full w-64 bg-custom-deep-green ${
+//           isOpen ? 'translate-x-0' : '-translate-x-full'
+//         } transition-transform duration-300 ease-in-out overflow-y-auto`}
+//       >
+//         <div className="p-4">
+//           {/* Sidebar content */}
+//           <h2 className="text-white text-lg font-semibold mb-4">Sidebar</h2>
+//           <ul className="space-y-2">
+//             <li>
+//               <a href="/home" className="text-white hover:text-gray-300">
+//                 Dashboard
+//               </a>
+//             </li>
+//             <li>
+//               <a href="/buyData" className="text-white hover:text-gray-300">
+//                 Buy Data Bundle
+//               </a>
+//             </li>
+//             {/* Add other sidebar links here */}
+//           </ul>
+//         </div>
+//       </div>
+//       <div
+//         onClick={toggleSidebar}
+//         className={`fixed top-0 left-0 h-full w-full bg-opacity-50 z-10 ${isOpen ? 'block' : 'hidden'}`}
+//       ></div>
+//       <button
+//         className={`fixed top-0 left-0 h-10 w-10 bg-red-500 text-white z-20 transition-transform duration-300 ease-in-out ${
+//           isOpen ? 'rotate-0' : 'rotate-180'
+//         } bg-opacity-75`}
+//         onClick={toggleSidebar}
+//       >
+//         <CollapseBtn />
+//       </button>
+//       <div
+//         ref={mainContentRef}
+//         onClick={handleMainContentClick}
+//         className="relative z-0"
+//       >
+//         {/* Main layout content goes here
+//         <p>
+//           This is your main layout content. Click on empty areas to open and close the sidebar.
+//         </p> */}
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Sidebar;
+
+

@@ -2,6 +2,18 @@ import React from "react";
 import Card from "@/components/utils/Card";
 import Sidebar from "@/components/user/Sidebar";
 import Notification from "@/components/user/Notification";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
+
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/login" });
+    res.end();
+  }
+  return { props: {} };
+}
 
 const ManualFunding = () => {
   return (

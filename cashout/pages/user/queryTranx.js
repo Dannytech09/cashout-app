@@ -1,15 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
-import withAuth from "../../hocs/withAuth";
-import axios from "axios";
-import API_BASE_URL from "@/apiConfig";
-import authHeader from "@/services/auth-Header";
-import QueryTransactions from "@/components/user/QueryTransactions";
+import QueryTransactions from "@/components/user/QueryTranx";
 import { useRouter } from "next/router";
+import { removeUserSession } from "@/Utils/Common";
+import { expireSessionAndRedirect } from "@/Utils/authCookies";
+import { queryTranxHandler } from "../api/user/querytranx";
+import { authGuard } from "@/Utils/authGuard";
+// import { queryTranxHandler } from "@/pages/api/user/querytranx";
+import { getUserIdAndToken } from "@/Utils/authCookies";
 
-const BASE_URL = `${API_BASE_URL}/queryTransactions`;
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
 
-function QueryTranx() {
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/login" });
+    res.end();
+  }
+  return { props: {} };
+}
+
+// make airtime query btn unclickable until value completes
+function QueryTranxComp(ctx) {
   const router = useRouter();
+  authGuard();
+  
   const [openTranx, setOpenTranx] = useState(false);
   const [openData, setOpenData] = useState(false);
   const input1Ref = useRef();
@@ -17,6 +31,8 @@ function QueryTranx() {
   const [transactions, setTransactions] = useState({});
   const [checkSubmit, setCheckSubmit] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [redirecting, setRedirecting] = useState(null);
 
   useEffect(() => {
     if (input1Ref.current && openTranx) {
@@ -42,33 +58,28 @@ function QueryTranx() {
     e.preventDefault();
     setCheckSubmit(false);
 
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    const id = user._id;
-
     const inputValue = input1Ref.current.value;
     // console.log(inputValue);
 
-    await axios
-      .post(
-        `${BASE_URL}/${id}`,
-        { request_id: inputValue },
-        { headers: authHeader() }
-      )
+    await queryTranxHandler(ctx, inputValue)
       .then((response) => {
-        setTransactions(response.data.data);
-        setCheckSubmit(true);
-        // console.log(response.data);
+        if (
+          response.error === "Invalid token." ||
+          response.error === "Token has been revoked or expired."
+        ) {
+          removeUserSession();
+          expireSessionAndRedirect(ctx, router);
+          setRedirecting(true);
+        } else if (response.error) {
+          setErrorMessage(response.error);
+        } else {
+          setTransactions(response.data);
+          setCheckSubmit(true);
+          // console.log(response.data);
+        }
       })
       .catch((error) => {
-        if (
-          error.response.data.error === "Invalid token." ||
-          error.response.data.error === "Token expired."
-        ) {
-          sessionStorage.clear();
-          router.push("/login");
-        } else if (error.response.data.code === "011") {
-          alert("Invalid Transaction ID");
-        }
+        throw new Error(`An error occurred ${error}`);
         // console.log(error);
       });
   };
@@ -81,6 +92,10 @@ function QueryTranx() {
     setIsButtonDisabled(true);
     // console.log(inputValue);
   };
+
+  if (redirecting) {
+    return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
+  }
 
   return (
     <div className="relative">
@@ -97,10 +112,11 @@ function QueryTranx() {
         input2Ref={input2Ref}
         input1Ref={input1Ref}
         disabled={isButtonDisabled}
+        errorMessage={errorMessage}
         // isButtonDisabled={isButtonDisabled}
       />
     </div>
   );
 }
 
-export default withAuth(QueryTranx);
+export default QueryTranxComp;

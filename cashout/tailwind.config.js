@@ -25,7 +25,13 @@ module.exports = {
     //     lighter: "#F3F4F6",
     //   },
     // },
-    extend: {},
+    extend: {
+      backgroundColor: {
+        'custom-deep-green': '#2E6268',
+        'custom-dark-gray': '#343a40',
+        'custom-gray': '#6c757d',
+      },
+    },
   },
   plugins: [],
 };

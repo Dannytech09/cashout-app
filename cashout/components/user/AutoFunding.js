@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 const AutoFundingComp = (ctx) => {
   const router = useRouter();
   authGuard();
+
   const [data, setData] = useState(null);
   const [postData, setPostData] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -32,8 +33,10 @@ const AutoFundingComp = (ctx) => {
   const fetchData = async () => {
     setIsFetching(true);
     try {
-      const response = await autoFundingHandler(ctx);
-    //   console.log(response)
+      const response = await autoFundingHandler(ctx, null);
+      //   console.log("gen", response);
+      setSuccessMessage(response.message);
+      setPostData(response.result);
       if (
         response.error === "Invalid token." ||
         response.error === "Token has been revoked or expired."
@@ -43,17 +46,13 @@ const AutoFundingComp = (ctx) => {
         setRedirecting(true);
       } else if (response.error) {
         setErrorMessage(response.error);
-      } else if (response.code === "000") {
-        // console.log("result", response.data.result)
-        // setErrorMessage(null)
-        setPostData(response.result);
-        setSuccessMessage(response.message);
+        setSuccessMessage(null);
       }
     } catch (error) {
-    //   console.log(error);
       throw new Error(`An error occurred ${error}`);
+    } finally {
+      setIsFetching(false);
     }
-    setIsFetching(false);
   };
 
   useEffect(() => {
@@ -69,7 +68,7 @@ const AutoFundingComp = (ctx) => {
   const fetchOnLogin = async () => {
     try {
       const response = await getAutoFundingAcctHandler();
-    //   console.log(response)
+      //   console.log(response)
       if (
         response.error === "Invalid token." ||
         response.error === "Token has been revoked or expired."
@@ -78,7 +77,7 @@ const AutoFundingComp = (ctx) => {
         expireSessionAndRedirect(ctx, router);
         setRedirecting(true);
       } else if (response.error) {
-          setErrorMessage(response.error);
+        setErrorMessage(response.error);
       } else if (response.data.length === 0) {
         setErrorMessage(null);
         setSuccessMessage(
@@ -91,7 +90,7 @@ const AutoFundingComp = (ctx) => {
         setData(response.data);
       }
     } catch (error) {
-    //   console.log(error);
+      //   console.log(error);
       throw new Error(`An error occurred ${error}`);
     }
   };

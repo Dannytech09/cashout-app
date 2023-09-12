@@ -146,7 +146,7 @@ export default function AutoFunding({ data, postData, isFetching, buttonClicked,
             </p>
           )}
         </div>
-        {/* <div className="flex gap-5 mb-5 p-3 border-slate-200 text-center max-sm:w-full h-[15ch] lg:h-[25ch] lg:w-[20ch] bg-slate-400 border-2 max-sm:mt-[-2ch] rounded-2xl w-[30]">
+        <div className="flex gap-5 mb-5 p-3 border-slate-200 text-center max-sm:w-full h-[15ch] lg:h-[25ch] lg:w-[20ch] bg-slate-400 border-2 max-sm:mt-[-2ch] rounded-2xl w-[30]">
           <span className="fill-blue-900 h-7 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
             <WalletIcon />
           </span>
@@ -194,7 +194,7 @@ export default function AutoFunding({ data, postData, isFetching, buttonClicked,
               started
             </p>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   )

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { getCoupon, directCoupon } from "@/pages/api/user/directCoupon";
-import { expireSessionAndRedirect, getUserIdAndToken } from "@/Utils/authCookies";
+import {
+  expireSessionAndRedirect,
+  getUserIdAndToken,
+} from "@/Utils/authCookies";
 import { getUser, removeUserSession } from "@/Utils/Common";
 import DirectCoupon from "./userJsx/DirectCoupon";
 
 function DirectCouponComp(ctx) {
   const router = useRouter();
   const userId = getUser();
-  const { token } = getUserIdAndToken(ctx)
+  const { token } = getUserIdAndToken(ctx);
 
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -105,6 +108,7 @@ function DirectCouponComp(ctx) {
       handleInputField(e);
     } else {
       setError("Phone number must be 11 digits long");
+      setPhoneNumber("");
     }
   };
 
@@ -153,7 +157,7 @@ function DirectCouponComp(ctx) {
         } else if (response.code === "000") {
           alert(response.message);
           router.reload();
-        } 
+        }
         setLoading(false);
         setRedirecting(false);
       } catch (error) {
@@ -170,7 +174,6 @@ function DirectCouponComp(ctx) {
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
   }
-
 
   function handleInputField() {
     const inputFields = document.querySelectorAll(".input-field");
@@ -192,28 +195,29 @@ function DirectCouponComp(ctx) {
 
   return (
     <div className="bg-slate-500 h-full md:h-screen xl:h-screen">
-     <DirectCoupon
-     networkData={networkData}
-     amountPlaceHolder={amountPlaceHolder}
-     loading={loading}
-     dataVol={dataVol}
-     phoneNumber={phoneNumber}
-     amounts={amounts}
-     modalIsOpen={modalIsOpen}
-     allSelected={allSelected}
-     name={name}
-     handleNetworkAndInputValidation={handleNetworkAndInputValidation}
-     handleDataVolAndInputValidation={handleDataVolAndInputValidation}
-     handlePhoneNumberAndInputValidation={handlePhoneNumberAndInputValidation}
-     submit={submit}
-     openModal={openModal}
-     closeModal={closeModal}
-     confirmData={confirmData}
-     setModalIsOpen={setModalIsOpen}
-     error={error}
-     errorMessage={errorMessage}
-
-     />
+      <DirectCoupon
+        networkData={networkData}
+        amountPlaceHolder={amountPlaceHolder}
+        loading={loading}
+        dataVol={dataVol}
+        phoneNumber={phoneNumber}
+        amounts={amounts}
+        modalIsOpen={modalIsOpen}
+        allSelected={allSelected}
+        name={name}
+        handleNetworkAndInputValidation={handleNetworkAndInputValidation}
+        handleDataVolAndInputValidation={handleDataVolAndInputValidation}
+        handlePhoneNumberAndInputValidation={
+          handlePhoneNumberAndInputValidation
+        }
+        submit={submit}
+        openModal={openModal}
+        closeModal={closeModal}
+        confirmData={confirmData}
+        setModalIsOpen={setModalIsOpen}
+        error={error}
+        errorMessage={errorMessage}
+      />
     </div>
   );
 }

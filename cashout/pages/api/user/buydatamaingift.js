@@ -1,14 +1,14 @@
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
-import { getUser } from "@/Utils/Common";
 import { getUserIdAndToken } from "@/Utils/authCookies";
+import { getUser } from "@/Utils/Common";
 
-const BASE_URL = `${API_BASE_URL}/vend`;
+const BASE_URL = `${API_BASE_URL}/pay`;
 const userId = getUser();
 
-export async function buyDataSGetHandler() {
+export async function buyDataGetMainGiftHandler() {
     try {
-        const response = await axios.get(`${BASE_URL}/${userId}/getDatas`);
+        const response = await axios.get(`${BASE_URL}/getData`);
         // console.log(response)
        return response.data
       } catch (error) {
@@ -17,13 +17,13 @@ export async function buyDataSGetHandler() {
       }
 }
 
-export async function buyDataSHandler(ctx, network, dataVol, phoneNumber) {
-    const { token } = getUserIdAndToken(ctx);
+export async function buyDataMainGiftHandler(ctx, network, dataVol, phoneNumber) {
+  const { token } = getUserIdAndToken(ctx);
 
     try {
         const response = await axios.post(
-          `${BASE_URL}/${userId}/purchases`,
-          { network: network, plan_code: dataVol, mobile: phoneNumber },
+          `${BASE_URL}/${userId}/purchase`,
+          { network, dataVol, phoneNumber },
           {
             headers: {
               Authorization: `Bearer ${token}`,

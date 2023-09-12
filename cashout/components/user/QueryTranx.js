@@ -14,6 +14,7 @@ function QueryTransactions({
   handleTranxSubmit,
   handleDataSubmit,
   isButtonDisabled,
+  errorMessage
 }) {
   return (
     // <div className="relative">
@@ -30,6 +31,11 @@ function QueryTransactions({
           get your tracking/transaction ID handy{" "}
         </p>
       </div>
+      {errorMessage && (
+            <div className="p-3 m-3 text-xs mt-[-2ch] border border-red-700 bg-red-700">
+              <p className="text-white text-center">{errorMessage}</p>
+            </div>
+          )}
       <div className="mt-[3ch]">
         <div className="flex flex-col gap-4 p-4">
           <div>
@@ -132,3 +138,33 @@ function QueryTransactions({
 }
 
 export default QueryTransactions;
+
+
+// import axios from "axios";
+// import API_BASE_URL from "@/apiConfig";
+// import { getUserIdAndToken } from "@/Utils/authCookies";
+// import { getUser } from "@/Utils/Common";
+
+// const BASE_URL = `${API_BASE_URL}/queryTransactions`;
+// const userId = getUser();
+
+// export async function queryTranxHandler(ctx, inputValue ) {
+//     const { token } = getUserIdAndToken(ctx);
+  
+//       try {
+//           const response = await axios.post(
+//             `${BASE_URL}/${userId}`,
+//             {request_id: inputValue},
+//             {
+//               headers: {
+//                 Authorization: `Bearer ${token}`,
+//               },
+//             }
+//           );
+//           // console.log(response.data)
+//           return response.data;
+//         } catch (error) {
+//           // console.log(error.response.data)
+//            return error.response.data;
+//         }
+//   }

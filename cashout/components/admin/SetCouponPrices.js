@@ -35,13 +35,13 @@ export default function SetCouponPrices() {
   const handleAccountTypeChange = (e) => {
     const inputValue = e.target.value;
     setAccountType(inputValue);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   const handleNetworkChange = (e) => {
     const inputValue = e.target.value;
     setVariation_string(inputValue);
-    console.log(inputValue);
+    // console.log(inputValue);
   };
 
   const handleDataChange = (event, index) => {
@@ -56,7 +56,7 @@ export default function SetCouponPrices() {
     }
 
     setData(newData);
-    console.log(newData);
+    // console.log(newData);
   };
 
   const handleAddData = () => {
