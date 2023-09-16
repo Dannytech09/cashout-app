@@ -51,7 +51,7 @@ const LoginComp = (ctx) => {
       if (response.error) {
         const r = response.error;
         setMessage(r);
-      } else if (response.statusText === "OK") {
+      } else if (response.data.success === true || response.status === 200) {
         const token = response.data.token;
         const user = response.data.user;
         setCookieAndRedirect(ctx, "token", token);
