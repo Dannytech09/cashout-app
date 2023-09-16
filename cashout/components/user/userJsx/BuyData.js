@@ -2,7 +2,7 @@ import React from 'react'
 import styles from "@/styles/BuyData.module.css";
 import Link from "next/link";
 import Sidebar from "@/components/user/Sidebar";
-import Footer from "../../../components/user/SubMain";
+import Footer from "../SubMain";
 import ConfirmDataModal from "../ConfirmDataModal";
 import Loader from "@/components/utils/Loader";
 import { Logout } from '../Logout';

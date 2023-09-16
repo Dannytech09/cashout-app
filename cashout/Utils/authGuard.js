@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { getUser, removeUserSession } from "./Common";
-import { expireSessionAndRedirect, getUserIdAndToken } from "./authCookies";
-import { useRouter } from "next/router";
+import { aExpireSessionAndRedirect, expireSessionAndRedirect, getUserIdAndToken } from "./authCookies";
 
-export async function authGuard(ctx) {
-    const router = useRouter();
+// error aborting errors using router inappropriately
+export async function authGuard(ctx, router) {
     const userId = getUser();
     const { token } = getUserIdAndToken(ctx);
   
@@ -13,6 +12,19 @@ export async function authGuard(ctx) {
         // console.log("effect ran")
         removeUserSession();
         expireSessionAndRedirect(ctx, router)
+      }
+    }, [userId, token])
+}
+
+export async function adminAuthGuard(ctx, router) {
+    const userId = getUser();
+    const { token } = getUserIdAndToken(ctx);
+  
+    useEffect(() => {
+      if (!userId || !token) {
+        // console.log("effect ran")
+        removeUserSession();
+        aExpireSessionAndRedirect(ctx, router)
       }
     }, [userId, token])
 }

@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { removeUserSession } from "@/Utils/Common";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { queryTranxHandler } from "../api/user/querytranx";
-import { authGuard } from "@/Utils/authGuard";
 // import { queryTranxHandler } from "@/pages/api/user/querytranx";
 import { getUserIdAndToken } from "@/Utils/authCookies";
 
@@ -22,7 +21,6 @@ export async function getServerSideProps(ctx) {
 // make airtime query btn unclickable until value completes
 function QueryTranxComp(ctx) {
   const router = useRouter();
-  authGuard();
   
   const [openTranx, setOpenTranx] = useState(false);
   const [openData, setOpenData] = useState(false);

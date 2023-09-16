@@ -4,16 +4,14 @@ import nookies from "nookies";
 export function getUserIdAndToken(ctx) {
   const cookies = nookies.get(ctx);
   // console.log("c", JSON.stringify(cookies, null, 2))
-  const userCookie = cookies.u ? cookies.u : null; // Get the cookie value as a string
+  const userCookie = cookies.u ? cookies.u : null; // value as string
 
   let userId = null;
   if (userCookie) {
     try {
-      // Attempt to parse the JSON string
       const parsedUserCookie = JSON.parse(userCookie);
       userId = parsedUserCookie.id;
     } catch (error) {
-      // Handle the JSON parsing error here
     throw new error("Error occured")
     }
   }
@@ -22,7 +20,7 @@ export function getUserIdAndToken(ctx) {
   return { userId, token };
 }
 
-// del
+// del - u
 export function expireSessionAndRedirect(ctx, router) {
   const pathsToDelete = ["/", "/user"];
   for (const path of pathsToDelete) {
@@ -34,6 +32,20 @@ export function expireSessionAndRedirect(ctx, router) {
   }
   // alert("Session Expired.. Take me to auth page ! ");
   router.push("/login");
+}
+
+// del - a
+export function aExpireSessionAndRedirect(ctx, router) {
+  const pathsToDelete = ["/", "/user"];
+  for (const path of pathsToDelete) {
+    nookies.destroy(ctx, "token", { path });
+  }
+  const toDelete = ["/", "/user"];
+  for (const path of toDelete) {
+    nookies.destroy(ctx, "u", { path });
+  }
+  // alert("Session Expired.. Take me to auth page ! ");
+  router.push("/admin-wonders/login");
 }
 
 // set

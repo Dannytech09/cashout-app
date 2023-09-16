@@ -11,20 +11,42 @@ import LogoutIcon from "../heroIcons/LogoutIcon";
 import ProfileIcon from "../heroIcons/ProfileIcon";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import AuthService from "../../services/auth.Service";
+import { LogoutHandler } from "@/pages/api/user/logout";
+import { aExpireSessionAndRedirect } from "@/Utils/authCookies";
+import { removeUserSession } from "@/Utils/Common";
 
 // Using array for nav items
 const menuItems = [
-  { id: 1, label: "Admin Board", icon: HomeIcon, link: "/admin-wonders/dashboard" },
-  { id: 2, label: "Fund Wallet", icon: FundWalletIcon, link: "/admin-wonders/cd" },
-  { id: 3, label: "Tranx History", icon: FundWalletIcon, link: "/admin-wonders/getAllHistory" },
+  {
+    id: 1,
+    label: "Admin Board",
+    icon: HomeIcon,
+    link: "/admin-wonders/dashboard",
+  },
+  {
+    id: 2,
+    label: "Fund Wallet",
+    icon: FundWalletIcon,
+    link: "/admin-wonders/cd",
+  },
+  {
+    id: 3,
+    label: "Tranx History",
+    icon: FundWalletIcon,
+    link: "/admin-wonders/getAllHistory",
+  },
   {
     id: 4,
     label: "Data component",
     icon: FundWalletIcon,
     link: "/admin-wonders/dataComponent",
   },
-  { id: 5, label: "Get All Users", icon: DataIcon, link: "/admin-wonders/getAllUsers" },
+  {
+    id: 5,
+    label: "Get All Users",
+    icon: DataIcon,
+    link: "/admin-wonders/getAllUsers",
+  },
   {
     id: 6,
     label: "LookUp User",
@@ -49,7 +71,12 @@ const menuItems = [
     icon: FundWalletIcon,
     link: "/admin-wonders/upgrade",
   },
-  { id: 10, label: "Block User", icon: AirtimeIcon, link: "/admin-wonders/blockUser" },
+  {
+    id: 10,
+    label: "Block User",
+    icon: AirtimeIcon,
+    link: "/admin-wonders/blockUser",
+  },
   {
     id: 11,
     label: "Create User",
@@ -89,9 +116,23 @@ const SidebarAdmin = () => {
     }
   );
 
-  const logoutHandler = async () => {
-    await AuthService.logout();
-    router.push("/admin-wonders/login");
+  const aLogoutHandler = async (ctx) => {
+    try {
+      const response = await LogoutHandler();
+      if (response.error) {
+        const message = response.error;
+        alert(message);
+      } else if (response.success === true) {
+        localStorage.removeItem("buttonClicked");
+        removeUserSession();
+        aExpireSessionAndRedirect(ctx, router);
+      }
+    } catch (error) {
+      // console.log(error)
+      if (error) {
+        throw new Error(`An error occured ${error}`);
+      }
+    }
   };
 
   const handleSideBarToggle = () => {
@@ -173,7 +214,7 @@ const SidebarAdmin = () => {
 
         {/* Logout Container */}
         <button
-          onClick={logoutHandler}
+          onClick={aLogoutHandler}
           className={
             "flex mb-10 mt-3 border border-2-red items-center py-2 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
           }

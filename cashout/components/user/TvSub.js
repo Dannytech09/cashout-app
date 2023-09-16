@@ -13,7 +13,7 @@ import TvSub from "./userJsx/TvSub";
 
 function TvSubComp(ctx) {
   const router = useRouter();
-  authGuard();
+  authGuard(ctx, router);
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);

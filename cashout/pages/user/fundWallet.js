@@ -3,6 +3,7 @@ import Link from "next/link";
 import Sidebar from "@/components/user/Sidebar";
 import { authGuard } from "@/Utils/authGuard";
 import { getUserIdAndToken } from "@/Utils/authCookies";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
@@ -16,8 +17,10 @@ export async function getServerSideProps(ctx) {
 }
 
 // This page is being routed to different pages
-function FundWallet() {
-  authGuard();
+function FundWallet(ctx) {
+  const router = useRouter();
+
+  authGuard(ctx, router);
   return (
     <div className="bg-gray-300 h-screen">
       <Sidebar />

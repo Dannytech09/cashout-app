@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
 import Greetings from "../utils/Greetings";
 import styles from "../../styles/dashboard.module.css";
 import SmileIcon from "../heroIcons/SmileIcon";
 import Link from "next/link";
 import MotionText from "./MotionText";
 import {Logout} from "./Logout";
+// import { useRouter } from "next/router";
 
 export default function Header({ user }) {
 

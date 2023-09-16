@@ -1,9 +1,11 @@
-import API_BASE_URL from "@/apiConfig";
-import authHeader from "@/services/auth-Header";
 import axios from "axios";
+import API_BASE_URL from "@/apiConfig";
+import { getUserIdAndToken } from "@/Utils/authCookies";
 
 // 1
-export async function LockCoupon(network, visibility) {
+export async function LockCoupon(ctx, network, visibility) {
+  const { token } = getUserIdAndToken(ctx);
+
   try {
     const response = await axios.patch(
       `${API_BASE_URL}/admin/lock-dataCoupon`,
@@ -11,7 +13,11 @@ export async function LockCoupon(network, visibility) {
         network,
         visibility,
       },
-      { headers: authHeader() }
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     // console.log(response.data);
     return response.data;

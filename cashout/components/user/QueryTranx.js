@@ -1,8 +1,11 @@
 import React from "react";
 import styles from "@/styles/QueryTransactions.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { authGuard } from "@/Utils/authGuard";
 
 function QueryTransactions({
+  ctx,
   openTranx,
   openData,
   input2Ref,
@@ -16,6 +19,10 @@ function QueryTransactions({
   isButtonDisabled,
   errorMessage
 }) {
+
+  const router = useRouter();
+  authGuard(ctx, router);
+
   return (
     // <div className="relative">
     <>
@@ -138,33 +145,3 @@ function QueryTransactions({
 }
 
 export default QueryTransactions;
-
-
-// import axios from "axios";
-// import API_BASE_URL from "@/apiConfig";
-// import { getUserIdAndToken } from "@/Utils/authCookies";
-// import { getUser } from "@/Utils/Common";
-
-// const BASE_URL = `${API_BASE_URL}/queryTransactions`;
-// const userId = getUser();
-
-// export async function queryTranxHandler(ctx, inputValue ) {
-//     const { token } = getUserIdAndToken(ctx);
-  
-//       try {
-//           const response = await axios.post(
-//             `${BASE_URL}/${userId}`,
-//             {request_id: inputValue},
-//             {
-//               headers: {
-//                 Authorization: `Bearer ${token}`,
-//               },
-//             }
-//           );
-//           // console.log(response.data)
-//           return response.data;
-//         } catch (error) {
-//           // console.log(error.response.data)
-//            return error.response.data;
-//         }
-//   }

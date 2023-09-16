@@ -100,7 +100,7 @@ const Sidebar = () => {
       }
     } catch (error) {
       // console.log(error);
-        throw new Error(`An error occured ${error}`);
+      throw new Error(`An error occured ${error}`);
     }
   };
 
@@ -233,7 +233,6 @@ const Sidebar = () => {
 
 export default Sidebar;
 
-
 // import React, { useState, useRef } from 'react';
 // import CollapseBtn from '../heroIcons/CollapseBtn';
 
@@ -301,5 +300,3 @@ export default Sidebar;
 // };
 
 // export default Sidebar;
-
-

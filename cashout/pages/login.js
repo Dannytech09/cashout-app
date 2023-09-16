@@ -1,10 +1,10 @@
-import Login from "@/components/user/Login";
 import React from "react";
+import LoginComp from "@/components/user/Login";
 
 export default function LoginPage() {
   return (
     <div>
-      <Login />
+      <LoginComp />
     </div>
   );
 }

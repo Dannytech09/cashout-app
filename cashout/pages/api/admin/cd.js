@@ -1,10 +1,17 @@
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
-import authHeader from "@/services/auth-Header";
+import { getUserIdAndToken } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/users`;
 
-export async function updateUserBalance(email, amount, operation, purpose) {
+export async function updateUserBalance(
+  ctx,
+  email,
+  amount,
+  operation,
+  purpose
+) {
+  const { token } = getUserIdAndToken(ctx);
   try {
     const response = await axios.post(
       `${BASE_URL}/credit-debit`,
@@ -12,17 +19,16 @@ export async function updateUserBalance(email, amount, operation, purpose) {
         email,
         amount,
         operation,
-        purpose
+        purpose,
       },
-      { headers: authHeader() }
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     return response.data;
   } catch (error) {
-    if(error.response.data.code === "002") {
-        return error.response.data;
-    } else if(error.response.data.error) {
-        return error.response.data;
-    }
-    throw new Error("An error occurred.");
+    return error.response.data;
   }
 }

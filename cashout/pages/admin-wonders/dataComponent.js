@@ -1,10 +1,25 @@
 import React from "react";
-import withAuth from "../../hocs/withAuth";
 import Link from "next/link";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
+import { adminAuthGuard } from "@/Utils/authGuard";
+import { useRouter } from "next/router";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
+
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/admin-wonders/login" });
+    res.end();
+  }
+  return { props: {} };
+}
 
 // This page is being routed to different pages
-function dataComponent() {
+function dataComponent(ctx) {
+  const router = useRouter();
+  adminAuthGuard(ctx, router);
   return (
     <>
       <SidebarAdmin />
@@ -90,4 +105,4 @@ function dataComponent() {
   );
 }
 
-export default withAuth(dataComponent);
+export default dataComponent;

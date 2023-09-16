@@ -8,7 +8,7 @@ import Notification from "./userJsx/Notification";
 
 export default function NotificationComp(ctx) {
   const router = useRouter();
-  authGuard();
+  authGuard(ctx, router);
 
   const [bank, setBank] = useState("");
   const [narration, setNarration] = useState("");

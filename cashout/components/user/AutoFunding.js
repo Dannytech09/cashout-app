@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 
 const AutoFundingComp = (ctx) => {
   const router = useRouter();
-  authGuard();
+  authGuard(ctx, router);
 
   const [data, setData] = useState(null);
   const [postData, setPostData] = useState(null);

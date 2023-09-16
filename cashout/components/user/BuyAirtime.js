@@ -3,10 +3,11 @@ import { useRouter } from "next/router";
 import { buyAirtimeHandler } from "@/pages/api/user/buyAirtime";
 import BuyAirtime from "./userJsx/BuyAirtime";
 import { authGuard } from "@/Utils/authGuard";
+import { expireSessionAndRedirect } from "@/Utils/authCookies";
 
 function BuyAirtimeComp(ctx) {
   const router = useRouter();
-  authGuard();
+  authGuard(ctx, router);
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -93,10 +94,11 @@ function BuyAirtimeComp(ctx) {
         // console.log(response)
         if (
           response.error === "Invalid token." ||
-          response.error === "Token expired."
+          response.error === "Token has been revoked or expired."
         ) {
           localStorage.removeItem("buttonClicked");
           sessionStorage.clear();
+          expireSessionAndRedirect(ctx, router);
           router.push("/login");
         } else if (response.error) {
           setErrorMessage(response.error);

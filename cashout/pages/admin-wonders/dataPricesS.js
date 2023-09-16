@@ -1,6 +1,17 @@
-import UpdatePrices from "@/components/admin/SetDataPrices";
-import withAuth from "@/hocs/withAuth";
 import React from "react";
+import UpdatePrices from "@/components/admin/DataPricesS";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
+
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/admin-wonders/login" });
+    res.end();
+  }
+  return { props: {} };
+}
 
 // SS
 function DataPricesS() {
@@ -11,4 +22,4 @@ function DataPricesS() {
   );
 }
 
-export default withAuth(DataPricesS);
+export default DataPricesS;
