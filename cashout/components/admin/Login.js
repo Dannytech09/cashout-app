@@ -40,7 +40,7 @@ export default function LoginComp(ctx) {
         if (response.error) {
           const r = response.error;
           setErrorMessage(r);
-        } else if (response.statusText === "OK") {
+        } else if (response.success === true || response.status === 200) {
           const token = response.data.token;
           const user = response.data.user;
           setCookieAndRedirect(ctx, "token", token);
