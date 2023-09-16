@@ -76,7 +76,7 @@ function GetAllPurchasesComp(ctx) {
     };
 
     fetchData();
-  }, [router]);
+  }, [router, ctx, token]);
 
   if (redirecting) {
     return (

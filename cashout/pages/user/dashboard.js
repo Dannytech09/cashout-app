@@ -33,7 +33,7 @@ function Dashboard({ ctx, user, error }) {
       // console.log(error)
       setRedirecting(true);
     }
-  });
+  }, [error, ctx, router]);
 
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;

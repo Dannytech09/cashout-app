@@ -24,7 +24,7 @@ function GetAllUsersComp(ctx) {
   const [redirecting, setRedirecting] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [postsPerPage] = useState(10);
-  
+
   useEffect(() => {
   const fetch = async () => {
     try {
@@ -55,7 +55,7 @@ function GetAllUsersComp(ctx) {
     }
   };
     fetch();
-  }, [router]);
+  }, [router, ctx, token]);
 
   if (redirecting) {
     return (
