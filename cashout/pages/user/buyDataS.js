@@ -5,7 +5,7 @@ import styles from "../../styles/BuyData.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Sidebar from "@/components/user/Sidebar";
-import Footer from "../../components/user/SubMain";
+import Footer from "../../components/user/Footer";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmDataModal from "../../components/user/ConfirmDataModal";
 import API_BASE_URL from "@/apiConfig";
@@ -13,8 +13,9 @@ import Loader from "@/components/utils/Loader";
 import withAuth from "@/hocs/withAuth";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
+let name;
 
-function BuyData() {
+function BuyDataS() {
   const router = useRouter();
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -39,11 +40,11 @@ function BuyData() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${BASE_URL}/getData`);
+        const response = await fetch(`${BASE_URL}/getDatas`);
         const res = await response.json();
         // console.log(res.networkDataS);
-        // setNetworkData(res.networkData);             // SALD
-        setNetworkData(res.networkDataS);               // SWD
+        // setNetworkData(res.networkData);             // S
+        setNetworkData(res.networkDataS); // SWD
         setLoading(false);
         return;
       } catch (error) {
@@ -54,30 +55,27 @@ function BuyData() {
     fetchData();
   }, []);
 
-  // if (loading) {
-  //   return <div className="bg-slate-100">Loading...</div>;
-  // }
-
   const changeNetwork = (e) => {
+    const selectedVariationString = e.target.value;
+
     const selectedNetwork = networkData.find(
-      (ctr) => ctr.network === e.target.value
+      (ctr) => ctr.variation_string === selectedVariationString
     );
     if (selectedNetwork) {
       setDataVols(selectedNetwork.dataVol);
 
-      const selectedData = selectedNetwork.dataVol.find(
-        (vol) => vol.name === e.target.value
-      );
-
-      if (selectedData) {
-        selectedDataVolName = selectedData.name;
-        // console.log(selectedDataVolName);
-      }
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(selectedNetwork.network); // Set the network based on the found network
+    } else {
+      setDataVols([]); // Clear the dataVols state when the network is not found (optional)
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
     }
-    setPhoneNumber("");
-    setAmount("");
-    setNetwork(e.target.value);
-    // console.log(e.target.value);
+    name = selectedNetwork.variation_string;
+    // console.log("Selected Network:", variation);
+    // console.log("Data Vols:", dataVols);
   };
 
   // handle two onchange props
@@ -158,7 +156,7 @@ function BuyData() {
         setErrorMessage(false);
         setServerError(false);
         const response = await axios.post(
-          `${BASE_URL}/${id}/purchase`,
+          `${BASE_URL}/${id}/purchases`,
           { network: network, plan_code: dataVol, mobile: phoneNumber },
           {
             headers: authHeader(),
@@ -173,7 +171,7 @@ function BuyData() {
           router.reload();
         }
       } catch (error) {
-        // console.log(error.response.data)
+        // console.log(error)
         if (
           error.response.data.error === "Invalid token." ||
           error.response.data.error === "Token expired."
@@ -196,6 +194,7 @@ function BuyData() {
         } else if (error.response.data.code === "005") {
           setServerError(true);
         } else {
+          // console.log(error.response);
           alert(`Something went wrong! If problem persist check your network`);
         }
       }
@@ -231,14 +230,13 @@ function BuyData() {
       <form onSubmit={submit} className="">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl p-5">Buy Data</h3>
-            <div className="border rounded-2xl border-dotted bg-yellow-300 m-2 p-2 w-60 text-xs mx-auto">
-              <div>
+            <h3 className="text-black text-xl p-5">Buy Data 2</h3>
+            <div className="border rounded-2xl border-dotted bg-green-300 m-2 p-2 w-60 text-xs mx-auto">
+              <div className="">
                 <p className="mb-2">Network Needed is not on the list ?</p>
-                <p>Checkout Data2. Thank You !</p>
+                <p>Checkout Data. Thank You !</p>
               </div>
             </div>
-
             <div>
               {phoneErr && (
                 <div className={styles.errorMessage}>
@@ -284,7 +282,7 @@ function BuyData() {
             >
               <option value={network}>--Choose Network--</option>
               {networkData.map((ctr) => (
-                <option value={ctr.network} key={ctr.network}>
+                <option value={ctr.variation_string} key={ctr._id}>
                   {ctr.variation_string}
                 </option>
               ))}
@@ -348,7 +346,7 @@ function BuyData() {
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
-        network={network}
+        network={name}
         // dataVol={dataVol}
         // value={buyData}
       />
@@ -357,4 +355,4 @@ function BuyData() {
   );
 }
 
-export default withAuth(BuyData);
+export default withAuth(BuyDataS);

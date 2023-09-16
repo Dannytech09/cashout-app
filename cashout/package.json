@@ -26,7 +26,8 @@
     "react-icons": "^4.8.0",
     "react-modal": "^3.16.1",
     "react-rough-notation": "^1.0.5",
-    "react-router-dom": "^6.10.0"
+    "react-router-dom": "^6.10.0",
+    "sharp": "^0.32.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

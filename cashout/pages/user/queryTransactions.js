@@ -4,10 +4,12 @@ import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
 import authHeader from "@/services/auth-Header";
 import QueryTransactions from "@/components/user/QueryTransactions";
+import { useRouter } from "next/router";
 
 const BASE_URL = `${API_BASE_URL}/queryTransactions`;
 
 function QueryTranx() {
+  const router = useRouter();
   const [openTranx, setOpenTranx] = useState(false);
   const [openData, setOpenData] = useState(false);
   const input1Ref = useRef();
@@ -58,7 +60,13 @@ function QueryTranx() {
         // console.log(response.data);
       })
       .catch((error) => {
-        if (error.response.data.code === "011") {
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/login");
+        } else if (error.response.data.code === "011") {
           alert("Invalid Transaction ID");
         }
         // console.log(error);

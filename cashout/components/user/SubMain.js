@@ -1,34 +1,31 @@
 import React from "react";
-import Card from "../utils/Card";
-import WifiDataIcon from "@/components/heroIcons/WifiDataIcon";
-import PhoneAirtimeIcon from "../heroIcons/PhoneAirtimeIcon";
-import TvCabIcon from "../heroIcons/TvCabIcon";
-import LightElectIcon from "../heroIcons/LightElectIcon";
 import Link from "next/link";
+import Card from "../utils/Card";
+import InfoIcon from "../heroIcons/InfoIcon";
 
-export default function subMain() {
+export default function SubMain() {
   return (
     // <div>
-    <Card className="max-sm:w-full mt-[0ch] h-40 text-center z-60 p-4 justify-between w-full border-3 bg-slate-200">
-      <div className="place-items-stretch flex justify-evenly bg-slate-100 p-2 rounded-t-xl">
-        <div className="flex gap-4 hover:bg-slate-500 hover:text-blue-300 items-center justify-center max-sm:w-30 text-center h-[6ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[40%]">
-          <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><WifiDataIcon/></span>
-          <Link href="/user/buyData" className="text-blue-600 text-md">Data</Link>
-        </div>
-        <div className="flex gap-4 hover:bg-slate-500 hover:text-blue-300 items-center justify-center max-sm:w-30 text-center h-[6ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[40%]">
-        <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><PhoneAirtimeIcon/></span>
-        <Link href="/user/buyAirtime" className="text-blue-600 text-md">Airtime</Link>
-        </div>
+    <Card className="max-sm:flex-col mt-10 max-sm:w-full text-center z-60 flex h-60 p-4 justify-center w-full border-3 bg-slate-100 border-white">
+      <div className="flex hover:bg-slate-500 hover:text-blue-950 gap-20 text-center max-sm:w-full h-[20ch] bg-slate-400 border-2 max-sm:mt-[-2ch] border-slate-200 rounded-2xl w-[30%]">
+        <span className=" fill-blue-900 h-8 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+          <InfoIcon/>
+        </span>
+        <Link href={"/user/history"} className="font-extrabold text-sm pt-3 place-items-center">Transaction History</Link>
       </div>
-      <div className="flex justify-evenly bg-slate-100 p-2 rounded-b-xl">
-        <div className="flex gap-2 hover:bg-slate-500 hover:text-blue-300 items-center justify-center px-2 max-sm:w-35 text-center h-[6ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[40%]">
-        <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><TvCabIcon/></span>
-          <Link href={"/user/tvSub"} className="text-blue-600 text-md">Cable Sub</Link>
-        </div>
-        <div className="flex gap-2 hover:bg-slate-500 hover:text-blue-300 items-center justify-center px-2 max-sm:w-35 text-center h-[6ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[40%]">
-        <span className="fill-blue-500 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"><LightElectIcon/></span>
-          <Link href={"/user/electBill"} className="text-blue-600 text-md">Elect bills</Link>
-        </div>
+      <div className="flex gap-20 hover:bg-slate-500 hover:text-blue-950 max-sm:w-full h-[20ch] mt-[0ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[30%]">
+      <span className="fill-blue-900 h-8 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+          <InfoIcon/>
+        </span>
+        <Link href={"/user/queryTransactions"} className="font-extrabold text-sm pt-3">Query Transaction</Link>
+      </div>
+      <div className="flex gap-20 hover:bg-slate-500 hover:text-blue-950 max-sm:w-full h-[20ch] mt-[0ch] bg-slate-400 border-2 border-slate-200 rounded-2xl w-[30%]">
+      <span className="fill-blue-900 h-8 border-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600">
+          <InfoIcon/>
+        </span>
+        <Link href={"/user/buyData-mainGift"}>
+        <h3 className="font-extrabold text-sm pt-3">NormalGift/Bulk Data</h3>
+        </Link>
       </div>
     </Card>
     // </div>

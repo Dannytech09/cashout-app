@@ -6,10 +6,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../../styles/BuyAirtime.module.css";
 import Sidebar from "@/components/user/Sidebar";
-import Footer from "@/components/user/Footer";
+import Footer from "@/components/user/SubMain";
 import SmileIcon from "@/components/heroIcons/SmileIcon";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
+import withAuth from "@/hocs/withAuth";
 
 const BASE_URL = `${API_BASE_URL}/buyAirtime`;
 
@@ -121,7 +122,13 @@ function BuyAirtime() {
           // console.log(response)
         }
       } catch (error) {
-        if (error.response.data.error) {
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token expired."
+        ) {
+          sessionStorage.clear();
+          router.push("/login");
+        } else if (error.response.data.error) {
           setUnauthorised(true);
         } else if (error.response.data.code === "003") {
           setPhoneErr(true);
@@ -162,9 +169,9 @@ function BuyAirtime() {
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-       {loading && <Loader />}
+      {loading && <Loader />}
       <div>
-      <Sidebar />
+        <Sidebar />
       </div>
       <form onSubmit={submit} className="">
         <div className="p-10">
@@ -179,7 +186,9 @@ function BuyAirtime() {
               {insufficientBal && (
                 <div className={styles.errorMessage}>
                   Fund your wallet now boss !
-                  <span className="fill-blue-900 stroke-blue-600"><SmileIcon/></span>
+                  <span className="fill-blue-900 stroke-blue-600">
+                    <SmileIcon />
+                  </span>
                 </div>
               )}
               {unauthorised && (
@@ -266,4 +275,4 @@ function BuyAirtime() {
   );
 }
 
-export default BuyAirtime;
+export default withAuth(BuyAirtime);

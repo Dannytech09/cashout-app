@@ -7,8 +7,10 @@ import axios from "axios";
 import withAuth from "../../hocs/withAuth";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
+import { useRouter } from "next/router";
 
 function UpdateUser() {
+  const router = useRouter();
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -55,6 +57,12 @@ function UpdateUser() {
         setLoading(false);
     } catch (error) {
       if (
+        error.response.data.error === "Invalid token." ||
+        error.response.data.error === "Token expired."
+      ) {
+        sessionStorage.clear();
+        router.push("/login");
+      } else if (
         error.response?.status === 401 ||
         error.response?.status === 500
       ) {

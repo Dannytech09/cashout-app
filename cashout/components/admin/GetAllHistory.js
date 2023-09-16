@@ -125,7 +125,7 @@ function AllPurchases({ error, allPurchases, loading, count, rCount }) {
                 </p>
               </div>
               {item.message && (
-                <p className="text-blue-700 text-[1.1ch]">
+                <p className="text-blue-700 text-[1ch]">
                   Message: {item.message}
                 </p>
               )}

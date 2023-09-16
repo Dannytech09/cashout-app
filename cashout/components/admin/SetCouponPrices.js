@@ -1,47 +1,59 @@
 import { useState } from "react";
 import classNames from "classnames";
-import API_BASE_URL from "@/apiConfig";
-import { getToken } from "@/Utils/Common";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
-import withAuth from "@/hocs/withAuth";
+import Loader from "@/components/utils/Loader";
+import { SetPricesHandler } from "@/pages/api/admin/setCouponPrices";
 
-const ADMIN_BASE_URL = `${API_BASE_URL}/admin`;
-
-function PatchForm() {
-  const [network, setNetwork] = useState("");
-  const [data, setData] = useState([{ name: "", amount: "" }]);
+// 1
+export default function SetCouponPrices() {
+  const [variation_string, setVariation_string] = useState("");
+  const [data, setData] = useState([{ plan_code: "", name: "", amount: "" }]);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
-    const response = await fetch(`${ADMIN_BASE_URL}/price/update-price`, {
-      method: "PUT",
-      headers: {
-        Authorization: "Bearer " + getToken(),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ network, data }),
-    });
-
-    if (response.ok) {
-      alert("Data updated successfully");
-    } else {
-      const error = await response.json();
-      alert(`Error updating data: ${error.message}`);
+    try {
+      const response = await SetPricesHandler(variation_string, data);
+      // console.log(response.message);
+      if (response.success === true || response.status === 204) {
+        alert("Data updated successfully");
+      } else if (response.message) {
+        alert(response.message);
+      }
+    } catch (error) {
+      // console.log(error.response.message);
+      if (error.response.message) {
+        alert(error.response.message);
+      }
     }
+    setLoading(false);
+  };
+
+  const handleNetworkChange = (e) => {
+    const inputValue = e.target.value;
+    setVariation_string(inputValue);
+    // console.log(inputValue);
   };
 
   const handleDataChange = (event, index) => {
     const newData = [...data];
-    newData[index][event.target.name] = event.target.value.toUpperCase();
+
     if (event.target.name === "amount") {
-      newData[index][event.target.name] = event.target.value.replace(/\D/, "");
+      // Handle amount field
+      newData[index][event.target.name] = event.target.value.replace(/\D/g, "");
+    } else {
+      // Handle other fields
+      newData[index][event.target.name] = event.target.value.toUpperCase();
     }
+
     setData(newData);
+    // console.log(newData);
   };
 
   const handleAddData = () => {
-    setData([...data, { name: "", amount: "" }]);
+    setData([...data, { plan_code: "", name: "", amount: "" }]);
   };
 
   const handleRemoveData = (index) => {
@@ -53,37 +65,56 @@ function PatchForm() {
       onSubmit={handleSubmit}
       className="text-center border border-black-300 bg-black h-screen"
     >
+      {loading && <Loader />}
       <div>
         <SidebarAdmin />
       </div>
       <div className="mb-4 max-w-screen-md flex-col w-screen text-center">
         <h1 className="m-5 p-2 border border-green-400 bg-green-400 text-white ">
-          Update Data Prices - self
+          Update Coupon Prices - 1
         </h1>
         <label htmlFor="network" className="block text-white font-bold mb-2">
-          Network:
+          Network: e.g., MTN Direct Coupon(1 month)
         </label>
-        <select
-          id="network"
-          name="network"
-          value={network}
-          onChange={(event) => setNetwork(event.target.value)}
+        <input
+          id="variation_string"
+          name="variation_string"
+          value={variation_string}
+          onChange={handleNetworkChange}
           className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        >
-          <option value="">Select network</option>
-          <option value="mtn">MTN</option>
-          <option value="glo">Glo</option>
-          <option value="airtel">Airtel</option>
-          <option value="9mobile">9mobile</option>
-        </select>
+        />
       </div>
       <div className="mb-4">
         <label className="block text-white font-bold">
-          Please input Data Vol and Amount:
+          Please input Data Coupon Vol and Amount:
         </label>
         {data.map((dataItem, index) => (
           <div key={index} className="flex p-2 m-2">
-            <input
+            <select
+              type="text"
+              name="plan_code"
+              value={dataItem.plan_code}
+              onChange={(event) => handleDataChange(event, index)}
+              placeholder="Plan Code"
+              className={classNames(
+                "appearance-none border rounded w-1/2 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                {
+                  "bg-red-100 border-red-500": !/^[0-9]+GB$/.test(
+                    dataItem.plan_code
+                  ),
+                }
+              )}
+            >
+              {" "}
+              <option value="">Plan Code</option>
+              <option value="151">750MB</option>
+              <option value="152">1GB</option>
+              <option value="154">1.5GB</option>
+              <option value="156">2GB</option>
+              <option value="153">3GB</option>{" "}
+            </select>
+            <br />
+            <select
               type="text"
               name="name"
               value={dataItem.name}
@@ -97,9 +128,17 @@ function PatchForm() {
                   ),
                 }
               )}
-            />
+            >
+              {" "}
+              <option value="">Select network</option>
+              <option value="750MB">750MB</option>
+              <option value="1GB">1GB</option>
+              <option value="1.5GB">1.5GB</option>
+              <option value="2GB">2GB</option>
+              <option value="3GB">3GB</option>{" "}
+            </select>
             <input
-              type="text"
+              type="number"
               name="amount"
               value={dataItem.amount}
               onChange={(event) => handleDataChange(event, index)}
@@ -123,7 +162,7 @@ function PatchForm() {
           onClick={handleAddData}
           className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          Add Data
+          Add Coupon
         </button>
       </div>
       <button
@@ -135,5 +174,3 @@ function PatchForm() {
     </form>
   );
 }
-
-export default withAuth(PatchForm);

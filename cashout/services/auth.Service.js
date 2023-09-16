@@ -1,9 +1,9 @@
 import axios from "axios";
 import { setUserSession, removeUserSession } from "../Utils/Common";
 import authHeader from "./auth-Header";
+import API_BASE_URL from "@/apiConfig";
 // import { setCookie } from "nookies";
 // import { destroyCookie } from "nookies";
-import API_BASE_URL from "@/apiConfig";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/auth`;
 
@@ -40,7 +40,7 @@ const signIn = async (email, password) => {
       password,
     })
     .then(async (response) => {
-      // console.log(response);
+      // console.log(response?.data);
       if (
         response?.data?.user.isAdmin === false &&
         typeof window !== "undefined"

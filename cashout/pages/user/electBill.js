@@ -9,11 +9,12 @@ import SmileIcon from "@/components/heroIcons/SmileIcon";
 import ConfirmElectModal from "@/components/user/ConfirmElectModal";
 import API_BASE_URL from "@/apiConfig";
 import Loader from "@/components/utils/Loader";
+import withAuth from "@/hocs/withAuth";
 // import Footer from "../../components/user/Footer";
 
 const BASE_URL = `${API_BASE_URL}`;
 
-export default function TvSub() {
+function ElectBill() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [insufficientBal, setInsufficientBal] = useState(false);
@@ -391,3 +392,5 @@ export default function TvSub() {
     </div>
   );
 }
+
+export default withAuth(ElectBill)
