@@ -1,34 +1,67 @@
 import { useState } from "react";
-import classNames from "classnames";
-import SidebarAdmin from "@/components/admin/Sidebar-Admin";
-import Loader from "@/components/utils/Loader";
 import { SetPricesHandler } from "@/pages/api/admin/setCouponPrices";
+import { aExpireSessionAndRedirect } from "@/Utils/authCookies";
+import { useRouter } from "next/router";
+import { authGuard } from "@/Utils/authGuard";
+import SetCouponPrices from "./adminjsx/SetCouponPrices";
 
 // 1
-export default function SetCouponPrices() {
+export default function SetCouponPricesComp(ctx) {
+  const router = useRouter();
+  authGuard(ctx, router);
+
+  const [accountType, setAccountType] = useState("");
   const [variation_string, setVariation_string] = useState("");
   const [data, setData] = useState([{ plan_code: "", name: "", amount: "" }]);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [redirecting, setRedirecting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
 
     try {
-      const response = await SetPricesHandler(variation_string, data);
+      setLoading(true);
+      setErrorMessage(null);
+      setSuccessMessage(null);
+      setRedirecting(false);
+      const response = await SetPricesHandler(
+        ctx,
+        accountType,
+        variation_string,
+        data
+      );
       // console.log(response.message);
-      if (response.success === true || response.status === 204) {
-        alert("Data updated successfully");
-      } else if (response.message) {
-        alert(response.message);
+      if (
+        response.error === "Invalid token." ||
+        response.error === "Token has been revoked or expired." ||
+        response.error === "Forbidden!"
+      ) {
+        sessionStorage.clear();
+        aExpireSessionAndRedirect(ctx, router);
+        setRedirecting(true);
+      } else if (response.error) {
+        setErrorMessage(response.error);
+        setSuccessMessage(null);
+      } else {
+        setSuccessMessage(response.message);
+        setErrorMessage(null);
       }
     } catch (error) {
-      // console.log(error.response.message);
-      if (error.response.message) {
-        alert(error.response.message);
+      //   console.error(error);
+      if (error) {
+        throw new Error(`An error occurred ${error}`);
       }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+  };
+
+  const handleAccountTypeChange = (e) => {
+    const inputValue = e.target.value;
+    setAccountType(inputValue);
+    // console.log(inputValue);
   };
 
   const handleNetworkChange = (e) => {
@@ -60,117 +93,30 @@ export default function SetCouponPrices() {
     setData(data.filter((_, i) => i !== index));
   };
 
+  if (redirecting) {
+    return (
+      <div className="text-sm bg-red-600">
+        Session expired redirecting to login...
+      </div>
+    );
+  }
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="text-center border border-black-300 bg-black h-screen"
-    >
-      {loading && <Loader />}
-      <div>
-        <SidebarAdmin />
-      </div>
-      <div className="mb-4 max-w-screen-md flex-col w-screen text-center">
-        <h1 className="m-5 p-2 border border-green-400 bg-green-400 text-white ">
-          Update Coupon Prices - 1
-        </h1>
-        <label htmlFor="network" className="block text-white font-bold mb-2">
-          Network: e.g., MTN Direct Coupon(1 month)
-        </label>
-        <input
-          id="variation_string"
-          name="variation_string"
-          value={variation_string}
-          onChange={handleNetworkChange}
-          className="appearance-none border rounded w-80 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-white font-bold">
-          Please input Data Coupon Vol and Amount:
-        </label>
-        {data.map((dataItem, index) => (
-          <div key={index} className="flex p-2 m-2">
-            <select
-              type="text"
-              name="plan_code"
-              value={dataItem.plan_code}
-              onChange={(event) => handleDataChange(event, index)}
-              placeholder="Plan Code"
-              className={classNames(
-                "appearance-none border rounded w-1/2 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
-                {
-                  "bg-red-100 border-red-500": !/^[0-9]+GB$/.test(
-                    dataItem.plan_code
-                  ),
-                }
-              )}
-            >
-              {" "}
-              <option value="">Plan Code</option>
-              <option value="151">750MB</option>
-              <option value="152">1GB</option>
-              <option value="154">1.5GB</option>
-              <option value="156">2GB</option>
-              <option value="153">3GB</option>{" "}
-            </select>
-            <br />
-            <select
-              type="text"
-              name="name"
-              value={dataItem.name}
-              onChange={(event) => handleDataChange(event, index)}
-              placeholder="Name (e.g. 1GB)"
-              className={classNames(
-                "appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
-                {
-                  "bg-red-100 border-red-500": !/^[0-9]+GB$/.test(
-                    dataItem.name
-                  ),
-                }
-              )}
-            >
-              {" "}
-              <option value="">Select network</option>
-              <option value="750MB">750MB</option>
-              <option value="1GB">1GB</option>
-              <option value="1.5GB">1.5GB</option>
-              <option value="2GB">2GB</option>
-              <option value="3GB">3GB</option>{" "}
-            </select>
-            <input
-              type="number"
-              name="amount"
-              value={dataItem.amount}
-              onChange={(event) => handleDataChange(event, index)}
-              placeholder="Amount (e.g. 3000)"
-              className={classNames(
-                "appearance-none border rounded w-1/2 ml-2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
-                { "bg-red-100 border-red-500": !/^\d+$/.test(dataItem.amount) }
-              )}
-            />
-            <button
-              type="button"
-              onClick={() => handleRemoveData(index)}
-              className="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Del
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={handleAddData}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Add Coupon
-        </button>
-      </div>
-      <button
-        type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Submit
-      </button>
-    </form>
+    <div>
+      <SetCouponPrices
+        accountType={accountType}
+        variation_string={variation_string}
+        data={data}
+        loading={loading}
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+        handleSubmit={handleSubmit}
+        handleAccountTypeChange={handleAccountTypeChange}
+        handleNetworkChange={handleNetworkChange}
+        handleDataChange={handleDataChange}
+        handleAddData={handleAddData}
+        handleRemoveData={handleRemoveData}
+      />
+    </div>
   );
 }

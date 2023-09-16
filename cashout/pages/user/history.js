@@ -1,50 +1,22 @@
-import DataServices from "../../services/data.services";
-import React, { useState, useEffect } from "react";
-import withAuth from "../../hocs/withAuth";
-import MyPurchases from "@/components/user/History";
-import { useRouter } from "next/router";
+import React from 'react'
+import HistoryComp from '@/components/user/History';
+import { getUserIdAndToken } from "@/Utils/authCookies";
 
-function History() {
-  const router = useRouter();
-  const [myPurchases, setMyPurchases] = useState([]);
-  const [checkTransaction, setCheckTransaction] = useState(false);
-  const [loading, setLoading] = useState(false);
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const res = await DataServices.getMyPurchases();
-
-      setMyPurchases(res.data.data);
-      // console.log(res.data.data);
-    } catch (error) {
-      if (
-        error.response.data.error === "Invalid token." ||
-        error.response.data.error === "Token expired."
-      ) {
-        sessionStorage.clear();
-        router.push("/login");
-      } else if (error?.response?.data?.code === "002") {
-        setCheckTransaction(true);
-      } else {
-        alert("Something went wrong");      }
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return (
-    <div>
-      <MyPurchases
-        checkTransaction={checkTransaction}
-        myPurchases={myPurchases}
-        loading={loading}
-      />
-    </div>
-  );
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/login" });
+    res.end();
+  }
+  return { props: {} };
 }
 
-export default withAuth(History);
+export default function History() {
+  return (
+    <div>
+      <HistoryComp />
+    </div>
+  )
+}

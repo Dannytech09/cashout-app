@@ -1,17 +1,22 @@
-import API_BASE_URL from "@/apiConfig";
-import authHeader from "@/services/auth-Header";
 import axios from "axios";
+import API_BASE_URL from "@/apiConfig";
+import { getUserIdAndToken } from "@/Utils/authCookies";
 
 // SS
-export async function LockDataS(variation_string, visibility) {
+export async function LockDataSHandler(ctx,  visibility, variation_string) {
+  const { token } = getUserIdAndToken(ctx);
   try {
     const response = await axios.patch(
       `${API_BASE_URL}/admin/lock-services`,
       {
-        variation_string,
         visibility,
+        variation_string,
       },
-      { headers: authHeader() }
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
     );
     // console.log(response.data);
     return response.data;

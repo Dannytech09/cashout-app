@@ -7,7 +7,7 @@ import Loader from "../utils/Loader";
 function AllPurchases({ error, allPurchases, loading, count, rCount }) {
   return (
     <div className="relative">
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <div className="fixed top-0 z-40">
         <SidebarAdmin />
       </div>
@@ -19,10 +19,11 @@ function AllPurchases({ error, allPurchases, loading, count, rCount }) {
       </div>
       <div>{error && <p>Error: {error}</p>}</div>
       <div className="mt-[10ch]">
-        { count && (
-
-        <p className=" mx-auto mt-[11ch] text-xs p-3 mb-[-2ch]">Total Count - {count} Returned count - {rCount}</p>)
-        }
+        {count && (
+          <p className=" mx-auto mt-[11ch] text-xs p-3 mb-[-2ch]">
+            Total Count - {count} Returned count - {rCount}
+          </p>
+        )}
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
           {allPurchases.map((item) => (
             <div
@@ -41,36 +42,31 @@ function AllPurchases({ error, allPurchases, loading, count, rCount }) {
                   <span className="font-medium">{item.account_name}</span>
                 </p>
               )}
-                 <p className="text-gray-700 text-[1.1ch]">
-                  Email: {item.email}
-                </p>
-                <p className="text-gray-700 text-[1.1ch]">
-                  Username: {item.username}
-                </p>
-                <hr className="border-1 border-black"/>
+              <p className="text-gray-700 text-[1.1ch]">Email: {item.email}</p>
+              <p className="text-gray-700 text-[1.1ch]">
+                Username: {item.username}
+              </p>
+              <hr className="border-1 border-black" />
               {item.bank && (
                 // <div className="flex-wrap text-[1.3ch]">
-                   <p className="text-gray-700 text-[1.1ch]">
-                    Bank: <span className="font-medium"> {item.bank}</span>
-                  </p>
+                <p className="text-gray-700 text-[1.1ch]">
+                  Bank: <span className="font-medium"> {item.bank}</span>
+                </p>
                 // </div>
               )}
               {item.account_number && (
-                 <p className="text-gray-700 text-[1.1ch]">
+                <p className="text-gray-700 text-[1.1ch]">
                   Account Number:{" "}
                   <span className="font-medium">{item.account_number}</span>
                 </p>
               )}
               {item.paymentReference && (
-                   <p className="text-gray-700 text-[1.1ch]">
-                    Payment Ref:{" "}
-                    <span className="font-medium">
-                      {" "}
-                      {item.paymentReference}
-                    </span>
-                  </p>
+                <p className="text-gray-700 text-[1.1ch]">
+                  Payment Ref:{" "}
+                  <span className="font-medium"> {item.paymentReference}</span>
+                </p>
               )}
-              
+
               <div className="flex justify-between">
                 {item.product_name && (
                   <p className="text-gray-700 text-[1.1ch]">
@@ -104,10 +100,10 @@ function AllPurchases({ error, allPurchases, loading, count, rCount }) {
                 </p>
                 {item.payment_fee && (
                   // <div className="flex-wrap text-[1.3ch]">
-                    <p className="text-gray-700 text-[1.1ch]">
-                      Payment fee:{" "}
-                      <span className="font-medium"> {item.payment_fee}</span>
-                    </p>
+                  <p className="text-gray-700 text-[1.1ch]">
+                    Payment fee:{" "}
+                    <span className="font-medium"> {item.payment_fee}</span>
+                  </p>
                   // </div>
                 )}
                 {item.cashback && (

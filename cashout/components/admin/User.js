@@ -1,16 +1,15 @@
-import React from 'react'
+import React from "react";
 
 export default function User({ user }) {
   return (
     <div>
-
       {user && (
         <div className="text-center border-4 border-black bg-blue-300 p-5">
           <ul className="text-sm">
             <li>
               {" "}
               User ID: &nbsp;
-              <span>{user._id}</span>
+              <span>{user.id || user._id}</span>
             </li>
             <li>
               {" "}
@@ -25,6 +24,12 @@ export default function User({ user }) {
               Username: &nbsp;
               {user.username}
             </li>
+            {user.phoneNumber && (
+              <li>
+                Phone Number: &nbsp;
+              <span>{user.phoneNumber}</span>
+              </li>
+            )}
             <li>
               {" "}
               Email: &nbsp;
@@ -42,22 +47,17 @@ export default function User({ user }) {
             </li>
             <li>
               {" "}
-              Admin? : &nbsp;
-              <span>{user.isAdmin.toString()}</span>
-            </li>
-            <li>
-              {" "}
-              Phone Number: &nbsp;
-              <span>{user.phoneNumber}</span>
-            </li>
-            <li>
-              {" "}
               User&apos;s Account-Type: &nbsp;
               <span> {user.accountType}</span>
+            </li>
+            <li>
+              {" "}
+              Bank: &nbsp;
+              <span>{user.bank.toString()}</span>
             </li>
           </ul>
         </div>
       )}
     </div>
-  )
+  );
 }

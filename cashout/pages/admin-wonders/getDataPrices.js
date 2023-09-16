@@ -1,39 +1,55 @@
-import DataServices from "@/services/data.services";
 import React, { useState, useEffect } from "react";
-import withAuth from "../../hocs/withAuth";
+import axios from "axios";
 import CurrentPrices from "@/components/admin/GetDataPrices";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
-import { useRouter } from "next/router";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+import API_BASE_URL from "@/apiConfig";
+import { getUser } from "@/Utils/Common";
+// import { useRouter } from "next/router";
 
-function GetCurrentDataPrices() {
-  const router = useRouter();
+const BASE_URL = `${API_BASE_URL}/vend`
+
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
+
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/admin-wonders/login" });
+    res.end();
+  }
+  return { props: {} };
+}
+
+// A
+function GetDataPrices() {
+  // const router = useRouter();
   const [dataPrices, setDataPrices] = useState([]);
   const [error, setError] = useState(null);
+  const userId = getUser();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await DataServices.getDataInfo();
+        const response = await axios.get(
+          `${BASE_URL}/${userId}/getData`
+          // {
+          //   headers: {
+          //     Authorization: `Bearer ${token}`,
+          //   },
+          // }
+        );
         const newData = response.data.networkData;
         if (JSON.stringify(newData) !== JSON.stringify(dataPrices)) {
           setDataPrices(newData);
         }
       } catch (error) {
-        if (
-          error.response.data.error === "Invalid token." ||
-          error.response.data.error === "Token expired."
-        ) {
-          sessionStorage.clear();
-          router.push("/admin-wonders/login");
-        } else {
-          setError(error);
-        }
+        setError(error);
         // console.log(error);
       }
     };
 
     fetchData();
-  }, [router]);
+  });
 
   if (error) {
     return (
@@ -53,4 +69,4 @@ function GetCurrentDataPrices() {
   );
 }
 
-export default withAuth(GetCurrentDataPrices);
+export default GetDataPrices;

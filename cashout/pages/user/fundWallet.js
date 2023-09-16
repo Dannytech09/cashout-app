@@ -1,10 +1,26 @@
 import React from "react";
-import withAuth from "../../hocs/withAuth";
 import Link from "next/link";
 import Sidebar from "@/components/user/Sidebar";
+import { authGuard } from "@/Utils/authGuard";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+import { useRouter } from "next/router";
+
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
+
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/login" });
+    res.end();
+  }
+  return { props: {} };
+}
 
 // This page is being routed to different pages
-function FundWallet() {
+function FundWallet(ctx) {
+  const router = useRouter();
+
+  authGuard(ctx, router);
   return (
     <div className="bg-gray-300 h-screen">
       <Sidebar />
@@ -31,4 +47,4 @@ function FundWallet() {
   );
 }
 
-export default withAuth(FundWallet);
+export default FundWallet;

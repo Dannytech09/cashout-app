@@ -1,27 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import AuthService from "@/services/auth.Service";
 import LogoutIcon from "../heroIcons/LogoutIcon";
 import { ThemeProvider } from "next-themes";
 import Theme from "../homePage/Theme";
+import { LogoutHandler } from "@/pages/api/user/logout";
+import { expireSessionAndRedirect } from "@/Utils/authCookies";
+import { removeUserSession } from "@/Utils/Common";
 
-export default function Logout() {
+export const Logout = ({ ctx }) => {
   const router = useRouter();
 
   const logoutHandler = async () => {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("buttonClicked");
+    try {
+      const response = await LogoutHandler();
+      if (response.error) {
+        const message = response.error;
+        alert(message);
+      } else if (response.success === true) {
+        localStorage.removeItem("buttonClicked");
+        removeUserSession();
+        expireSessionAndRedirect(ctx, router);
+      }
+    } catch (error) {
+      if (error) {
+        throw new Error("An error occured", error);
+      }
     }
-    await AuthService.logout();
-    router.push("/login");
   };
 
   return (
     <div className="flex">
       <div className="mr-0 border-slate-200 bg-white hover:bg-blue-500">
-      <ThemeProvider>
-        <Theme/>
-      </ThemeProvider>
+        <ThemeProvider>
+          <Theme />
+        </ThemeProvider>
       </div>
       <div
         onClick={logoutHandler}
@@ -31,4 +43,4 @@ export default function Logout() {
       </div>
     </div>
   );
-}
+};

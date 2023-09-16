@@ -1,15 +1,23 @@
 import React from 'react'
-import DirectCoupon from "../../components/user/DirectCoupon";
-import withAuth from '@/hocs/withAuth';
+import DirectCouponComp from '@/components/user/DirectCoupon'
+import { getUserIdAndToken } from "@/Utils/authCookies";
 
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
 
-const DirectCouponPage = () => {
-  return (
-    <div>
-   <DirectCoupon/>
-    </div>
-  )
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/login" });
+    res.end();
+  }
+  return { props: {} };
 }
 
 
-export default withAuth(DirectCouponPage);
+export default function DirectCouponPage () {
+  return (
+    <div>
+   <DirectCouponComp/>
+    </div>
+  )
+}

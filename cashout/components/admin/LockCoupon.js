@@ -1,31 +1,63 @@
 import { useState } from "react";
 import Loader from "@/components/utils/Loader";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
-import withAuth from "@/hocs/withAuth";
 import { LockCoupon } from "@/pages/api/admin/lockCoupon";
+import { aExpireSessionAndRedirect } from "@/Utils/authCookies";
+import { useRouter } from "next/router";
+import { authGuard } from "@/Utils/authGuard";
 
 // A
-const LockCouponComp = () => {
+const LockCouponComp = (ctx) => {
+  const router = useRouter();
+    authGuard(ctx, router);
+
   const [network, setNetwork] = useState("MTN-Coupon");
   const [visibility, setVisibility] = useState(true);
-  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   const handleVisibilityUpdate = async () => {
     try {
       setLoading(true);
-      const response = await LockCoupon(network, visibility);
-
-    //   console.log(response);
-      setMessage(response.message);
-    } catch (error) {
-    //   console.error(error);
-      if (error.response.message) {
-        alert (response.message)
+      setErrorMessage(null);
+      setSuccessMessage(null);
+      setRedirecting(false);
+      const response = await LockCoupon(ctx, network, visibility);
+      // console.log(response);
+      if (
+        response.error === "Invalid token." ||
+        response.error === "Token has been revoked or expired." ||
+        response.error === "Forbidden!"
+      ) {
+        sessionStorage.clear();
+        aExpireSessionAndRedirect(ctx, router);
+        setRedirecting(true);
+      } else if (response.error) {
+        setErrorMessage(response.error);
+        setSuccessMessage(null);
+      } else {
+        setSuccessMessage(response.message);
+        setErrorMessage(null);
       }
+    } catch (error) {
+      //   console.error(error);
+      if (error) {
+        throw new Error(`An error occurred ${error}`);
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
+
+  if (redirecting) {
+    return (
+      <div className="text-sm bg-red-600">
+        Session expired redirecting to login...
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-100 h-screen p-8">
@@ -33,18 +65,26 @@ const LockCouponComp = () => {
       <div className="fixed top-0 left-0">
         <SidebarAdmin />
       </div>
-      <p className="mb-4">{message}</p>
       <h1 className="text-center m-5 p-5">Lock and On Data Coupon - 1</h1>
+      {errorMessage && (
+        <div className="p-3 m-3 text-xs mt-[-2ch] border border-red-700 bg-red-700">
+          <p className="text-white text-center">{errorMessage}</p>
+        </div>
+      )}
+      {successMessage && (
+        <div className="p-3 m-3 text-xs mt-[-2ch] border border-green-700 bg-green-700">
+          <p className="text-white text-center">{successMessage}</p>
+        </div>
+      )}
       <div className="justify-center text-center">
         <div>
           <select
             className="bg-white border border-gray-300 rounded-md px-4 py-2 mb-4"
             value={network}
             onChange={(e) => {
-                setNetwork(e.target.value)
-                // console.log(e.target.value)
-            }
-            }
+              setNetwork(e.target.value);
+              // console.log(e.target.value)
+            }}
           >
             <option value="">--Choose Coupon--</option>
             <option value="33">MTN Coupon</option>
@@ -54,10 +94,10 @@ const LockCouponComp = () => {
           <select
             className="bg-white border border-gray-300 rounded-md px-4 py-2 mb-4"
             value={visibility}
-            onChange={(e) => { setVisibility(e.target.value === "true")
+            onChange={(e) => {
+              setVisibility(e.target.value === "true");
               // console.log(e.target.value)
-            }
-        }
+            }}
           >
             <option value="false">LOCK</option>
             <option value="true">ON</option>
@@ -76,4 +116,4 @@ const LockCouponComp = () => {
   );
 };
 
-export default withAuth(LockCouponComp);
+export default LockCouponComp;

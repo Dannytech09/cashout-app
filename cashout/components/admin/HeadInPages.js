@@ -1,7 +1,8 @@
 import React from 'react'
 import Link from "next/link";
 
-function HeadInPages() {
+function HeadInPages(ctx) {
+
   return (
    <>
     <div className="hover:pointer border border-solid text-sm p-2 m-2 text-slate-200 hover:bg-slate-400 hover:text-amber-400 text-center">

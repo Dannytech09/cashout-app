@@ -1,18 +1,24 @@
 import React, { useState, useEffect } from "react";
-import styles from "../../styles/BuyData.module.css";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import Sidebar from "@/components/user/Sidebar";
-import Footer from "../../components/user/SubMain";
-import ConfirmDataModal from "./ConfirmDataModal";
-import Loader from "@/components/utils/Loader";
-import { getCoupon, directCoupon } from "@/pages/api/directCoupon";
+import { getCoupon, directCoupon } from "@/pages/api/user/directCoupon";
+import {
+  expireSessionAndRedirect,
+  getUserIdAndToken,
+} from "@/Utils/authCookies";
+import { getUser, removeUserSession } from "@/Utils/Common";
+import DirectCoupon from "./userJsx/DirectCoupon";
 
-function DirectCoupon() {
+function DirectCouponComp(ctx) {
   const router = useRouter();
+  const userId = getUser();
+  const { token } = getUserIdAndToken(ctx);
+
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [redirecting, setRedirecting] = useState(false);
 
   const [network, setNetwork] = useState("MTN DATA COUPON");
   const [dataVol, setDataVol] = useState("--Data Volume--");
@@ -23,6 +29,11 @@ function DirectCoupon() {
   const [name, setName] = useState("");
 
   useEffect(() => {
+    if (!userId || !token) {
+      removeUserSession();
+      expireSessionAndRedirect(ctx, router);
+    }
+
     async function fetchData() {
       setLoading(true);
       try {
@@ -35,8 +46,10 @@ function DirectCoupon() {
       }
       setLoading(false);
     }
-    fetchData();
-  }, []);
+    if (userId) {
+      fetchData();
+    }
+  }, [userId, token, ctx, router]);
 
   const changeNetwork = (e) => {
     const inputValue = e.target.value;
@@ -88,10 +101,15 @@ function DirectCoupon() {
 
   // handle two onchange props
   const handlePhoneNumberAndInputValidation = (e) => {
-    const inputValue = e.target.value;
-    setPhoneNumber(inputValue);
-    handleInputField(e);
-    // console.log(e.target.value);
+    const inputValue = e.target.value.replace(/[^0-9]/g, "");
+    if (inputValue.length <= 11) {
+      setPhoneNumber(inputValue);
+      setError(null);
+      handleInputField(e);
+    } else {
+      setError("Phone number must be 11 digits long");
+      setPhoneNumber("");
+    }
   };
 
   const submit = (e) => {
@@ -125,31 +143,37 @@ function DirectCoupon() {
     if (typeof window !== "undefined") {
       try {
         setLoading(true);
-        const response = await directCoupon(network, dataVol, phoneNumber);
+        const response = await directCoupon(ctx, network, dataVol, phoneNumber);
         // console.log("c", response);
-        if (response.code === "000") {
-          alert(response.message);
-          router.reload();
-        } else if (response) {
+        if (
+          response.error === "Invalid token." ||
+          response.error === "Token has been revoked or expired."
+        ) {
+          removeUserSession();
+          expireSessionAndRedirect(ctx, router);
+          setRedirecting(true);
+        } else if (response.error) {
+          setErrorMessage(response.error);
+        } else if (response.code === "000") {
           alert(response.message);
           router.reload();
         }
+        setLoading(false);
+        setRedirecting(false);
       } catch (error) {
         // console.log(error.response);
-        if (
-          error.response.data.error === "Invalid token." ||
-          error.response.data.error === "Token expired."
-        ) {
-          sessionStorage.clear();
-          router.push("/login");
-        } else {
-          alert(`Something went wrong! If problem persist check your network`);
-        }
+        throw new Error(`An error occurred ${error}`); // server error - nextjs
+      } finally {
+        setLoading(false);
+        setRedirecting(false);
+        closeModal();
       }
-      setLoading(false);
-      closeModal();
     }
   };
+
+  if (redirecting) {
+    return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
+  }
 
   function handleInputField() {
     const inputFields = document.querySelectorAll(".input-field");
@@ -171,97 +195,31 @@ function DirectCoupon() {
 
   return (
     <div className="bg-slate-500 h-full md:h-screen xl:h-screen">
-      {loading && <Loader />}
-      <div className="">
-        <Sidebar />
-      </div>
-      <form onSubmit={submit} className="">
-        <div className="p-10">
-          <div className="text-center">
-            <h3 className="text-black bg-violet-400 border-slate-200 rounded-2xl text-xl p-5">
-              MTN DIRECT COUPON
-            </h3>
-            <div className="text-xs p-0 m-2">
-              <p>Dial *323*4# or *323*1# to check balance</p>
-              <p>You might be unable to check balance atimes due to network</p>
-              <p>Hence, confirm final status via your history</p>
-            </div>
-
-            <select
-              className={`${styles.formControl} input-field`}
-              onChange={handleNetworkAndInputValidation}
-            >
-              <option>--Choose Network--</option>
-              <option value={33}>MTN DATA COUPON</option>
-            </select>
-            <br />
-            <select
-              className={`${styles.formControl} input-field`}
-              onChange={handleDataVolAndInputValidation}
-              value={dataVol}
-            >
-              <option>--Data Volume--</option>
-              {networkData.map((ctr) =>
-                ctr.dataVol.map((data) => (
-                  <option value={data.plan_code} key={data.plan_code}>
-                    {data.name}
-                  </option>
-                ))
-              )}
-            </select>
-            <br />
-            <input
-              placeholder="Phone number"
-              className={`${styles.formControl} text-red-400 input-field`}
-              value={phoneNumber}
-              onChange={handlePhoneNumberAndInputValidation}
-            />
-            <br />
-            <div className={styles.amountBtn}>
-              <div
-                className={`${styles.formControl} border border-white bg-white input-field`}
-              >
-                {amountPlaceHolder
-                  ? "amount"
-                  : amounts.map((data) => (
-                      <h2 key={data.plan_code}>{data.amount}</h2>
-                    ))}
-              </div>
-
-              <br />
-              <div
-                className={`${styles.btn} border border-white bg-white text-center hover:cursor-pointer`}
-              >
-                <button
-                  disabled={!allSelected}
-                  onClick={openModal}
-                  style={{
-                    opacity: allSelected ? "1" : "0.5",
-                    cursor: allSelected ? "pointer" : "not-allowed",
-                  }}
-                >
-                  {loading ? <p>Loading...</p> : "Buy Data"}
-                </button>
-              </div>
-              <div
-                className={`${styles.btn} mt-3 border border-blue-900 bg-blue-900 text-center hover:cursor-pointer`}
-              >
-                <Link href="/user/dashboard"> Goto My Dashboard </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
-      <ConfirmDataModal
+      <DirectCoupon
+        networkData={networkData}
+        amountPlaceHolder={amountPlaceHolder}
+        loading={loading}
+        dataVol={dataVol}
         phoneNumber={phoneNumber}
+        amounts={amounts}
         modalIsOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        onConfirm={confirmData}
-        network={name}
+        allSelected={allSelected}
+        name={name}
+        handleNetworkAndInputValidation={handleNetworkAndInputValidation}
+        handleDataVolAndInputValidation={handleDataVolAndInputValidation}
+        handlePhoneNumberAndInputValidation={
+          handlePhoneNumberAndInputValidation
+        }
+        submit={submit}
+        openModal={openModal}
+        closeModal={closeModal}
+        confirmData={confirmData}
+        setModalIsOpen={setModalIsOpen}
+        error={error}
+        errorMessage={errorMessage}
       />
-      <Footer />
     </div>
   );
 }
 
-export default DirectCoupon;
+export default DirectCouponComp;
