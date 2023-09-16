@@ -59,7 +59,7 @@ function BuyDataMainGiftComp(ctx) {
     if (userId) {
       fetchData();
     }
-  }, [userId]);
+  }, [userId, router, ctx, token]);
 
   // if (loading) {
   //   return <div className="bg-slate-100">Loading...</div>;

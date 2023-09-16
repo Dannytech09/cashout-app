@@ -55,7 +55,7 @@ function BuyDataSComp(ctx) {
     if (userId) {
       fetchData();
     }
-  }, [userId]);
+  }, [userId, router, ctx, token]);
 
   const changeNetwork = (e) => {
     const selectedVariationString = e.target.value;

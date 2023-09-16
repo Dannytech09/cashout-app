@@ -55,7 +55,7 @@ function BuyDataComp(ctx) {
     if (userId) {
       fetchData();
     }
-  }, [userId]);
+  }, [userId, router, ctx, token]);
 
   //   if this  is enabled it can cause: Rendered more hooks than during the previous ...
   // if (loading) {

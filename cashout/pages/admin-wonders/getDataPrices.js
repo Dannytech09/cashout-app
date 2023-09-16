@@ -49,7 +49,7 @@ function GetDataPrices() {
     };
 
     fetchData();
-  }, [dataPrices]);
+  });
 
   if (error) {
     return (

@@ -54,7 +54,7 @@ function TvSubComp(ctx) {
       }
     }
     fetchData();
-  }, []);
+  }, [ctx, router]);
 
   const handleServiceChange = (event) => {
     const serviceID = event.target.value;
@@ -211,7 +211,7 @@ function TvSubComp(ctx) {
         } else if (response.error) {
           setErrorMessage(response.error);
         } else if (response.code === "000") {
-        //   console.log(response);
+          //   console.log(response);
           alert(response.Record.message);
           setLoading(false);
           router.reload();

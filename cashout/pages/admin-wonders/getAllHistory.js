@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
-import { aExpireSessionAndRedirect, getUserIdAndToken } from "@/Utils/authCookies";
+import {
+  aExpireSessionAndRedirect,
+  getUserIdAndToken,
+} from "@/Utils/authCookies";
 import AllPurchases from "@/components/admin/GetAllHistory";
 import { useRouter } from "next/router";
 import { adminAuthGuard } from "@/Utils/authGuard";
@@ -32,46 +35,46 @@ function GetAllPurchasesComp(ctx) {
   const [rCount, setRCount] = useState("");
   const [redirecting, setRedirecting] = useState(false);
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `${BASE_URL}/purchases/getAllPurchases`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      // console.log(response);
-     if (response.data.code === "000") {
-        setAllDataPurchased(response.data.data);
-        setRCount(response.data.returnedCount);
-        setCount(response.data.totalCount);
-      } else {
-        setAllDataPurchased([]);
-        setRCount("")
-        setCount("")
-      }
-    } catch (error) {
-      // console.log(error);
-      if (
-        error.response.data.error === "Invalid token." ||
-        error.response.data.error === "Token has been revoked or expired." ||
-        error.response.data.error === "Forbidden!"
-      ) {
-        sessionStorage.clear();
-        aExpireSessionAndRedirect(ctx, router);
-        setRedirecting(true);
-      } else if (error.response.data.error) {
-        setError(error.response.data.error);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `${BASE_URL}/purchases/getAllPurchases`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        // console.log(response);
+        if (response.data.code === "000") {
+          setAllDataPurchased(response.data.data);
+          setRCount(response.data.returnedCount);
+          setCount(response.data.totalCount);
+        } else {
+          setAllDataPurchased([]);
+          setRCount("");
+          setCount("");
+        }
+      } catch (error) {
+        // console.log(error);
+        if (
+          error.response.data.error === "Invalid token." ||
+          error.response.data.error === "Token has been revoked or expired." ||
+          error.response.data.error === "Forbidden!"
+        ) {
+          sessionStorage.clear();
+          aExpireSessionAndRedirect(ctx, router);
+          setRedirecting(true);
+        } else if (error.response.data.error) {
+          setError(error.response.data.error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
   }, [router]);
 

@@ -24,7 +24,8 @@ function GetAllUsersComp(ctx) {
   const [redirecting, setRedirecting] = useState(false);
   // const [currentPage, setCurrentPage] = useState(1);
   // const [postsPerPage] = useState(10);
-
+  
+  useEffect(() => {
   const fetch = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/api/v1/users`, {
@@ -53,8 +54,6 @@ function GetAllUsersComp(ctx) {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
     fetch();
   }, [router]);
 

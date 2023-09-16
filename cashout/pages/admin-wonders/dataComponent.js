@@ -17,7 +17,7 @@ export async function getServerSideProps(ctx) {
 }
 
 // This page is being routed to different pages
-function dataComponent(ctx) {
+function DataComponent(ctx) {
   const router = useRouter();
   adminAuthGuard(ctx, router);
   return (
@@ -105,4 +105,4 @@ function dataComponent(ctx) {
   );
 }
 
-export default dataComponent;
+export default DataComponent;

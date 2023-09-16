@@ -60,7 +60,7 @@ const UsersData = ({
     };
 
     fetchData();
-  }, []);
+  });
 
   return (
     <div>

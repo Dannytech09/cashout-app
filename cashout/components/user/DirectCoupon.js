@@ -49,7 +49,7 @@ function DirectCouponComp(ctx) {
     if (userId) {
       fetchData();
     }
-  }, [userId, token]);
+  }, [userId, token, ctx, router]);
 
   const changeNetwork = (e) => {
     const inputValue = e.target.value;
