@@ -2,7 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import classNames from "classnames";
 import API_BASE_URL from "@/apiConfig";
-import { aExpireSessionAndRedirect, getUserIdAndToken } from "@/Utils/authCookies";
+import {
+  aExpireSessionAndRedirect,
+  getUserIdAndToken,
+} from "@/Utils/authCookies";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
 import Loader from "@/components/utils/Loader";
 import { useRouter } from "next/router";
@@ -12,9 +15,9 @@ const ADMIN_BASE_URL = `${API_BASE_URL}/admin`;
 
 // A
 function SetPricesComp(ctx) {
-    const router = useRouter();
-    const { token } = getUserIdAndToken(ctx);
-    adminAuthGuard(ctx, router);
+  const router = useRouter();
+  const { token } = getUserIdAndToken(ctx);
+  adminAuthGuard(ctx, router);
 
   const [accountType, setAccountType] = useState("");
   const [variation_string, setVariation_string] = useState("");
@@ -29,37 +32,41 @@ function SetPricesComp(ctx) {
     setLoading(true);
 
     try {
-      const response = await axios.patch(`${ADMIN_BASE_URL}/update-price`, { accountType, variation_string, data }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.patch(
+        `${ADMIN_BASE_URL}/update-price`,
+        { accountType, variation_string, data },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       // console.log(response)
-      if (response.statusText === "OK") {
+      if (response.statusText === "OK" || response.status === 200) {
         setErrorMessage(null);
         alert("Data updated successfully");
       }
     } catch (error) {
-        // console.log(error)
-        if (
-            error.response.data.error === "Invalid token." ||
-            error.response.data.error === "Token has been revoked or expired." ||
-            error.response.data.error === "Forbidden!"
-          ) {
-            sessionStorage.clear();
-            aExpireSessionAndRedirect(ctx, router);
-            setRedirecting(true);
-          } else if (error.response.data.error) {
-            setErrorMessage(error.response.data.error);
-            setSuccessMessage(null);
-          } else {
-            throw new Error(`An error occurred ${error}`);
-          }
-        } finally {
-          setLoading(false);
-        }
+      // console.log(error)
+      if (
+        error.response.data.error === "Invalid token." ||
+        error.response.data.error === "Token has been revoked or expired." ||
+        error.response.data.error === "Forbidden!"
+      ) {
+        sessionStorage.clear();
+        aExpireSessionAndRedirect(ctx, router);
+        setRedirecting(true);
+      } else if (error.response.data.error) {
+        setErrorMessage(error.response.data.error);
+        setSuccessMessage(null);
+      } else {
+        throw new Error(`An error occurred ${error}`);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAccountTypeChange = (e) => {
@@ -114,15 +121,15 @@ function SetPricesComp(ctx) {
           Update Data Prices - A
         </h1>
         {errorMessage && (
-            <div className="p-3 m-3 text-xs mt-[-2ch] border border-red-700 bg-red-700">
-              <p className="text-white text-center">{errorMessage}</p>
-            </div>
-          )}
-          {successMessage && (
-            <div className="p-3 m-3 text-xs mt-[-2ch] border border-green-700 bg-green-700">
-              <p className="text-white text-center">{successMessage}</p>
-            </div>
-          )}
+          <div className="p-3 m-3 text-xs mt-[-2ch] border border-red-700 bg-red-700">
+            <p className="text-white text-center">{errorMessage}</p>
+          </div>
+        )}
+        {successMessage && (
+          <div className="p-3 m-3 text-xs mt-[-2ch] border border-green-700 bg-green-700">
+            <p className="text-white text-center">{successMessage}</p>
+          </div>
+        )}
         <label htmlFor="network" className="block text-white font-bold mb-2">
           Account Type:
         </label>
