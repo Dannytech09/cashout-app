@@ -4,7 +4,8 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/api/v1`;
-const userId = getUser();
+const user = getUser();
+ const id = user ? user.id : null;
 
 // get req
 export async function getAutoFundingAcctHandler(ctx) {
@@ -12,7 +13,7 @@ export async function getAutoFundingAcctHandler(ctx) {
   try {
     const header = { Authorization: `Bearer ${token}` };
 
-    const response = await axios.get(`${BASE_URL}/acctNumber/${userId}`, {
+    const response = await axios.get(`${BASE_URL}/acctNumber/${id}`, {
       headers: header,
     });
     // console.log(response)
@@ -29,7 +30,7 @@ export async function autoFundingHandler(ctx) {
 
   try {
     const response = await axios.post(
-      `${BASE_URL}/autoFunding/${userId}`,
+      `${BASE_URL}/autoFunding/${id}`,
       null,
       {
         headers: {

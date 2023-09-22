@@ -3,17 +3,17 @@ import { useRouter } from "next/router";
 import { buyDataSHandler, buyDataSGetHandler } from "@/pages/api/user/buydatas";
 import BuyDataS from "./userJsx/BuyDataS";
 import {
-  expireSessionAndRedirect,
-  getUserIdAndToken,
+  expireSessionAndRedirect
 } from "@/Utils/authCookies";
-import { getUser, removeUserSession } from "@/Utils/Common";
+import { removeUserSession } from "@/Utils/Common";
 
 let name;
 
 function BuyDataSComp(ctx) {
   const router = useRouter();
-  const userId = getUser();
-  const { token } = getUserIdAndToken(ctx);
+  // const user = getUser();
+  // const id = user ? user.id : null;
+  // const { token } = getUserIdAndToken(ctx);
 
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -32,30 +32,24 @@ function BuyDataSComp(ctx) {
   const [allSelected, setAllSelected] = useState(false);
 
   useEffect(() => {
-    if (!userId || !token) {
-      removeUserSession();
-      expireSessionAndRedirect(ctx, router);
-    }
-
+    // if (!id || !token) {
+    //   removeUserSession();
+    //   expireSessionAndRedirect(ctx, router);
+    // }
     async function fetchData() {
       try {
         setLoading(true);
         const response = await buyDataSGetHandler();
-        // console.log(response);
         setNetworkData(response.networkDataS);
         setLoading(false);
       } catch (error) {
-        // console.log("err", error)
         alert(error.response.error);
       } finally {
         setLoading(false);
       }
     }
-
-    if (userId) {
       fetchData();
-    }
-  }, [userId, router, ctx, token]);
+  }, []);
 
   const changeNetwork = (e) => {
     const selectedVariationString = e.target.value;

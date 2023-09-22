@@ -14,8 +14,8 @@ import BuyDataMainGift from "./userJsx/BuyDataMainGift";
 
 function BuyDataMainGiftComp(ctx) {
   const router = useRouter();
-  const userId = getUser();
-  const { token } = getUserIdAndToken(ctx);
+  // const userId = getUser();
+  // const { token } = getUserIdAndToken(ctx);
 
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -37,11 +37,10 @@ function BuyDataMainGiftComp(ctx) {
   // console.log("userId", user.id);
 
   useEffect(() => {
-    if (!userId || !token) {
-      removeUserSession();
-      expireSessionAndRedirect(ctx, router);
-    }
-
+    // if (!userId || !token) {
+    //   removeUserSession();
+    //   expireSessionAndRedirect(ctx, router);
+    // }
     async function fetchData() {
       try {
         setLoading(true);
@@ -56,10 +55,8 @@ function BuyDataMainGiftComp(ctx) {
         setLoading(false);
       }
     }
-    if (userId) {
       fetchData();
-    }
-  }, [userId, router, ctx, token]);
+  }, []);
 
   // if (loading) {
   //   return <div className="bg-slate-100">Loading...</div>;

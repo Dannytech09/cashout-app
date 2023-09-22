@@ -4,12 +4,13 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}`;
-const userId = getUser();
+const user = getUser();
+ const id = user ? user.id : null;
 
 export async function allMyPurchasesHandler(ctx) {
     const { token } = getUserIdAndToken(ctx)
     try {
-        const response = await axios.get(`${BASE_URL}/${userId}/getSingleUserPurchases`, {
+        const response = await axios.get(`${BASE_URL}/${id}/getSingleUserPurchases`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }

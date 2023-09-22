@@ -53,9 +53,9 @@ const LoginComp = (ctx) => {
         setMessage(r);
       } else if (response.data.success === true || response.status === 200) {
         const token = response.data.token;
-        const user = response.data.user;
+        // const user = response.data.user;
+        setUserSession(JSON.stringify(response.data.user));
         setCookieAndRedirect(ctx, "token", token);
-        setUserSession(JSON.stringify(user));
         router.push("/user/dashboard");
         // const userJSON = JSON.stringify(user);
         // setCookieAndRedirect(ctx, "u", userJSON);

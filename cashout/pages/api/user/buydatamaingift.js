@@ -4,7 +4,8 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/pay`;
-const userId = getUser();
+const user = getUser();
+ const id = user ? user.id : null;
 
 export async function buyDataGetMainGiftHandler() {
     try {
@@ -22,7 +23,7 @@ export async function buyDataMainGiftHandler(ctx, network, dataVol, phoneNumber)
 
     try {
         const response = await axios.post(
-          `${BASE_URL}/${userId}/purchase`,
+          `${BASE_URL}/${id}/purchase`,
           { network, dataVol, phoneNumber },
           {
             headers: {

@@ -25,13 +25,14 @@ function GetDataPrices() {
   // const router = useRouter();
   const [dataPrices, setDataPrices] = useState([]);
   const [error, setError] = useState(null);
-  const userId = getUser();
+  const user = getUser();
+ const id = user ? user.id : null;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${BASE_URL}/${userId}/getData`
+          `${BASE_URL}/${id}/getData`
           // {
           //   headers: {
           //     Authorization: `Bearer ${token}`,

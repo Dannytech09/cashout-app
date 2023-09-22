@@ -4,7 +4,8 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/electBill`;
-const userId = getUser();
+const user = getUser();
+ const id = user ? user.id : null;
 
 export async function verifyElectBillHandler(ctx, selectedService, selectedType, meterNumber) {
     const { token } = getUserIdAndToken(ctx);
@@ -30,7 +31,7 @@ export async function buyElectBillHandler(ctx, selectedService, meterNumber, sel
 
     try {
         const response = await axios.post(
-          `${BASE_URL}/pay/${userId}`,
+          `${BASE_URL}/pay/${id}`,
           { serviceID: selectedService, billersCode: meterNumber, variation_code: selectedType, amount: amount, },
           {
             headers: {
