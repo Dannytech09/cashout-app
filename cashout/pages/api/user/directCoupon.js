@@ -4,7 +4,8 @@ import { getUser } from "@/Utils/Common";
 import { getUserIdAndToken } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
-const id = getUser();
+const user = getUser();
+ const id = user ? user.id : null;
 
 export async function getCoupon() {
   try {

@@ -3,16 +3,15 @@ import { useRouter } from "next/router";
 import BuyData from "./userJsx/BuyData";
 import { buyDataGetHandler, buyDataHandler } from "@/pages/api/user/buydata";
 import {
-  expireSessionAndRedirect,
-  getUserIdAndToken,
+  expireSessionAndRedirect
 } from "@/Utils/authCookies";
-import { getUser, removeUserSession } from "@/Utils/Common";
+import { removeUserSession } from "@/Utils/Common";
 // import { useSelector } from "react-redux";
 
 function BuyDataComp(ctx) {
   const router = useRouter();
-  const userId = getUser();
-  const { token } = getUserIdAndToken(ctx);
+  // const userId = getUser();
+  // const { token } = getUserIdAndToken(ctx);
   //   const { userId } = getUserIdAndToken(ctx);
 
   const [networkData, setNetworkData] = useState([]);
@@ -32,11 +31,10 @@ function BuyDataComp(ctx) {
   const [allSelected, setAllSelected] = useState(false);
 
   useEffect(() => {
-    if (!userId || !token) {
-      removeUserSession();
-      expireSessionAndRedirect(ctx, router);
-    }
-
+    // if (!userId || !token) {
+    //   removeUserSession();
+    //   expireSessionAndRedirect(ctx, router);
+    // }
     async function fetchData() {
       try {
         setLoading(true);
@@ -52,10 +50,8 @@ function BuyDataComp(ctx) {
       }
     }
 
-    if (userId) {
       fetchData();
-    }
-  }, [userId, router, ctx, token]);
+  }, []);
 
   //   if this  is enabled it can cause: Rendered more hooks than during the previous ...
   // if (loading) {

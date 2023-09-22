@@ -4,11 +4,12 @@ import { getUser } from "@/Utils/Common";
 import { getUserIdAndToken } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/vend`;
-const userId = getUser();
+const user = getUser();
+ const id = user ? user.id : null;
 
 export async function buyDataSGetHandler() {
     try {
-        const response = await axios.get(`${BASE_URL}/${userId}/getDatas`);
+        const response = await axios.get(`${BASE_URL}/${id}/getDatas`);
         // console.log(response)
        return response.data
       } catch (error) {
@@ -22,7 +23,7 @@ export async function buyDataSHandler(ctx, network, dataVol, phoneNumber) {
 
     try {
         const response = await axios.post(
-          `${BASE_URL}/${userId}/purchases`,
+          `${BASE_URL}/${id}/purchases`,
           { network: network, plan_code: dataVol, mobile: phoneNumber },
           {
             headers: {

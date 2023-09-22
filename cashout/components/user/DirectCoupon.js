@@ -10,8 +10,8 @@ import DirectCoupon from "./userJsx/DirectCoupon";
 
 function DirectCouponComp(ctx) {
   const router = useRouter();
-  const userId = getUser();
-  const { token } = getUserIdAndToken(ctx);
+  // const userId = getUser();
+  // const { token } = getUserIdAndToken(ctx);
 
   const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
@@ -29,10 +29,10 @@ function DirectCouponComp(ctx) {
   const [name, setName] = useState("");
 
   useEffect(() => {
-    if (!userId || !token) {
-      removeUserSession();
-      expireSessionAndRedirect(ctx, router);
-    }
+    // if (!userId || !token) {
+    //   removeUserSession();
+    //   expireSessionAndRedirect(ctx, router);
+    // }
 
     async function fetchData() {
       setLoading(true);
@@ -46,10 +46,8 @@ function DirectCouponComp(ctx) {
       }
       setLoading(false);
     }
-    if (userId) {
       fetchData();
-    }
-  }, [userId, token, ctx, router]);
+  }, []);
 
   const changeNetwork = (e) => {
     const inputValue = e.target.value;
