@@ -26,7 +26,7 @@ const AutoFundingComp = (ctx) => {
     fetchData();
     setButtonClicked(true);
     if (typeof window !== "undefined") {
-      localStorage.setItem("buttonClicked", "true");
+      sessionStorage.setItem("buttonClicked", "true");
     }
   };
 
@@ -57,7 +57,7 @@ const AutoFundingComp = (ctx) => {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const storedButtonClicked = localStorage.getItem("buttonClicked");
+      const storedButtonClicked = sessionStorage.getItem("buttonClicked");
       if (storedButtonClicked === "true") {
         setButtonClicked(true);
       }
@@ -71,7 +71,8 @@ const AutoFundingComp = (ctx) => {
       //   console.log(response)
       if (
         response.error === "Invalid token." ||
-        response.error === "Token has been revoked or expired."
+        response.error === "Token has been revoked or expired." ||
+        response.error === "Oops! Bad Request !"
       ) {
         removeUserSession();
         expireSessionAndRedirect(ctx, router);

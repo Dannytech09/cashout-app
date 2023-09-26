@@ -27,7 +27,7 @@ export default function TvSub({ loading, errorMessage, allSelected, renderName, 
             <h3 className="text-black text-center text-xl p-5">
               Cable Subscription
             </h3>
-            <p className='text-center text-xs mb-4'>1 percent discount on every purchase</p>
+            <p className='text-center text-xs mb-4'>1 percent discount</p>
             <div>
               {errorMessage && (
                 <div

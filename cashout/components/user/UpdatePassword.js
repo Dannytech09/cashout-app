@@ -55,7 +55,8 @@ function UpdateUserPasswordComp(ctx) {
     } catch (error) {
       if (
         error.response.data.error === "Invalid token." ||
-        error.response.data.error === "Token expired."
+        error.response.data.error === "Token expired." ||
+        error.response.data.error === "Oops! Bad Request !"
       ) {
         sessionStorage.clear();
         router.push("/login");

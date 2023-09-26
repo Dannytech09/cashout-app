@@ -7,7 +7,7 @@ import { adminAuthGuard } from "@/Utils/authGuard";
 
 export default function CdComp(ctx) {
   const router = useRouter();
-    adminAuthGuard(ctx, router);
+  adminAuthGuard(ctx, router);
 
   const [email, setEmail] = useState("");
   const [amount, setAmount] = useState("");
@@ -36,7 +36,8 @@ export default function CdComp(ctx) {
       // console.log(response)
       if (
         response.error === "Invalid token." ||
-        response.error === "Token has been revoked or expired." || response.error === "Forbidden!"
+        response.error === "Token has been revoked or expired." ||
+        response.error === "Forbidden!"
       ) {
         sessionStorage.clear();
         aExpireSessionAndRedirect(ctx, router);
@@ -57,8 +58,12 @@ export default function CdComp(ctx) {
     }
   };
 
-    if (redirecting) {
-    return <div className="text-sm bg-red-600">Session expired redirecting to login...</div>;
+  if (redirecting) {
+    return (
+      <div className="text-sm bg-red-600">
+        Session expired redirecting to login...
+      </div>
+    );
   }
 
   return (

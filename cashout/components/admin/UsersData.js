@@ -34,20 +34,9 @@ const UsersData = ({
           sessionStorage.clear();
           aExpireSessionAndRedirect(ctx, router);
         } else if (response.data.success === true) {
-          // Count users
-          setUsers(response.data.count);
-
-          // total bal
-          const balances = response.data.data.map((user) =>
-            parseFloat(user.balance.$numberDecimal)
-          );
-          const total = balances.reduce((acc, curr) => acc + curr, 0);
-          setTotalBalance(total);
-
-          // total blocked
-          const blocked = response.data.data.map((user) => user.blocked);
-          const totalAllBlocked = blocked.reduce((acc, curr) => acc + curr, 0);
-          setTotalBlocked(totalAllBlocked);
+          setUsers(response.data.total);
+          setTotalBalance(response.data.tBal.$numberDecimal);
+          setTotalBlocked(response.data.tBlocked);
         }
       } catch (error) {
         // console.error("Error fetching data:", error);

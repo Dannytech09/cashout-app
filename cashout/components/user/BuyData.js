@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import BuyData from "./userJsx/BuyData";
 import { buyDataGetHandler, buyDataHandler } from "@/pages/api/user/buydata";
-import {
-  expireSessionAndRedirect
-} from "@/Utils/authCookies";
+import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
 // import { useSelector } from "react-redux";
 
@@ -50,7 +48,7 @@ function BuyDataComp(ctx) {
       }
     }
 
-      fetchData();
+    fetchData();
   }, []);
 
   //   if this  is enabled it can cause: Rendered more hooks than during the previous ...
@@ -166,7 +164,8 @@ function BuyDataComp(ctx) {
         // console.log("res", response);
         if (
           response.error === "Invalid token." ||
-          response.error === "Token has been revoked or expired."
+          response.error === "Token has been revoked or expired." ||
+          response.error === "Oops! Bad Request !"
         ) {
           removeUserSession();
           expireSessionAndRedirect(ctx, router);

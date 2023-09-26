@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export default function Users({ users }) {
   return (
-         <div className="border text-xs h-full border-solid bg-slate-500 border-slate-500 p-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 ml-4 mr-4 justify-center mt-[15ch] mb-40">
+         <div className="border text-xs h-full border-solid bg-slate-500 border-slate-500 p-2 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 ml-4 mr-4 justify-center mt-[15ch] mb-20">
         {users.map((user) => (
           <div
             key={user._id}

@@ -4,7 +4,7 @@ import LogoutIcon from "@/components/heroIcons/LogoutIcon";
 import { ThemeProvider } from "next-themes";
 import Theme from "@/components/homePage/Theme";
 import { LogoutHandler } from "@/pages/api/user/logout";
-import { aExpireSessionAndRedirect, } from "@/Utils/authCookies";
+import { aExpireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
 
 export const Alogout = ({ ctx }) => {
@@ -17,7 +17,7 @@ export const Alogout = ({ ctx }) => {
         const message = response.error;
         alert(message);
       } else if (response.success === true) {
-        localStorage.removeItem("buttonClicked");
+        sessionStorage.removeItem("buttonClicked");
         removeUserSession();
         aExpireSessionAndRedirect(ctx, router);
       }

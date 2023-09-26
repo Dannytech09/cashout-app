@@ -94,7 +94,7 @@ const Sidebar = () => {
         const message = response.error;
         alert(message);
       } else if (response.success === true) {
-        localStorage.removeItem("buttonClicked");
+        sessionStorage.removeItem("buttonClicked");
         removeUserSession();
         expireSessionAndRedirect(ctx, router);
       }
