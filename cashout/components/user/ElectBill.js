@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/router";
-import { buyElectBillHandler, verifyElectBillHandler } from "@/pages/api/user/electbill";
+import {
+  buyElectBillHandler,
+  verifyElectBillHandler,
+} from "@/pages/api/user/electbill";
 import { removeUserSession } from "@/Utils/Common";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import ElectBill from "./userJsx/ElectBill";
@@ -75,20 +78,26 @@ function ElectBillComp(ctx) {
       try {
         // check 404 error
         setLoading(true);
-        setRenderName(false);;
+        setRenderName(false);
         setIsEditable(true);
-        const response = await verifyElectBillHandler(ctx, selectedService, selectedType, meterNumber);
+        const response = await verifyElectBillHandler(
+          ctx,
+          selectedService,
+          selectedType,
+          meterNumber
+        );
         //    console.log(response);
         if (
-            response.error === "Invalid token." ||
-            response.error === "Token has been revoked or expired."
-          ) {
-            removeUserSession();
-            expireSessionAndRedirect(ctx, router);
-            setRedirecting(true);
-          } else if (response.error) {
-            setErrorMessage(response.error);
-          } else if (response.code === "000") {
+          response.error === "Invalid token." ||
+          response.error === "Token has been revoked or expired." ||
+          response.error === "Oops! Bad Request !"
+        ) {
+          removeUserSession();
+          expireSessionAndRedirect(ctx, router);
+          setRedirecting(true);
+        } else if (response.error) {
+          setErrorMessage(response.error);
+        } else if (response.code === "000") {
           setRenderName(response.data.Customer_Name);
           setIsEditable(false);
           setPurchaseBtn(true);
@@ -96,9 +105,9 @@ function ElectBillComp(ctx) {
         }
       } catch (error) {
         //   console.log(error);
-      throw new Error(`An error occurred ${error}`);
+        throw new Error(`An error occurred ${error}`);
       } finally {
-          setLoading(false);
+        setLoading(false);
       }
     }
   };
@@ -113,11 +122,9 @@ function ElectBillComp(ctx) {
     setAllSelected(allFormFilled);
   }, [selectedService, selectedType, meterNumber]);
 
-
   useEffect(() => {
     handleFormValidation();
   }, [handleFormValidation]);
-
 
   const submit = (e) => {
     e.preventDefault();
@@ -147,16 +154,21 @@ function ElectBillComp(ctx) {
     return () => clearTimeout(timer);
   }, [modalIsOpen]);
 
-
   const confirmData = async () => {
     if (typeof window !== "undefined") {
-
       try {
         setLoading(true);
-        const response = await buyElectBillHandler(ctx, selectedService, meterNumber, selectedType, amount )
+        const response = await buyElectBillHandler(
+          ctx,
+          selectedService,
+          meterNumber,
+          selectedType,
+          amount
+        );
         if (
           response.error === "Invalid token." ||
-          response.error === "Token has been revoked or expired."
+          response.error === "Token has been revoked or expired." ||
+          response.error === "Oops! Bad Request !"
         ) {
           removeUserSession();
           expireSessionAndRedirect(ctx, router);
@@ -184,39 +196,38 @@ function ElectBillComp(ctx) {
     }
   };
 
-  
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
   }
 
   return (
     <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
-     <ElectBill
-     loading={loading}
-     errorMessage={errorMessage}
-     redirecting={redirecting}
-     allSelected={allSelected}
-     renderName={renderName}
-     purchaseBtn={purchaseBtn}
-     modalIsOpen={modalIsOpen}
-     isEditable={isEditable}
-     selectedService={selectedService}
-     selectedType={selectedType}
-     meterNumber={meterNumber}
-     amount={amount}
-     verifyServiceId={verifyServiceId}
-     verifyType={verifyType}
-     handleServiceChange={handleServiceChange}
-     handleSelectedType={handleSelectedType}
-     handleMeterNumber={handleMeterNumber}
-     handleAmount={handleAmount}
-     handleFormSubmit={handleFormSubmit}
-     submit={submit}
-     openModal={openModal}
-     closeModal={closeModal}
-     confirmData={confirmData}
-     setModalIsOpen={setModalIsOpen}
-     />
+      <ElectBill
+        loading={loading}
+        errorMessage={errorMessage}
+        redirecting={redirecting}
+        allSelected={allSelected}
+        renderName={renderName}
+        purchaseBtn={purchaseBtn}
+        modalIsOpen={modalIsOpen}
+        isEditable={isEditable}
+        selectedService={selectedService}
+        selectedType={selectedType}
+        meterNumber={meterNumber}
+        amount={amount}
+        verifyServiceId={verifyServiceId}
+        verifyType={verifyType}
+        handleServiceChange={handleServiceChange}
+        handleSelectedType={handleSelectedType}
+        handleMeterNumber={handleMeterNumber}
+        handleAmount={handleAmount}
+        handleFormSubmit={handleFormSubmit}
+        submit={submit}
+        openModal={openModal}
+        closeModal={closeModal}
+        confirmData={confirmData}
+        setModalIsOpen={setModalIsOpen}
+      />
     </div>
   );
 }

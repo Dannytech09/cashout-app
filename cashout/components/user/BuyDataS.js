@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { buyDataSHandler, buyDataSGetHandler } from "@/pages/api/user/buydatas";
 import BuyDataS from "./userJsx/BuyDataS";
-import {
-  expireSessionAndRedirect
-} from "@/Utils/authCookies";
+import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
 
 let name;
@@ -32,23 +30,33 @@ function BuyDataSComp(ctx) {
   const [allSelected, setAllSelected] = useState(false);
 
   useEffect(() => {
-    // if (!id || !token) {
-    //   removeUserSession();
-    //   expireSessionAndRedirect(ctx, router);
-    // }
-    async function fetchData() {
+    async function fetchData(ctx) {
       try {
         setLoading(true);
         const response = await buyDataSGetHandler();
         setNetworkData(response.networkDataS);
         setLoading(false);
+        if (
+          response.error === "Invalid token." ||
+          response.error === "Token has been revoked or expired." ||
+          response.error === "Oops! Bad Request !"
+        ) {
+          removeUserSession();
+          expireSessionAndRedirect(ctx, router);
+          setRedirecting(true);
+        } else if (response.error) {
+          alert(response.error);
+          removeUserSession();
+          expireSessionAndRedirect(ctx, router);
+          setRedirecting(true);
+        }
       } catch (error) {
-        alert(error.response.error);
+        throw new Error(`An error occurred ${error}`);
       } finally {
         setLoading(false);
       }
     }
-      fetchData();
+    fetchData();
   }, []);
 
   const changeNetwork = (e) => {
@@ -160,7 +168,8 @@ function BuyDataSComp(ctx) {
         // console.log("res", response);
         if (
           response.error === "Invalid token." ||
-          response.error === "Token has been revoked or expired."
+          response.error === "Token has been revoked or expired." ||
+          response.error === "Oops! Bad Request !"
         ) {
           removeUserSession();
           expireSessionAndRedirect(ctx, router);

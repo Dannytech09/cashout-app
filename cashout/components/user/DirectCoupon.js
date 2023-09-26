@@ -46,7 +46,7 @@ function DirectCouponComp(ctx) {
       }
       setLoading(false);
     }
-      fetchData();
+    fetchData();
   }, []);
 
   const changeNetwork = (e) => {
@@ -145,7 +145,8 @@ function DirectCouponComp(ctx) {
         // console.log("c", response);
         if (
           response.error === "Invalid token." ||
-          response.error === "Token has been revoked or expired."
+          response.error === "Token has been revoked or expired." ||
+          response.error === "Oops! Bad Request !"
         ) {
           removeUserSession();
           expireSessionAndRedirect(ctx, router);

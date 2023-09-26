@@ -2,7 +2,10 @@ import { useState } from "react";
 import User from "@/components/admin/User";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { aExpireSessionAndRedirect, getUserIdAndToken } from "@/Utils/authCookies";
+import {
+  aExpireSessionAndRedirect,
+  getUserIdAndToken,
+} from "@/Utils/authCookies";
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
@@ -76,7 +79,6 @@ function UpgradeComp(ctx) {
     }
   };
 
-  
   if (redirecting) {
     return (
       <div className="text-sm bg-red-600">
@@ -87,7 +89,7 @@ function UpgradeComp(ctx) {
 
   return (
     <div>
-        { loading && <Loader /> }
+      {loading && <Loader />}
       <div className="fixed top-0">
         <SidebarAdmin />
       </div>

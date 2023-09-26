@@ -6,19 +6,32 @@
 //   }
 // };
 
+// export const getUser = () => {
+//   if (typeof window !== "undefined") {
+//     try {
+//       const user = JSON.parse(sessionStorage.getItem("user"));
+//       // console.log(user)
+//       return user;
+//     } catch (error) {
+//       // throw new Error(`An error occurred, please send this error to our tech support ${error}`)
+//       return null;
+//     }
+//   }
+// };
+
 export const getUser = () => {
   if (typeof window !== "undefined") {
     try {
-      const user = JSON.parse(sessionStorage.getItem("user"));
-      // console.log(user)
-      return user;
+      const userId = JSON.parse(sessionStorage.getItem("user"));
+      if (userId !== null) {
+        return userId;
+      }
     } catch (error) {
-      // throw new Error(`An error occurred, please send this error to our tech support ${error}`)
-      return null;
+      throw new Error(`An error occured ${error}`);
     }
   }
+  return null;
 };
-
 
 export const getToken = () => {
   return sessionStorage.getItem("token") || null;

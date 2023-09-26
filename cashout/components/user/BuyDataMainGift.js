@@ -55,7 +55,7 @@ function BuyDataMainGiftComp(ctx) {
         setLoading(false);
       }
     }
-      fetchData();
+    fetchData();
   }, []);
 
   // if (loading) {
@@ -141,7 +141,8 @@ function BuyDataMainGiftComp(ctx) {
         // console.log(response);
         if (
           response.error === "Invalid token." ||
-          response.error === "Token has been revoked or expired."
+          response.error === "Token has been revoked or expired." ||
+          response.error === "Oops! Bad Request !"
         ) {
           removeUserSession();
           expireSessionAndRedirect(ctx, router);

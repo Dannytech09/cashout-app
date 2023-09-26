@@ -24,9 +24,13 @@ export default function DataLocker(ctx) {
       setErrorMessage(null);
       setSuccessMessage(null);
       setRedirecting(false);
-      const response = await LockDataSHandler(ctx, visibility, variation_string);
-        // console.log(response)
-         setSuccessMessage(response.message);
+      const response = await LockDataSHandler(
+        ctx,
+        visibility,
+        variation_string
+      );
+      // console.log(response)
+      setSuccessMessage(response.message);
       if (
         response.error === "Invalid token." ||
         response.error === "Token has been revoked or expired." ||
@@ -40,12 +44,12 @@ export default function DataLocker(ctx) {
         setSuccessMessage(null);
       }
     } catch (error) {
-        // console.error(error);
-        if (error) {
-          throw new Error(`An error occurred ${error}`);
-        } else {
-          setErrorMessage("Something went wrong !");
-        }
+      // console.error(error);
+      if (error) {
+        throw new Error(`An error occurred ${error}`);
+      } else {
+        setErrorMessage("Something went wrong !");
+      }
     } finally {
       setLoading(false);
     }

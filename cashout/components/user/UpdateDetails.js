@@ -64,7 +64,8 @@ function UpdateUserComp(ctx) {
     } catch (error) {
       if (
         error.response.data.error === "Invalid token." ||
-        error.response.data.error === "Token has been revoked or expired."
+        error.response.data.error === "Token has been revoked or expired." ||
+        error.response.data.error === "Oops! Bad Request !"
       ) {
         removeUserSession();
         expireSessionAndRedirect(ctx, router);

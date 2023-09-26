@@ -9,7 +9,7 @@ import { authGuard } from "@/Utils/authGuard";
 // A
 const LockCouponComp = (ctx) => {
   const router = useRouter();
-    authGuard(ctx, router);
+  authGuard(ctx, router);
 
   const [network, setNetwork] = useState("MTN-Coupon");
   const [visibility, setVisibility] = useState(true);

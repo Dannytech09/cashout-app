@@ -23,7 +23,7 @@ export default function BuyAirtime({ loading, errorMessage, modalIsOpen, setModa
         <div className="p-10">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Airtime</h3>
-             <p className='text-center text-xs mb-4'>1 percent discount on every purchase</p>
+             <p className='text-center text-xs mb-4'>1 percent discount</p>
             <div>
               {errorMessage && (
                 <div className={styles.errorMessage}>{errorMessage}</div>

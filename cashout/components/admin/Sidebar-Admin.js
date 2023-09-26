@@ -123,7 +123,7 @@ const SidebarAdmin = () => {
         const message = response.error;
         alert(message);
       } else if (response.success === true) {
-        localStorage.removeItem("buttonClicked");
+        sessionStorage.removeItem("buttonClicked");
         removeUserSession();
         aExpireSessionAndRedirect(ctx, router);
       }
@@ -216,7 +216,7 @@ const SidebarAdmin = () => {
         <button
           onClick={aLogoutHandler}
           className={
-            "flex mb-10 mt-3 border border-2-red items-center py-2 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
+            "flex mb-20 mt-3 border border-2-red items-center py-2 px-3 cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap"
           }
         >
           {toggle && (

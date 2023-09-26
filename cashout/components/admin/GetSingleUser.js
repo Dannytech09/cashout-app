@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import User from "../../components/admin/User";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { aExpireSessionAndRedirect, getUserIdAndToken } from "../../Utils/authCookies";
+import {
+  aExpireSessionAndRedirect,
+  getUserIdAndToken,
+} from "../../Utils/authCookies";
 import Link from "next/link";
 import API_BASE_URL from "@/apiConfig";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
@@ -10,7 +13,7 @@ import { useRouter } from "next/router";
 import Loader from "../utils/Loader";
 import { adminAuthGuard } from "@/Utils/authGuard";
 
-const BASE_URL = `${API_BASE_URL}`
+const BASE_URL = `${API_BASE_URL}`;
 
 function GetSingleUserComp(ctx) {
   const router = useRouter();
@@ -34,36 +37,36 @@ function GetSingleUserComp(ctx) {
 
   const submitHandler = async (id) => {
     try {
-    setLoading(true);
-    const response = await axios.get(`${BASE_URL}/api/v1/users/${id.id}`, {
+      setLoading(true);
+      const response = await axios.get(`${BASE_URL}/api/v1/users/${id.id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json; charset=utf8",
         },
-      })
-    //   console.log(response)
-     if (response.data.code === "000") {
+      });
+      //   console.log(response)
+      if (response.data.code === "000") {
         alert("Check Successful");
         setUser(response.data.data);
-     } else {
+      } else {
         setUser(null);
-     }
-      } catch(error) {
-        // console.log(error)
-        if (
-            error.response.data.error === "Invalid token." ||
-            error.response.data.error === "Token has been revoked or expired." ||
-            error.response.data.error === "Forbidden!"
-          ) {
-            sessionStorage.clear();
-            aExpireSessionAndRedirect(ctx, router);
-            setRedirecting(true);
-          } else if (error.response.data.error) {
-            setError(error.response.data.error);
-          }
-        } finally {
-          setLoading(false);
-        }
+      }
+    } catch (error) {
+      // console.log(error)
+      if (
+        error.response.data.error === "Invalid token." ||
+        error.response.data.error === "Token has been revoked or expired." ||
+        error.response.data.error === "Forbidden!"
+      ) {
+        sessionStorage.clear();
+        aExpireSessionAndRedirect(ctx, router);
+        setRedirecting(true);
+      } else if (error.response.data.error) {
+        setError(error.response.data.error);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (redirecting) {
@@ -76,7 +79,7 @@ function GetSingleUserComp(ctx) {
 
   return (
     <div>
-      {loading && <Loader /> }
+      {loading && <Loader />}
       <div className="fixed top-0">
         <SidebarAdmin />
       </div>
