@@ -1,33 +1,43 @@
-import React from 'react'
+import React from "react";
 import styles from "@/styles/BuyData.module.css";
 import Link from "next/link";
-import Sidebar from "@/components/user/Sidebar";
 import Footer from "../SubMain";
 import ConfirmDataModal from "../ConfirmDataModal";
 import Loader from "@/components/utils/Loader";
-import { Logout } from '../Logout';
 
-function BuyData({ amountPlaceHolder, loading, errorMessage, amount, amounts, handleNetworkAndInputValidation, handleDataVolAndInputValidation, handlePhoneNumberAndInputValidation, submit, confirmData, networkData, network, dataVol, dataVols, phoneNumber, modalIsOpen, allSelected, openModal, onRequestClose, error }) {
-
+function BuyData({
+  amountPlaceHolder,
+  loading,
+  errorMessage,
+  amount,
+  amounts,
+  handleNetworkAndInputValidation,
+  handleDataVolAndInputValidation,
+  handlePhoneNumberAndInputValidation,
+  submit,
+  confirmData,
+  networkData,
+  network,
+  dataVol,
+  dataVols,
+  phoneNumber,
+  modalIsOpen,
+  allSelected,
+  openModal,
+  onRequestClose,
+  error,
+}) {
   return (
     <>
-        {loading && <Loader />}
-        <div  className='flex justify-between'>
-            <div className="">
-                <Sidebar />
-            </div>
-            <div className='mr-0 lg:mr-[-3ch] md:mr-[-3ch] sm:mr-[-3ch]'>
-                <Logout/>
-            </div>
-        </div>
+      {loading && <Loader />}
       <form onSubmit={submit} className="mt-[-5ch]">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl p-5">Buy Data</h3>
+            <h3 className="text-black text-xl p-5">Buy Data 2</h3>
             <div className="border rounded-2xl border-dotted bg-yellow-300 m-2 p-2 w-60 text-xs mx-auto">
               <div>
                 <p className="mb-2">Network Needed is not on the list ?</p>
-                <p>Checkout Data2. Thank You !</p>
+                <p>Checkout Data. Thank You !</p>
               </div>
             </div>
 
@@ -35,7 +45,8 @@ function BuyData({ amountPlaceHolder, loading, errorMessage, amount, amounts, ha
               {errorMessage && (
                 <div className={styles.errorMessage}>{errorMessage}</div>
               )}
-            </div>
+              </div>
+            <div className={styles.amountBtn}>
             <select
               className={`${styles.formControl} input-field`}
               onChange={handleNetworkAndInputValidation}
@@ -47,7 +58,7 @@ function BuyData({ amountPlaceHolder, loading, errorMessage, amount, amounts, ha
                 </option>
               ))}
             </select>
-            <br />
+            {/* <br /> */}
             <select
               className={`${styles.formControl} input-field`}
               onChange={handleDataVolAndInputValidation}
@@ -59,7 +70,7 @@ function BuyData({ amountPlaceHolder, loading, errorMessage, amount, amounts, ha
                 </option>
               ))}
             </select>
-            <br />
+            {/* <br /> */}
             <input
               placeholder="Phone number"
               className={`${styles.formControl} text-red-400 input-field`}
@@ -67,10 +78,11 @@ function BuyData({ amountPlaceHolder, loading, errorMessage, amount, amounts, ha
               onChange={handlePhoneNumberAndInputValidation}
             />
             {error ? (
-              <div className='text-left ml-6 mt-[-1.3ch] text-xs mb-[-2ch] text-red-800'>{error}</div>
-            ) : null }
-            <br />
-            <div className={styles.amountBtn}>
+              <div className="text-left ml-6 mt-[-1.3ch] text-xs mb-[-2ch] text-red-800">
+                {error}
+              </div>
+            ) : null}
+            {/* <br /> */}
               <div
                 className={`${styles.formControl} border border-white bg-white input-field`}
               >
@@ -115,7 +127,7 @@ function BuyData({ amountPlaceHolder, loading, errorMessage, amount, amounts, ha
       />
       <Footer />
     </>
-  )
+  );
 }
 
-export default BuyData
+export default BuyData;

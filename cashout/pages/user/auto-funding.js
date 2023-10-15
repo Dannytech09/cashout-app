@@ -1,6 +1,7 @@
-import React from 'react'
-import AutoFundingComp from '@/components/user/AutoFunding'
-import { getUserIdAndToken } from '@/Utils/authCookies';
+import React from "react";
+import AutoFundingComp from "@/components/user/AutoFunding";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+import Layout from "@/components/user/Layout";
 
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
@@ -8,7 +9,7 @@ export async function getServerSideProps(ctx) {
   if (!token) {
     // console.log("getServerSideProps ran")
     const { res } = ctx;
-    res.writeHead(302, { Location: '/login' });
+    res.writeHead(302, { Location: "/login" });
     res.end();
   }
   // The page will render Comp if authenticated
@@ -17,8 +18,8 @@ export async function getServerSideProps(ctx) {
 
 export default function AutoFunding() {
   return (
-    <div>
-      <AutoFundingComp/>
-    </div>
-  )
+    <Layout>
+      <AutoFundingComp />
+    </Layout>
+  );
 }

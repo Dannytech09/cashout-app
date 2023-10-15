@@ -1,24 +1,33 @@
-import React from 'react'
+import React from "react";
 import Link from "next/link";
 import styles from "@/styles/BuyData.module.css";
-import Sidebar from "@/components/user/Sidebar";
 import ConfirmDataModal from "../ConfirmDataModal";
 import Loader from "@/components/utils/Loader";
-import SubMain from '../SubMain';
-import { Logout } from '../Logout';
+import SubMain from "../SubMain";
 
-export default function DirectCoupon({ networkData, amountPlaceHolder, loading, dataVol, phoneNumber, amounts, modalIsOpen, allSelected, name, handleNetworkAndInputValidation, handleDataVolAndInputValidation, handlePhoneNumberAndInputValidation, submit, openModal, confirmData, setModalIsOpen, errorMessage, error }) {
+export default function DirectCoupon({
+  networkData,
+  amountPlaceHolder,
+  loading,
+  dataVol,
+  phoneNumber,
+  amounts,
+  modalIsOpen,
+  allSelected,
+  name,
+  handleNetworkAndInputValidation,
+  handleDataVolAndInputValidation,
+  handlePhoneNumberAndInputValidation,
+  submit,
+  openModal,
+  confirmData,
+  setModalIsOpen,
+  errorMessage,
+  error,
+}) {
   return (
     <div>
-         {loading && <Loader />}
-         <div  className='flex justify-between'>
-            <div className="">
-                <Sidebar />
-            </div>
-            <div className='mr-0 lg:mr-[-3ch] md:mr-[-3ch] sm:mr-[-3ch]'>
-                <Logout/>
-            </div>
-        </div>
+      {loading && <Loader />}
       <form onSubmit={submit} className="mt-[-2ch]">
         <div className="p-10">
           <div className="text-center">
@@ -30,7 +39,7 @@ export default function DirectCoupon({ networkData, amountPlaceHolder, loading, 
               <p>You might be unable to check balance atimes due to network</p>
               <p>Hence, confirm final status via your history</p>
             </div>
-               <div>
+            <div>
               {errorMessage && (
                 <div className={styles.errorMessage}>{errorMessage}</div>
               )}
@@ -64,9 +73,11 @@ export default function DirectCoupon({ networkData, amountPlaceHolder, loading, 
               value={phoneNumber}
               onChange={handlePhoneNumberAndInputValidation}
             />
-               {error ? (
-              <div className='text-left ml-6 mt-[-1.3ch] text-xs  text-red-800'>{error}</div>
-            ) : null }
+            {error ? (
+              <div className="text-left ml-6 mt-[-1.3ch] text-xs  text-red-800">
+                {error}
+              </div>
+            ) : null}
             <br />
             <div className={styles.amountBtn}>
               <div
@@ -112,5 +123,5 @@ export default function DirectCoupon({ networkData, amountPlaceHolder, loading, 
       />
       <SubMain />
     </div>
-  )
+  );
 }

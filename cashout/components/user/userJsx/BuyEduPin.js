@@ -2,43 +2,41 @@ import React from "react";
 import styles from "@/styles/BuyData.module.css";
 import Link from "next/link";
 import Footer from "@/components/user/Footer";
-import ConfirmDataModal from "@/components/user/ConfirmDataModal";
+import ConfirmEduPinModal from "@/components/user/ConfirmEduPinModal";
 import Loader from "@/components/utils/Loader";
 
-function BuyDataS({
+function BuyEduPin({
   amountPlaceHolder,
   loading,
   errorMessage,
   amount,
   amounts,
-  handleNetworkAndInputValidation,
-  handleDataVolAndInputValidation,
-  handlePhoneNumberAndInputValidation,
+  handleEduTypeAndInputValidation,
+  handleEduVolAndInputValidation,
   submit,
   confirmData,
-  networkData,
-  network,
-  dataVol,
-  dataVols,
-  phoneNumber,
+  eduPin,
+  edu,
+  vol,
+  vols,
   modalIsOpen,
   allSelected,
   openModal,
   onRequestClose,
   name,
-  error,
-}) {
+  num
+}) {        
   return (
     <div>
       {loading && <Loader />}
       <form onSubmit={submit} className="mt-[-5ch]">
         <div className="p-10">
           <div className="text-center">
-            <h3 className="text-black text-xl mt-8 p-5">Buy Data</h3>
+            <h3 className="text-black text-xl mt-8 p-5">Buy Educational Pin</h3>
             <div className="border rounded-2xl border-dotted bg-green-300 m-2 p-2 w-60 text-xs mx-auto">
               <div className="">
-                <p className="mb-2">Network Needed is not on the list ?</p>
-                <p>Checkout Data2. Thank You !</p>
+                <p className="mb-2">Check history for the generated pin(s)</p>
+                <p>Thank You !</p>
               </div>
             </div>
             <div>
@@ -49,40 +47,28 @@ function BuyDataS({
             <div className={styles.amountBtn}>
               <select
                 className={`${styles.formControl} input-field`}
-                onChange={handleNetworkAndInputValidation}
+                onChange={handleEduTypeAndInputValidation}
               >
-                <option value={network}>--Choose Network--</option>
-                {networkData.map((ctr) => (
-                  <option value={ctr.variation_string} key={ctr._id}>
-                    {ctr.variation_string}
+                <option value={edu}>--Choose Edu Pin--</option>
+                {eduPin.map((ctr) => (
+                  <option value={ctr.type} key={ctr._id}>
+                    {ctr.type}
                   </option>
                 ))}
               </select>
               {/* <br /> */}
               <select
                 className={`${styles.formControl} input-field`}
-                onChange={handleDataVolAndInputValidation}
+                onChange={handleEduVolAndInputValidation}
               >
-                <option value={dataVol}>--Data Volume--</option>
-                {dataVols.map((ctr) => (
+                <option value={vol}>--Number of Pins--</option>
+                {vols.map((ctr) => (
                   <option value={ctr.plan_code} key={ctr.plan_code}>
                     {ctr.name}
                   </option>
                 ))}
               </select>
               {/* <br /> */}
-              <input
-                placeholder="Phone number"
-                className={`${styles.formControl} text-red-400 input-field`}
-                value={phoneNumber}
-                onChange={handlePhoneNumberAndInputValidation}
-              />
-              {/* <br /> */}
-              {error ? (
-                <div className="text-left ml-6 mt-[-1.3ch] text-xs mb-[1ch] text-red-800">
-                  {error}
-                </div>
-              ) : null}
               <div
                 className={`${styles.formControl} border border-white bg-white input-field`}
               >
@@ -104,7 +90,7 @@ function BuyDataS({
                     cursor: allSelected ? "pointer" : "not-allowed",
                   }}
                 >
-                  {loading ? <p>Loading...</p> : "Buy Data"}
+                  {loading ? <p>Loading...</p> : "Purchase E-Pin"}
                 </button>
               </div>
               <div
@@ -116,18 +102,16 @@ function BuyDataS({
           </div>
         </div>
       </form>
-      <ConfirmDataModal
-        phoneNumber={phoneNumber}
+      <ConfirmEduPinModal
         modalIsOpen={modalIsOpen}
         onRequestClose={onRequestClose}
         onConfirm={confirmData}
-        network={name}
-        // dataVol={dataVol}
-        // value={buyData}
+        name={name}
+        vol={num}
       />
       <Footer />
     </div>
   );
 }
 
-export default BuyDataS;
+export default BuyEduPin;

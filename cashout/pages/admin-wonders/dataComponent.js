@@ -24,6 +24,22 @@ function DataComponent(ctx) {
     <>
       <SidebarAdmin />
       <div className="flex flex-col gap-4 p-4 text-center">
+      <div className="border rounded-md bg-red-300 p-4">
+          <Link
+            href={"/admin-wonders/eduLock"}
+            className="text-gray-600 hover:text-gray-800 font-medium"
+          >
+            Lock Edu
+          </Link>
+        </div>
+      <div className="border rounded-md bg-red-300 p-4">
+          <Link
+            href={"/admin-wonders/eduPrices"}
+            className="text-gray-600 hover:text-gray-800 font-medium"
+          >
+            Set Edu Prices
+          </Link>
+        </div>
       <div className="border rounded-md bg-blue-400 p-4">
           <Link
             href={"/admin-wonders/dataPricesS"}

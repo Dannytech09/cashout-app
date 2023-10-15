@@ -1,7 +1,8 @@
 import React from "react";
 import Loader from "@/components/utils/Loader";
+import SidebarAdmin from "../Sidebar-Admin";
 
-export default function UpdatePassword({
+export default function UpdateAPassword({
   error,
   loading,
   register,
@@ -12,6 +13,9 @@ export default function UpdatePassword({
   return (
     <div>
       {loading && <Loader />}
+      <div className="flex absolute mt-[-2ch]">
+        <SidebarAdmin />
+      </div>
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="mt-4 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"

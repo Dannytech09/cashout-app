@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import classNames from "classnames";
 import CollapseBtn from "../heroIcons/CollapseBtn";
-import Logo from "../heroIcons/Logo";
 import HomeIcon from "../heroIcons/HomeIcon";
 import DataIcon from "../heroIcons/DataIcon";
 import AirtimeIcon from "../heroIcons/AirtimeIcon";
@@ -16,12 +15,18 @@ import LockPassIcon from "../heroIcons/LockPassIcon";
 import { LogoutHandler } from "@/pages/api/user/logout";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
+import { Logout } from "./Logout";
+import Avatar from "../heroIcons/Avatar";
+import { useSelector } from "react-redux";
+import EduPinIcon from "../heroIcons/Edu";
+import LightElectIcon from "../heroIcons/LightElectIcon";
+import TvCabIcon from "../heroIcons/TvCabIcon";
 
 // Using array for nav items
 const menuItems = [
   { id: 1, label: "Dashboard", icon: HomeIcon, link: "/user/dashboard" },
-  { id: 2, label: "Buy Data", icon: DataIcon, link: "/user/buyData" },
-  { id: 3, label: "Buy Data 2", icon: DataIcon, link: "/user/buyDataS" },
+  { id: 2, label: "Buy Data", icon: DataIcon, link: "/user/buyDataS" },
+  { id: 3, label: "Buy Data 2", icon: DataIcon, link: "/user/buyData" },
   { id: 4, label: "Buy Airtime", icon: AirtimeIcon, link: "/user/buyAirtime" },
   {
     id: 5,
@@ -32,14 +37,20 @@ const menuItems = [
   {
     id: 6,
     label: "Cable Sub",
-    icon: FundWalletIcon,
+    icon: TvCabIcon,
     link: "/user/tvSub",
   },
   {
     id: 7,
     label: "Elect Bill",
-    icon: FundWalletIcon,
+    icon: LightElectIcon,
     link: "/user/electBill",
+  },
+  {
+    id: 71,
+    label: "Edu Pin",
+    icon: EduPinIcon,
+    link: "/user/buyEduPin",
   },
   {
     id: 8,
@@ -76,12 +87,26 @@ const menuItems = [
 const Sidebar = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
+  const user = useSelector((state) => state.user);
+
+  // useEffect(() => {
+
+  //   if (!user || user === null) {
+  //     removeUserSession();
+  //     expireSessionAndRedirect(ctx, "/login");
+  //     // router.push('/login');
+  //   }
+  // }, [user]);
+
+  // 'custom-deep-green': '#2E6268',
+  // 'custom-dark-gray': '#343a40',
+  // 'custom-gray': '#6c757d',
 
   const wrapperClasses = classNames(
-    "z-30 h-screen text-slate-800 mt-10 px-4 pt-3 flex absolute flex-col",
+    "z-30 h-[100ch] text-slate-200 px-4 pt-3 flex flex-col", // absolute
     {
       ["hidden"]: !toggle,
-      ["bg-gray-200"]: toggle,
+      ["bg-gray-900"]: toggle,
       // ["w-15 bg-secondary"]: toggle,
       // ["fixed top-0 left-0 w-64 h-full bg-gray-900 text-gray-100 overflow-y-auto transition-transform transform -translate-x-full"]: toggle,
     }
@@ -115,7 +140,7 @@ const Sidebar = () => {
 
   const getNavItemClasses = (menu) => {
     return classNames(
-      "flex items-center py-4 px-3 h-full cursor-pointer hover:bg-blue-200 rounded w-full overflow-hidden whitespace-nowrap",
+      "flex items-center bg-black py-4 px-3 h-full cursor-pointer hover:bg-blue-200 rounded w-full overflow-hidden whitespace-nowrap",
       {
         ["bg-light-lighter"]: menu.id,
       }
@@ -141,32 +166,37 @@ const Sidebar = () => {
   // }
 
   return (
-    <>
-      <div
-        className="flex absolute z-50 border-red-2 p-2 h-10 w-10 bg-red-500"
-        onClick={handleSideBarToggle}
-      >
-        <div>
+    <div className="">
+      <div className="flex fixed w-full z-50 justify-between border-red-800  h-10 custom-dark-gray">
+        <div className="ml-2 mt-2" onClick={handleSideBarToggle}>
           <CollapseBtn />
+        </div>
+        <div className="">
+          <Logout />
         </div>
       </div>
       <div
-        className={wrapperClasses}
+        className={`${wrapperClasses}`}
         style={{ transition: "width 300ms cubic-beizer(0.2, 0, 0, 1) 9s" }}
       >
         <div>
-          <div className="flex flex-col">
-            {/* Logo Container */}
-            <div className="flex item-center justify-between relative">
-              <div className="flex items-center pl-1 gap-4 w-auto h-auto ">
-                <Logo />
-                <span
-                  className={classNames("mt-1 text-sm font-medium text-text", {
-                    hidden: !toggle,
-                  })}
-                >
-                  Logo
-                </span>
+          <div className="flex flex-col mt-5">
+            {/* Avatar Container */}
+            <div className="flex items-center justify-between relative ml-1">
+              <div className="flex items-center pl-1 gap-1 w-auto h-auto">
+                <div className="w-[5ch]">
+                  <Avatar />
+                </div>
+                <div className="flex flex-col place-items-center">
+                  <div className="max-w-[12ch] px-2 py-1 overflow-hidden">
+                    {user && <div>{user.firstName}</div>}
+                    {user && (
+                      <div>
+                        {"\u20A6"} {user.bal.$numberDecimal}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -209,7 +239,7 @@ const Sidebar = () => {
           <button
             onClick={logoutHandler}
             className={
-              "flex items-center hover:bg-blue-200 py-4 px-3 cursor-pointer bg-gray-200  rounded w-full overflow-hidden whitespace-nowrap"
+              "flex items-center hover:bg-blue-200 py-4 px-3 cursor-pointer bg-black  rounded w-full overflow-hidden whitespace-nowrap"
             }
           >
             {toggle && (
@@ -225,9 +255,24 @@ const Sidebar = () => {
               </h5>
             )}
           </button>
+          <button
+            className={
+              "flex items-center hover:bg-blue-200 py-4 px-3 cursor-pointer bg-black  rounded w-full overflow-hidden whitespace-nowrap"
+            }
+          >
+            {toggle && (
+              <h5
+                className={classNames(
+                  "flex gap-5 mx-auto text-md font-medium text-text-light fill-blue-900 stroke-blue-600"
+                )}
+              >
+                Version 1.6.0
+              </h5>
+            )}
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

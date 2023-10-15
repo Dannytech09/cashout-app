@@ -16,7 +16,7 @@ export default function DelUser({
   return (
     <div>
       {loading && <Loader />}
-      <div className="fixed top-0">
+      <div className="flex absolute top-0">
         <SidebarAdmin />
       </div>
       <form

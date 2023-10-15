@@ -8,7 +8,7 @@ export async function getServerSideProps(ctx) {
 
   if (!token) {
     const { res } = ctx;
-    res.writeHead(302, { Location: "admin-wonders/login" });
+    res.writeHead(302, { Location: "/admin-wonders/login" });
     res.end();
   }
   return { props: {} };

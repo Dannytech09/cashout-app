@@ -1,24 +1,35 @@
-import React from 'react'
+import React from "react";
 import ConfirmDataGiftModal from "@/components/user/ConfirmDataGiftModal";
 import styles from "@/styles/BuyData.module.css";
 import Link from "next/link";
-import Sidebar from "@/components/user/Sidebar";
 import Loader from "@/components/utils/Loader";
-import { Logout } from '../Logout';
 
-export default function BuyDataMainGift({ amountPlaceHolder, loading, errorMessage, amount, amounts, handleNetworkAndInputValidation, handleDataVolAndInputValidation, handlePhoneNumberAndInputValidation, submit, confirmData, networkData, network, dataVol, dataVols, phoneNumber, modalIsOpen, allSelected, openModal, setModalIsOpen, error  }) {
+export default function BuyDataMainGift({
+  amountPlaceHolder,
+  loading,
+  errorMessage,
+  amount,
+  amounts,
+  handleNetworkAndInputValidation,
+  handleDataVolAndInputValidation,
+  handlePhoneNumberAndInputValidation,
+  submit,
+  confirmData,
+  networkData,
+  network,
+  dataVol,
+  dataVols,
+  phoneNumber,
+  modalIsOpen,
+  allSelected,
+  openModal,
+  setModalIsOpen,
+  error,
+}) {
   return (
     <div>
-        {loading && <Loader />}
-        <div  className='flex justify-between'>
-            <div className="">
-                <Sidebar />
-            </div>
-            <div className='mr-0 lg:mr-[-3ch] md:mr-[-3ch] sm:mr-[-3ch]'>
-                <Logout/>
-            </div>
-        </div>
-      <form onSubmit={submit} className="mt-[-5ch]">
+      {loading && <Loader />}
+      <form onSubmit={submit} className="mt-[0ch]">
         <div className="p-10">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Bulk Data</h3>
@@ -63,9 +74,11 @@ export default function BuyDataMainGift({ amountPlaceHolder, loading, errorMessa
               value={phoneNumber}
               onChange={handlePhoneNumberAndInputValidation}
             />
-             {error ? (
-              <div className='text-left ml-6 mt-[-1.3ch] text-xs mb-[-2ch] text-red-800'>{error}</div>
-            ) : null }
+            {error ? (
+              <div className="text-left ml-6 mt-[-1.3ch] text-xs mb-[-2ch] text-red-800">
+                {error}
+              </div>
+            ) : null}
             <br />
             <div className={styles.amountBtn}>
               <div
@@ -111,5 +124,5 @@ export default function BuyDataMainGift({ amountPlaceHolder, loading, errorMessa
         // value={buyData}
       />
     </div>
-  )
+  );
 }

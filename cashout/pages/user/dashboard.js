@@ -5,7 +5,6 @@ import Main from "@/components/user/Main";
 import SubMain from "@/components/user/SubMain";
 import Section from "@/components/user/Section";
 import Link from "next/link";
-import Footer from "@/components/user/Footer";
 import Header from "@/components/user/Header";
 import Layout from "@/components/user/Layout";
 import API_BASE_URL from "@/apiConfig";
@@ -15,62 +14,68 @@ import {
   getUserIdAndToken,
 } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/slices/userSlice";
+import Footer from "@/components/user/Footer";
+// import Sidebar from "@/components/user/Sidebar";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/auth`;
-
 function Dashboard({ ctx, user, error }) {
+  const dispatch = useDispatch();
   const router = useRouter();
+
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
-    // Check if there's an error
+    // console.log("dispatch ran")
+    dispatch(setUser(user));
     if (
       error === "Invalid token." ||
       error === "Token has been revoked or expired."
     ) {
       removeUserSession();
       expireSessionAndRedirect(ctx, router);
-      // console.log(error)
       setRedirecting(true);
     }
-  }, [error, ctx, router]);
+  }, [error, ctx, router, dispatch]);
 
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
   }
 
   return (
-    <div className="flex overflow-x-hidden">
-      <Head>
-        <title>My Dashboard</title>
-        <meta name="description" content="Best Data and airtime Website" />
-        {/* client side exception occur fixed */}
-        <meta name="next-head-count" content="5" />
-        <Link rel="icon" href="/favicon.png" />
-      </Head>
+    <Layout>
+      <div className="flex overflow-x-hidden">
+        <Head>
+          <title>My Dashboard</title>
+          <meta name="description" content="Best Data and airtime Website" />
+          {/* client side exception occur fixed */}
+          <meta name="next-head-count" content="5" />
+          <Link rel="icon" href="/john_data_logo_1.png" />
+        </Head>
 
-      <div className="sm:w-40">
-        <Layout>
+        <div>
+          {/* <div>
+            <Sidebar user={user}/>
+          </div> */}
           <div>
-            <div>
-              <Header user={user} />
-            </div>
-            <div>
-              <Main />
-            </div>
-            <div>
-              <Section />
-            </div>
-            <div>
-              <SubMain />
-            </div>
-            <div>
-              <Footer />
-            </div>
+            <Header user={user} />
           </div>
-        </Layout>
+          <div>
+            <Main />
+          </div>
+          <div>
+            <Section />
+          </div>
+          <div>
+            <SubMain user={user} />
+          </div>
+          <div>
+            <Footer />
+          </div>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

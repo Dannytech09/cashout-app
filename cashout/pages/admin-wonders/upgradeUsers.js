@@ -1,8 +1,7 @@
 import React from 'react'
+import UpgradeUsersComp from '@/components/admin/UpgradeUsers'
 import { getUserIdAndToken } from '@/Utils/authCookies';
-import SetPricesComp from '@/components/admin/SetPrices'
 
-// A
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
 
@@ -14,10 +13,10 @@ export async function getServerSideProps(ctx) {
   return { props: {} };
 }
 
-export default function SetPrices() {
+export default function UpgradeUsers() {
   return (
     <div>
-      <SetPricesComp />
+      <UpgradeUsersComp />
     </div>
   )
 }

@@ -1,7 +1,7 @@
-import React from 'react'
-import TvSubComp from '@/components/user/TvSub';
+import React from 'react';
 import { getUserIdAndToken } from "@/Utils/authCookies";
 import Layout from '@/components/user/Layout';
+import BuyEduPinComp from '@/components/user/BuyEduPin';
 
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
@@ -14,10 +14,10 @@ export async function getServerSideProps(ctx) {
   return { props: {} };
 }
 
-export default function TvSub() {
+export default function BuyEduPinPage() {
   return (
-    <Layout>
-      <TvSubComp />
-    </Layout>
+<Layout> 
+  <BuyEduPinComp />
+</Layout>
   )
 }
