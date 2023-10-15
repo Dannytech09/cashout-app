@@ -1,6 +1,7 @@
 import React from "react";
 import BuyData from "@/components/user/BuyData";
 import { getUserIdAndToken } from "@/Utils/authCookies";
+import Layout from "@/components/user/Layout";
 
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
@@ -15,8 +16,8 @@ export async function getServerSideProps(ctx) {
 
 export default function BuyDataPage() {
   return (
-    <div>
+    <Layout>
       <BuyData />
-    </div>
+    </Layout>
   );
 }

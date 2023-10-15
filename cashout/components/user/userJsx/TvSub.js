@@ -1,23 +1,33 @@
-import React from 'react'
+import React from "react";
 import styles from "@/styles/TvSub.module.css";
 import Link from "next/link";
-import Sidebar from "@/components/user/Sidebar";
 import ConfirmTvModal from "@/components/utils/ConfirmTvModal";
 import Loader from "@/components/utils/Loader";
-import { Logout } from '../Logout';
 
-export default function TvSub({ loading, errorMessage, allSelected, renderName, renderDueDate, purchaseBtn, modalIsOpen, selectedService, selectedVariation, iucNumber, handleServiceChange, handleVariationChange, handleIucNumber, getServiceOptions, getVariationOptions, handleFormSubmit, submit, confirmData, setModalIsOpen }) {
+export default function TvSub({
+  loading,
+  errorMessage,
+  allSelected,
+  renderName,
+  renderDueDate,
+  purchaseBtn,
+  modalIsOpen,
+  selectedService,
+  selectedVariation,
+  iucNumber,
+  handleServiceChange,
+  handleVariationChange,
+  handleIucNumber,
+  getServiceOptions,
+  getVariationOptions,
+  handleFormSubmit,
+  submit,
+  confirmData,
+  setModalIsOpen,
+}) {
   return (
     <div>
-         {loading && <Loader />}
-         <div  className='flex justify-between'>
-            <div className="">
-                <Sidebar />
-            </div>
-            <div className='mr-0 lg:mr-[-3ch] md:mr-[-3ch] sm:mr-[-3ch]'>
-                <Logout />
-            </div>
-        </div>
+      {loading && <Loader />}
       <form
         className={`${styles.form} bg-slate-500 mt-[-3ch] h-full md:h-screen xl:h-screen`}
         onSubmit={handleFormSubmit}
@@ -27,7 +37,7 @@ export default function TvSub({ loading, errorMessage, allSelected, renderName, 
             <h3 className="text-black text-center text-xl p-5">
               Cable Subscription
             </h3>
-            <p className='text-center text-xs mb-4'>1 percent discount</p>
+            <p className="text-center text-xs mb-4">1 percent discount</p>
             <div>
               {errorMessage && (
                 <div
@@ -158,5 +168,5 @@ export default function TvSub({ loading, errorMessage, allSelected, renderName, 
         onConfirm={confirmData}
       />
     </div>
-  )
+  );
 }

@@ -1,29 +1,36 @@
-import React from 'react'
+import React from "react";
 import ConfirmAirtimeModal from "@/components/utils/ConfirmAirtimeModal";
 import Link from "next/link";
 import styles from "@/styles/BuyAirtime.module.css";
-import Sidebar from "@/components/user/Sidebar";
 import Footer from "@/components/user/SubMain";
 import Loader from "@/components/utils/Loader";
-import { Logout } from '../Logout';
 
-export default function BuyAirtime({ loading, errorMessage, modalIsOpen, setModalIsOpen, allSelected, error, network, phoneNumber, amount, serviceId, changeNetwork, changePhoneNumber, changeAmount, submit, openModal,confirmData }) {
+export default function BuyAirtime({
+  loading,
+  errorMessage,
+  modalIsOpen,
+  setModalIsOpen,
+  allSelected,
+  error,
+  network,
+  phoneNumber,
+  amount,
+  serviceId,
+  changeNetwork,
+  changePhoneNumber,
+  changeAmount,
+  submit,
+  openModal,
+  confirmData,
+}) {
   return (
     <div>
-    {loading && <Loader />}
-        <div  className='flex justify-between'>
-            <div className="">
-                <Sidebar />
-            </div>
-            <div className='mr-0 lg:mr-[-3ch] md:mr-[-3ch] sm:mr-[-3ch]'>
-                <Logout/>
-            </div>
-        </div>
+      {loading && <Loader />}
       <form onSubmit={submit} className="mt-[-3ch]">
         <div className="p-10">
           <div className="text-center">
             <h3 className="text-black text-xl p-5">Buy Airtime</h3>
-             <p className='text-center text-xs mb-4'>1 percent discount</p>
+            <p className="text-center text-xs mb-4">1 percent discount</p>
             <div>
               {errorMessage && (
                 <div className={styles.errorMessage}>{errorMessage}</div>
@@ -48,8 +55,10 @@ export default function BuyAirtime({ loading, errorMessage, modalIsOpen, setModa
               onChange={changePhoneNumber}
             />
             {error ? (
-              <div className='text-left ml-6 mt-[-1.3ch] mb-[-2ch] text-xs text-red-800'>{error}</div>
-            ) : null }
+              <div className="text-left ml-6 mt-[-1.3ch] mb-[-2ch] text-xs text-red-800">
+                {error}
+              </div>
+            ) : null}
             <br />
             <input
               placeholder="Amount"
@@ -95,5 +104,5 @@ export default function BuyAirtime({ loading, errorMessage, modalIsOpen, setModa
         <Footer />
       </div>
     </div>
-  )
+  );
 }

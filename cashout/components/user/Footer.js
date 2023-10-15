@@ -10,9 +10,9 @@ export default function Footer() {
           <WhatsappIcon />
         </Link>
       </div>
-      <div className=" h-10 text-center text-sm font-extrabold p-2 bottom-0">
+      <div className=" text-center text-sm font-extrabold p-1 bottom-0">
         <Link href={"https://facebook.com/wondersdataplug"} target="_blank">
-          Developed By: Dannytech {new Date().getFullYear()}
+          Developed By: Dannytech Devs. {new Date().getFullYear()}
         </Link>
       </div>
     </div>

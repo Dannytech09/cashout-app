@@ -1,13 +1,17 @@
-import React from 'react'
+import React from "react";
 import WalletIcon from "@/components/heroIcons/WalletIcon";
-import Sidebar from "@/components/user/Sidebar";
 
-export default function AutoFunding({ data, postData, isFetching, buttonClicked, errorMessage, successMessage, handleClick }) {
-    return (
+export default function AutoFunding({
+  data,
+  postData,
+  isFetching,
+  buttonClicked,
+  errorMessage,
+  successMessage,
+  handleClick,
+}) {
+  return (
     <div>
-        <div className="fixed left-0 top-0">
-        <Sidebar />
-      </div>
       <div className="max-w-screen-sm p-4 border-red-300">
         <h3 className="text-white p-3">* Auto Funding By Transfer Option</h3>
         <p className="mb-6 p-3 text-white text-xs text-center border border-green-400 bg-gray-400">
@@ -32,13 +36,13 @@ export default function AutoFunding({ data, postData, isFetching, buttonClicked,
 
         {errorMessage && (
           <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-red-600">
-           {errorMessage}
+            {errorMessage}
           </p>
         )}
         {successMessage && (
-             <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-green-600">
-             {successMessage}
-            </p>
+          <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-green-600">
+            {successMessage}
+          </p>
         )}
         {buttonClicked && isFetching ? (
           <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-green-700">
@@ -197,5 +201,5 @@ export default function AutoFunding({ data, postData, isFetching, buttonClicked,
         </div>
       </div>
     </div>
-  )
+  );
 }

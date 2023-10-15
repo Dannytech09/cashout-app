@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { buyDataSHandler, buyDataSGetHandler } from "@/pages/api/user/buydatas";
-import BuyDataS from "./userJsx/BuyDataS";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
+import { buyEduGetHandler, buyEduHandler } from "@/pages/api/user/buyedupin";
+import BuyEduPin from "./userJsx/BuyEduPin";
 
 let name;
+let pk;
+let num;
 
-function BuyDataSComp(ctx) {
+function BuyEduPinComp(ctx) {
   const router = useRouter();
   // const user = getUser();
   // const id = user ? user.id : null;
   // const { token } = getUserIdAndToken(ctx);
 
-  const [networkData, setNetworkData] = useState([]);
+  const [eduPin, setEduPin] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
 
-  const [network, setNetwork] = useState("--Choose Network--");
-  const [dataVol, setDataVol] = useState("--Data Volume--");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [edu, setEdu] = useState("--Choose Edu Type--");
+  const [vol, setVol] = useState("--number of pin--");
   const [amount, setAmount] = useState("");
-  const [dataVols, setDataVols] = useState([]);
+  const [vols, setVols] = useState([]);
   const [amounts, setAmounts] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
@@ -33,8 +33,9 @@ function BuyDataSComp(ctx) {
     async function fetchData(ctx) {
       try {
         setLoading(true);
-        const response = await buyDataSGetHandler();
-        setNetworkData(response.networkDataS);
+        const response = await buyEduGetHandler();
+        // console.log(response)
+        setEduPin(response.eduPin);
         setLoading(false);
         if (
           response.error === "Invalid token." ||
@@ -60,68 +61,56 @@ function BuyDataSComp(ctx) {
   }, []);
 
   const changeNetwork = (e) => {
-    const selectedVariationString = e.target.value;
+    const inputType = e.target.value;
 
-    const selectedNetwork = networkData.find(
-      (ctr) => ctr.variation_string === selectedVariationString
+    const selectedType = eduPin.find(
+      (ctr) => ctr.type === inputType
     );
-    if (selectedNetwork) {
-      setDataVols(selectedNetwork.dataVol);
+    if (selectedType) {
+        setVols(selectedType.vol);
 
-      setPhoneNumber("");
       setAmount("");
-      setNetwork(selectedNetwork.network); // Set the network based on the found network
+      setEdu(selectedType.type); 
     } else {
-      setDataVols([]); // Clear the dataVols state when the network is not found (optional)
-      setPhoneNumber("");
+        setVols([]); 
       setAmount("");
-      setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
+      setEdu(""); 
     }
-    name = selectedNetwork.variation_string;
-    // console.log("Selected Network:", variation);
-    // console.log("Data Vols:", dataVols);
+    name = selectedType.type;
+    // console.log("Selected type array:", selectedType);
+    // console.log("selected type value:", name);
   };
 
   // handle two onchange props
-  const handleNetworkAndInputValidation = (e) => {
+  const handleEduTypeAndInputValidation = (e) => {
     changeNetwork(e);
     handleInputField(e);
   };
 
-  const changeDataVol = (e) => {
-    setDataVol(e.target.value);
-    const selectedDataVol = dataVols.find(
-      (ctr) => ctr.plan_code === e.target.value
+  const changeVol = (e) => {
+    const inputVol = e.target.value;
+    setVol(inputVol);
+    const selectedVol = vols.find(
+      (ctr) => ctr.plan_code === inputVol
     );
-    // check if selectedDataVol is undefined. if not checked it will throw an
-    // error if user selects a value and later select the default value
-    if (selectedDataVol) {
-      setAmounts(selectedDataVol);
+    pk = selectedVol.plan_code;
+    num = selectedVol.name;
+    // console.log("vol", num)
+    // console.log("pk", pk)
+    if (selectedVol) {
+      setAmounts(selectedVol);
       setAmountPlaceHolder(false);
+    //   console.log("l", selectedName)
     }
-    setPhoneNumber("");
     setAmount("");
-    // console.log(e.target.value);
-  };
+};
 
   // handle two onchange props
-  const handleDataVolAndInputValidation = (e) => {
-    changeDataVol(e);
+  const handleEduVolAndInputValidation = (e) => {
+    changeVol(e);
     handleInputField(e);
   };
 
-  // handle two onchange props
-  const handlePhoneNumberAndInputValidation = (e) => {
-    const inputValue = e.target.value.replace(/[^0-9]/g, "");
-    if (inputValue.length <= 11) {
-      setPhoneNumber(inputValue);
-      setError(null);
-      handleInputField(e);
-    } else {
-      setError("Phone number must be 11 digits long");
-      setPhoneNumber("");
-    }
-  };
 
   const submit = (e) => {
     e.preventDefault();
@@ -159,13 +148,12 @@ function BuyDataSComp(ctx) {
         setLoading(true);
         setRedirecting(false);
         setErrorMessage(null);
-        const response = await buyDataSHandler(
+        const response = await buyEduHandler(
           ctx,
-          network,
-          dataVol,
-          phoneNumber
+          name,
+          pk,
         );
-        // console.log("res", response);
+        console.log("res", response);
         if (
           response.error === "Invalid token." ||
           response.error === "Token has been revoked or expired." ||
@@ -182,9 +170,9 @@ function BuyDataSComp(ctx) {
           //   router.reload();
           const buyAgain = window.confirm("Do you wish to buy again ?");
           if (buyAgain) {
-            router.push("/user/buyDataS");
+            router.push("/user/buyEduPin");
           } else {
-            router.push("/user/dashboard");
+            router.push("/user/history");
           }
         }
         setLoading(false);
@@ -213,7 +201,7 @@ function BuyDataSComp(ctx) {
         allFormFilled = false;
       } else if (
         input.type === "select-one" &&
-        input.value === "--Choose Network--"
+        input.value === "--Choose Edu Type--"
       ) {
         allFormFilled = false;
       }
@@ -224,34 +212,31 @@ function BuyDataSComp(ctx) {
 
   return (
     <div className="bg-slate-500 h-full md:h-full xl:h-full">
-      <BuyDataS
+      <BuyEduPin
         amountPlaceHolder={amountPlaceHolder}
         loading={loading}
         errorMessage={errorMessage}
         amount={amount}
         amounts={amounts}
-        handleNetworkAndInputValidation={handleNetworkAndInputValidation}
-        handleDataVolAndInputValidation={handleDataVolAndInputValidation}
-        handlePhoneNumberAndInputValidation={
-          handlePhoneNumberAndInputValidation
-        }
+        handleEduTypeAndInputValidation={handleEduTypeAndInputValidation}
+        handleEduVolAndInputValidation={handleEduVolAndInputValidation}
         submit={submit}
         confirmData={confirmData}
-        networkData={networkData}
-        network={network}
-        dataVol={dataVol}
-        dataVols={dataVols}
-        phoneNumber={phoneNumber}
+        eduPin={eduPin}
+        edu={edu}
+        vol={vol}
+        vols={vols}
         modalIsOpen={modalIsOpen}
         allSelected={allSelected}
         openModal={openModal}
         closeModal={closeModal}
         onRequestClose={onRequestClose}
         name={name}
-        error={error}
+        num={num}
+        pk={pk}
       />
     </div>
   );
 }
 
-export default BuyDataSComp;
+export default BuyEduPinComp;

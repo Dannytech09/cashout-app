@@ -1,6 +1,7 @@
 import React from 'react'
 import DirectCouponComp from '@/components/user/DirectCoupon'
 import { getUserIdAndToken } from "@/Utils/authCookies";
+import Layout from '@/components/user/Layout';
 
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
@@ -16,8 +17,8 @@ export async function getServerSideProps(ctx) {
 
 export default function DirectCouponPage () {
   return (
-    <div>
-   <DirectCouponComp/>
-    </div>
+  <Layout>
+    <DirectCouponComp/>
+  </Layout>
   )
 }

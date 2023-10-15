@@ -1,8 +1,7 @@
-import React from 'react'
-import { getUserIdAndToken } from '@/Utils/authCookies';
-import SetPricesComp from '@/components/admin/SetPrices'
+import React from "react";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+import UpdateEduPrices from "@/components/admin/EduPrices";
 
-// A
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
 
@@ -14,10 +13,13 @@ export async function getServerSideProps(ctx) {
   return { props: {} };
 }
 
-export default function SetPrices() {
+// SS
+function EduPrices() {
   return (
     <div>
-      <SetPricesComp />
+      <UpdateEduPrices />
     </div>
-  )
+  );
 }
+
+export default EduPrices;

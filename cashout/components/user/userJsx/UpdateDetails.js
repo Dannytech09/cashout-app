@@ -1,15 +1,19 @@
-import React from 'react'
-import Sidebar from "@/components/user/Sidebar";
+import React from "react";
 import User from "@/components/user/User";
 import Loader from "@/components/utils/Loader";
 
-export default function UpdateDetails({ user, loading, register, handleSubmit, errors, error, submitHandler}) {
+export default function UpdateDetails({
+  user,
+  loading,
+  register,
+  handleSubmit,
+  errors,
+  error,
+  submitHandler,
+}) {
   return (
     <div>
-         {loading && <Loader />}
-      <div className="flex absolute mt-[-2ch]">
-        <Sidebar />
-      </div>
+      {loading && <Loader />}
       <form
         onSubmit={handleSubmit(submitHandler)}
         className="mt-4 select-none text-xs sm:text-xl justify-center flex flex-col gap-4 sm:gap-6 items-center h-full"
@@ -17,7 +21,7 @@ export default function UpdateDetails({ user, loading, register, handleSubmit, e
         <h1 className="sm:text-3xl mb-2 font-sans text-2xl">Update Profile</h1>
         {error && (
           <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-red-600">
-           {error}
+            {error}
           </p>
         )}
 
@@ -121,15 +125,16 @@ export default function UpdateDetails({ user, loading, register, handleSubmit, e
 
       <br />
       <hr />
+      {/* none, ping, bounce, pulse, spin */}
       {user ? (
         true
       ) : (
-        <div className="text-center m-10 text-red-500">
-          Awaiting Profile Update
+        <div className="text-center m-10 text-red-500 animate-pulse">
+          Awaiting Profile Update...
         </div>
       )}
 
       <User user={user} />
     </div>
-  )
+  );
 }

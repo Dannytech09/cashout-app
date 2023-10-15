@@ -72,6 +72,12 @@ const menuItems = [
     link: "/admin-wonders/upgrade",
   },
   {
+    id: 91,
+    label: "Upgrade Users",
+    icon: FundWalletIcon,
+    link: "/admin-wonders/upgradeUsers",
+  },
+  {
     id: 10,
     label: "Block User",
     icon: AirtimeIcon,
@@ -97,6 +103,12 @@ const menuItems = [
   },
   {
     id: 14,
+    label: "Update Password",
+    icon: Airtime2Cash,
+    link: "/admin-wonders/updatePassword",
+  },
+  {
+    id: 15,
     label: "Admin's Info",
     icon: ProfileIcon,
     link: "/admin-wonders/profile",
@@ -109,7 +121,7 @@ const SidebarAdmin = () => {
   const router = useRouter();
 
   const wrapperClasses = classNames(
-    "h-screen flex absolute mt-10 px-4 pt-3 flex flex-col z-30 overflow-y-auto",
+    "h-screen flex absolute mt-10 px-4 pt-3 flex flex-col z-40 overflow-y-auto",
     {
       ["hidden"]: !toggle,
       [" bg-gray-200"]: toggle,

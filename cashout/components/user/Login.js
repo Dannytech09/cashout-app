@@ -61,7 +61,7 @@ const LoginComp = (ctx) => {
         // setCookieAndRedirect(ctx, "u", userJSON);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       throw new Error(`An error occured ${error}`);
     } finally {
       setIsDisabled(false);

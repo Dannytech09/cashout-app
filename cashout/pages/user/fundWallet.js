@@ -4,6 +4,7 @@ import Sidebar from "@/components/user/Sidebar";
 import { authGuard } from "@/Utils/authGuard";
 import { getUserIdAndToken } from "@/Utils/authCookies";
 import { useRouter } from "next/router";
+import Layout from "@/components/user/Layout";
 
 export async function getServerSideProps(ctx) {
   const { token } = getUserIdAndToken(ctx);
@@ -22,8 +23,9 @@ function FundWallet(ctx) {
 
   authGuard(ctx, router);
   return (
-    <div className="bg-gray-300 h-screen">
-      <Sidebar />
+    <Layout>
+    <div className="h-screen">
+      {/* <Sidebar /> */}
       <div className="">
         <h2 className="text-center p-4 text-2xl">Wallet Funding</h2>
         <div className="border text-center rounded-lg bg-yellow-100 p-4 m-2">
@@ -44,6 +46,7 @@ function FundWallet(ctx) {
         </div>
       </div>
     </div>
+    </Layout>
   );
 }
 

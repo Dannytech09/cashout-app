@@ -1,23 +1,35 @@
-import React from 'react'
+import React from "react";
 import styles from "@/styles/TvSub.module.css";
 import Link from "next/link";
-import Sidebar from "@/components/user/Sidebar";
 import ConfirmElectModal from "@/components/user/ConfirmElectModal";
 import Loader from "@/components/utils/Loader";
-import { Logout } from '../Logout';
 
-export default function ElectBill({ loading, errorMessage, allSelected, renderName, purchaseBtn, modalIsOpen, isEditable, selectedService, selectedType, meterNumber, amount, verifyServiceId, verifyType, handleServiceChange, handleSelectedType, handleMeterNumber, handleAmount, handleFormSubmit, submit, setModalIsOpen, confirmData }) {
+export default function ElectBill({
+  loading,
+  errorMessage,
+  allSelected,
+  renderName,
+  purchaseBtn,
+  modalIsOpen,
+  isEditable,
+  selectedService,
+  selectedType,
+  meterNumber,
+  amount,
+  verifyServiceId,
+  verifyType,
+  handleServiceChange,
+  handleSelectedType,
+  handleMeterNumber,
+  handleAmount,
+  handleFormSubmit,
+  submit,
+  setModalIsOpen,
+  confirmData,
+}) {
   return (
     <div>
-         {loading && <Loader />}
-         <div  className='flex justify-between'>
-            <div className="">
-                <Sidebar />
-            </div>
-            <div className='mr-0 lg:mr-[-3ch] md:mr-[-3ch] sm:mr-[-3ch]'>
-                <Logout />
-            </div>
-        </div>
+      {loading && <Loader />}
       <form
         className={`${styles.form} bg-slate-500 h-full md:h-screen xl:h-screen`}
         onSubmit={handleFormSubmit}
@@ -32,7 +44,7 @@ export default function ElectBill({ loading, errorMessage, allSelected, renderNa
                 <div
                   className={`${styles.errorMessage} item-center justify-center flex gap-2`}
                 >
-                 {errorMessage}
+                  {errorMessage}
                 </div>
               )}
             </div>
@@ -160,5 +172,5 @@ export default function ElectBill({ loading, errorMessage, allSelected, renderNa
         onConfirm={confirmData}
       />
     </div>
-  )
+  );
 }

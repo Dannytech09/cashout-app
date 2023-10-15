@@ -1,36 +1,25 @@
 import React from "react";
-import Footer from "../Footer";
-import Sidebar from "../Sidebar";
 import To12HourFormat from "@/components/utils/Time";
 import Loader from "@/components/utils/Loader";
 import styles from "@/styles/TvSub.module.css";
-import { Logout } from "../Logout";
 
 function MyPurchases({ myPurchases, checkTransaction, loading, errorMessage }) {
   return (
-    <div className="relative">
+    <div className="relative border-red-300">
       {loading && <Loader />}
-      <div  className='flex justify-between'>
-            <div className="">
-                <Sidebar />
-            </div>
-            <div className='mr-0 lg:mr-[-3ch] z-30 mt-1 md:mr-[-3ch] sm:mr-[-3ch]'>
-                <Logout />
-            </div>
-        </div>
       <div className="p-2 fixed top-0 w-full border border-solid border-slate-500 bg-slate-900">
         <h1 className="mt-2 text-center text-slate-200 font-extrabold text-sm">
           Transaction History
         </h1>
       </div>
-      <div className="mt-[4ch] bg-black">
-            {errorMessage && (
-            <div
-                className={`${styles.errorMessage} item-center justify-center flex gap-2`}
-            >
-                {errorMessage}
-            </div>
-            )}
+      <div className="mt-[4ch]">
+        {errorMessage && (
+          <div
+            className={`${styles.errorMessage} item-center justify-center flex gap-2`}
+          >
+            {errorMessage}
+          </div>
+        )}
         <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
           {myPurchases.map((item) => (
             <div
@@ -120,17 +109,15 @@ function MyPurchases({ myPurchases, checkTransaction, loading, errorMessage }) {
             </div>
           ))}
         </div>
-        <div className="mt-10 text-center">
-          {checkTransaction ? (
-            <p className="mt-20 text-red-300">
-              Ohh.. No Transaction performed yet !
-            </p>
+        <div className="mt-10 h-screen w-screen overflow-y-auto text-center">
+          {!checkTransaction ? (
+            <p className="my-auto text-red-300">{checkTransaction}</p>
           ) : null}
         </div>
       </div>
-      <div className="fixed bottom-0 left-0 right-0">
+      {/* <div className="fixed bottom-0 left-0 right-0">
         <Footer />
-      </div>
+      </div> */}
     </div>
   );
 }
