@@ -4,15 +4,15 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/queryTransactions`;
-const user = getUser();
- const id = user ? user.id : null;
+// const user = getUser();
+//  const id = user ? user.id : null;
 
 export async function queryTranxHandler(ctx, inputValue ) {
-    const { token } = getUserIdAndToken(ctx);
+    const { token, userId } = getUserIdAndToken(ctx);
   
       try {
           const response = await axios.post(
-            `${BASE_URL}/${id}`,
+            `${BASE_URL}/${userId}`,
             {request_id: inputValue},
             {
               headers: {

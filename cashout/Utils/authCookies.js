@@ -12,13 +12,14 @@ export function getUserIdAndToken(ctx) {
       const parsedUserCookie = JSON.parse(userCookie);
       userId = parsedUserCookie.id;
     } catch (error) {
-    throw new error("Error occured")
+    throw new Error(`Error occured ${error}`)
     }
   }
   const token = cookies.token;
 
   return { userId, token };
 }
+
 
 // del - u
 export function expireSessionAndRedirect(ctx, router) {

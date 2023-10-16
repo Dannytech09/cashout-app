@@ -1,19 +1,19 @@
 const axios = require("axios");
 import API_BASE_URL from "@/apiConfig";
 import { getUserIdAndToken } from "@/Utils/authCookies";
-import { getUser } from "@/Utils/Common";
+// import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/api/v1`;
-const user = getUser();
- const id = user ? user.id : null;
+// const user = getUser();
+//  const id = user ? user.id : null;
 
 // get req
 export async function getAutoFundingAcctHandler(ctx) {
-  const { token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
   try {
     const header = { Authorization: `Bearer ${token}` };
 
-    const response = await axios.get(`${BASE_URL}/acctNumber/${id}`, {
+    const response = await axios.get(`${BASE_URL}/acctNumber/${userId}`, {
       headers: header,
     });
     // console.log(response)
@@ -26,11 +26,11 @@ export async function getAutoFundingAcctHandler(ctx) {
 
 // post req
 export async function autoFundingHandler(ctx) {
-  const { token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
 
   try {
     const response = await axios.post(
-      `${BASE_URL}/autoFunding/${id}`,
+      `${BASE_URL}/autoFunding/${userId}`,
       null,
       {
         headers: {
