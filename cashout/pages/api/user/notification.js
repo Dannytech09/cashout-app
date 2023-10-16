@@ -1,17 +1,17 @@
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
-import { getUser } from "@/Utils/Common";
+// import { getUser } from "@/Utils/Common";
 import { getUserIdAndToken } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/notification`;
-const user = getUser();
- const id = user ? user.id : null;
+// const user = getUser();
+//  const id = user ? user.id : null;
 
 export async function notification(ctx, bank, amount, narration) {
-  const { token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
   try {
     const response = await axios.post(
-      `${BASE_URL}/${id}`,
+      `${BASE_URL}/${userId}`,
       {
         bank,
         amount,

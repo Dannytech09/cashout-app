@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { getUser, removeUserSession } from "@/Utils/Common";
+import { removeUserSession } from "@/Utils/Common";
 import {
-  expireSessionAndRedirect,
-  getUserIdAndToken,
+  expireSessionAndRedirect
 } from "@/Utils/authCookies";
 import {
   buyDataGetMainGiftHandler,

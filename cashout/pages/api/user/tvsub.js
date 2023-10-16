@@ -1,11 +1,11 @@
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
 import { getUserIdAndToken } from "@/Utils/authCookies";
-import { getUser } from "@/Utils/Common";
+// import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/tvSub`;
-const user = getUser();
- const id = user ? user.id : null;
+// const user = getUser();
+//  const id = user ? user.id : null;
 
 // get
 export async function getTvSubHandler() {
@@ -40,11 +40,11 @@ export async function verifyTvSubHandler(ctx, selectedService, iucNumber, variat
 
 
 export async function buyTvSubHandler(ctx, selectedService, iucNumber, selectedVariation ) {
-  const { token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
 
     try {
         const response = await axios.post(
-          `${BASE_URL}/pay/${id}`,
+          `${BASE_URL}/pay/${userId}`,
           { serviceID: selectedService, billersCode: iucNumber, variation_code: selectedVariation, },
           {
             headers: {

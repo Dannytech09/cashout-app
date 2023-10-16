@@ -1,13 +1,14 @@
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
 import { getUserIdAndToken } from "@/Utils/authCookies";
-import { getUser } from "@/Utils/Common";
+// import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/pay`;
-const user = getUser();
- const id = user ? user.id : null;
+// const user = getUser();
+//  const id = user ? user.id : null;
 
 export async function buyDataGetMainGiftHandler() {
+  
     try {
         const response = await axios.get(`${BASE_URL}/getData`);
         // console.log(response)
@@ -19,11 +20,11 @@ export async function buyDataGetMainGiftHandler() {
 }
 
 export async function buyDataMainGiftHandler(ctx, network, dataVol, phoneNumber) {
-  const { token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
 
     try {
         const response = await axios.post(
-          `${BASE_URL}/${id}/purchase`,
+          `${BASE_URL}/${userId}/purchase`,
           { network, dataVol, phoneNumber },
           {
             headers: {

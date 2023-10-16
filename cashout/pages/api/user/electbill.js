@@ -1,11 +1,11 @@
 import axios from "axios";
 import API_BASE_URL from "@/apiConfig";
 import { getUserIdAndToken } from "@/Utils/authCookies";
-import { getUser } from "@/Utils/Common";
+// import { getUser } from "@/Utils/Common";
 
 const BASE_URL = `${API_BASE_URL}/electBill`;
-const user = getUser();
- const id = user ? user.id : null;
+// const user = getUser();
+//  const id = user ? user.id : null;
 
 export async function verifyElectBillHandler(ctx, selectedService, selectedType, meterNumber) {
     const { token } = getUserIdAndToken(ctx);
@@ -27,11 +27,11 @@ export async function verifyElectBillHandler(ctx, selectedService, selectedType,
 }
 
 export async function buyElectBillHandler(ctx, selectedService, meterNumber, selectedType, amount) {
-  const { token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
 
     try {
         const response = await axios.post(
-          `${BASE_URL}/pay/${id}`,
+          `${BASE_URL}/pay/${userId}`,
           { serviceID: selectedService, billersCode: meterNumber, variation_code: selectedType, amount: amount, },
           {
             headers: {
