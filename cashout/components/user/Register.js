@@ -35,7 +35,7 @@ export default function SignUpComp(ctx) {
     if (referrer) {
       setValue("referrer", referrer);
     }
-  }, [router.query.referrer, setValue]);
+  }, [router.query.referrer, router.query, setValue]);
 
   const submitHandler = async (data) => {
     try {

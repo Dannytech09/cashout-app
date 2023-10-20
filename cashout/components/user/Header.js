@@ -130,7 +130,7 @@ export default function Header({ user }) {
                   <div className="p-1">
                     <p className="text-center text-blue-700">
                       You will be charged {"\u20A6"} 2,000 for this upgrade to
-                      Partner's Account Type
+                      Partner&apos;s Account Type
                     </p>
                     <div className="text-center mt-10 flex justify-around">
                       <button
