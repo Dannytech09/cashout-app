@@ -6,6 +6,7 @@ import { getUsersHandler } from "@/pages/api/admin/usersdata";
 import { Alogout } from "./Logout";
 import { aExpireSessionAndRedirect } from "@/Utils/authCookies";
 import { adminAuthGuard } from "@/Utils/authGuard";
+import Link from "next/link";
 
 const UsersData = ({
   ctx,
@@ -84,15 +85,15 @@ const UsersData = ({
           </div>
         </Card>
         <Card className="lg:ml-20 lg:mr-20 sm:h-20 h-30 sm:mb-10 border-white-400 border-4 rounded-lg p-4 mt-5 bg-gradient-to-t from-gray-200 to-gray-500">
-          <div className="w-90 m-2 h-20 lg:w-80 border-2 border-blue-900 rounded-md bg-blue-900">
-            <h1>Blocked Users</h1>
+          <div className="w-90 m-2 h-20 lg:w-80 border-2 border-red-900 rounded-md bg-blue-900">
+            <h1 className="text-red-500">Blocked Users</h1>
             {totalBlocked}
           </div>
         </Card>
         <Card className="lg:ml-20 lg:mr-20 sm:h-20 h-30 sm:mb-10 border-white-400 border-4 rounded-lg p-4 mt-5 bg-gradient-to-t from-gray-200 to-gray-500">
-          <div className="lg:float-right object-right w-90 m-2 h-20 lg:w-80 border-2 border-blue-900 rounded-md bg-blue-900">
-            <h1>Set Data Price</h1>
-            <h1>Set Airtime Price</h1>
+          <div className="text-center items-center w-90 m-2 h-20 lg:w-80 border-2 border-blue-900 flex flex-col justify-center gap-3 rounded-md bg-blue-900">
+            <Link href={"/admin-wonders/notice"} className="hover:text-green-400">Update Notification</Link>
+            <Link href={"/admin-wonders/lockNotice"} className="hover:text-red-400">Lock / On Notification</Link>
           </div>
         </Card>
       </div>

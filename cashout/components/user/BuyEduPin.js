@@ -153,7 +153,7 @@ function BuyEduPinComp(ctx) {
           name,
           pk,
         );
-        console.log("res", response);
+        // console.log("res", response);
         if (
           response.error === "Invalid token." ||
           response.error === "Token has been revoked or expired." ||
