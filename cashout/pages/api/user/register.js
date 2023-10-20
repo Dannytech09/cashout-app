@@ -8,6 +8,7 @@ export async function registerHandler(
   lastName,
   phoneNumber,
   username,
+  referrer,
   email,
   password
 ) {
@@ -17,6 +18,7 @@ export async function registerHandler(
       lastName,
       phoneNumber,
       username,
+      referrer,
       email,
       password,
     });

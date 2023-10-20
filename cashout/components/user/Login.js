@@ -59,6 +59,14 @@ const LoginComp = (ctx) => {
         const userJSON = JSON.stringify(user);
         setCookieAndRedirect(ctx, "u", userJSON);
         router.push("/user/dashboard");
+        let d = response?.data?.noticeMe
+        if(d !== null) {
+        setTimeout(() => {
+          alert(d)
+        }, 3000)
+        } else {
+          return null
+          }
       }
     } catch (error) {
       // console.log(error);

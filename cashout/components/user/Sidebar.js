@@ -167,7 +167,7 @@ const Sidebar = () => {
 
   return (
     <div className="">
-      <div className="flex fixed w-full z-50 justify-between border-red-800  h-10 custom-dark-gray">
+      <div className="flex fixed w-full z-40 justify-between border-red-800  h-10 custom-dark-gray">
         <div className="ml-2 mt-2" onClick={handleSideBarToggle}>
           <CollapseBtn />
         </div>

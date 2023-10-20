@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import Register from "./userJsx/Register";
@@ -13,12 +13,15 @@ export default function SignUpComp(ctx) {
     register,
     handleSubmit,
     formState: { errors }, // formState
+    setValue,
+    getValues,
   } = useForm({
     defaultValues: {
       firstName: "",
       lastName: "",
       phoneNumber: "",
       username: "",
+      referrer: "",
       email: "",
       password: "",
     },
@@ -27,19 +30,34 @@ export default function SignUpComp(ctx) {
 
   const router = useRouter();
 
+  useEffect(() => {
+    const { referrer } = router.query;
+    if (referrer) {
+      setValue("referrer", referrer);
+    }
+  }, [router.query.referrer, setValue]);
+
   const submitHandler = async (data) => {
     try {
       setErrorMessage(null);
       setLoading(true);
       setSuccessMessage(null);
-      const { firstName, lastName, phoneNumber, username, email, password } =
-        data;
+      const {
+        firstName,
+        lastName,
+        phoneNumber,
+        username,
+        referrer,
+        email,
+        password,
+      } = data;
 
       const r = await registerHandler(
         firstName,
         lastName,
         phoneNumber,
         username,
+        referrer,
         email,
         password
       );
@@ -76,6 +94,8 @@ export default function SignUpComp(ctx) {
         handleSubmit={handleSubmit}
         errors={errors}
         submitHandler={submitHandler}
+        getValues={getValues}
+        setValue={setValue}
       />
     </>
   );

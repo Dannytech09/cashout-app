@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Logo from "@/components/heroIcons/Logo";
 import Loader from "@/components/utils/Loader";
+import { useRouter } from "next/router";
 
 export default function Register({
   errorMessage,
@@ -11,6 +12,8 @@ export default function Register({
   handleSubmit,
   errors,
   submitHandler,
+  getValues,
+  setValue
 }) {
   return (
     <div>
@@ -58,7 +61,7 @@ export default function Register({
               message: "Only letters are allowed / No spacing !",
             },
           })}
-          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
+          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
           placeholder="Please Enter Your First Name"
           aria-invalid={errors.firstName ? "true" : "false"}
         />
@@ -87,7 +90,7 @@ export default function Register({
               message: "Only letters are allowed / No spacing !",
             },
           })}
-          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
+          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
           placeholder="Please Enter Your Last Name"
           aria-invalid={errors.lastName ? "true" : "false"}
         />
@@ -116,7 +119,7 @@ export default function Register({
               message: "Input valid phone number !",
             },
           })}
-          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
+          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
           placeholder="Please Enter PhoneNumber"
           aria-invalid={errors.phoneNumber ? "true" : "false"}
         />
@@ -141,7 +144,7 @@ export default function Register({
               message: "username can not be greater than 10 digits",
             },
           })}
-          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
+          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
           placeholder="Please Enter Username"
           aria-invalid={errors.username ? "true" : "false"}
         />
@@ -153,6 +156,33 @@ export default function Register({
             {errors.username?.message}
           </p>
         )}
+        <input
+          {...register("referrer", {
+            required: "  Please leave this field if you were referred",
+            minLength: {
+              value: 3,
+              message: "username can not be less than 3 digits",
+            },
+            maxLength: {
+              value: 10,
+              message: "username can not be greater than 10 digits",
+            },
+          })}
+          value={getValues('referrer')}
+          onChange={(e) => setValue('referrer', e.target.value)}
+          style={{ display: 'none' }}
+          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
+          placeholder="Referrer - leave blank if no referrer"
+          aria-invalid={errors.username ? "true" : "false"}
+        />
+        {/* {errors.referrer && (
+          <p
+            className="w-full max-w-[39ch] text-rose-300 mt-[-2ch]"
+            role="alert"
+          >
+            {errors.referrer?.message}
+          </p>
+        )} */}
 
         <input
           {...register("email", {
@@ -167,7 +197,7 @@ export default function Register({
               message: "Email can not be more than 50 characters",
             },
           })}
-          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
+          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
           placeholder="Please Enter a Valid Email Address"
           // aria-invalid={errors.email ? "true" : "false"}
         />
@@ -195,7 +225,7 @@ export default function Register({
             },
           })}
           autoComplete="off"
-          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-3 px-3 w-full max-w-[45ch] text-slate-900"
+          className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
           placeholder="Please Enter Password"
           aria-invalid={errors.password ? "true" : "false"}
         />
