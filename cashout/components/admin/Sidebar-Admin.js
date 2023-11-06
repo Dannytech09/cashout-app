@@ -14,6 +14,7 @@ import Link from "next/link";
 import { LogoutHandler } from "@/pages/api/user/logout";
 import { aExpireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
+import UserPlusIcon from "../heroIcons/UserPlusIcon";
 
 // Using array for nav items
 const menuItems = [
@@ -58,6 +59,25 @@ const menuItems = [
     label: "Query Tranx",
     icon: ProfileIcon,
     link: "/admin-wonders/queryTranx",
+  },
+  {
+    id: 711,
+    label: "Referral",
+    icon: UserPlusIcon,
+    subLinks: [
+      {
+        id: 721,
+        label: "All Referral",
+        icon: UserPlusIcon,
+        subLink: "/admin-wonders/allReferral",
+      },
+      {
+        id: 722,
+        label: "others",
+        icon: UserPlusIcon,
+        subLink: "/admin-wonders/allReferral",
+      },
+    ],
   },
   {
     id: 8,
@@ -117,6 +137,11 @@ const menuItems = [
 
 const SidebarAdmin = () => {
   const [toggle, setToggle] = useState(false);
+  const [expandedId, setExpandedId] = useState(null);
+
+  const handleToggle = (id) => {
+    setExpandedId(id === expandedId ? null : id);
+  };
 
   const router = useRouter();
 
@@ -158,7 +183,7 @@ const SidebarAdmin = () => {
 
   const getNavItemClasses = (menu) => {
     return classNames(
-      "flex items-center py-3 px-3 h-full cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap",
+      "flex items-center py-3 px-3 h-full cursor-pointer hover:bg-light-lighter rounded w-full whitespace-nowrap",
       {
         ["bg-light-lighter"]: menu.id,
       }
@@ -198,25 +223,94 @@ const SidebarAdmin = () => {
               const classes = getNavItemClasses(menu);
               return (
                 <div key={menu.id} className={classes}>
-                  <Link href={menu.link}>
-                    <h5
-                      className={classNames(
-                        "text-md flex font-medium text-text-light"
-                      )}
-                    >
-                      <div style={{ width: "2.5rem" }}>
-                        <Icon />
-                      </div>
-                      <span
-                        className={classNames(
-                          "text-md font-medium text-text-light"
-                        )}
+                  {menu.subLinks ? (
+                    <div className="">
+                      <Link
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleToggle(menu.id);
+                        }}
                       >
-                        {menu.label}
-                      </span>
-                      {/* {toggle && <Icon />} */}
-                    </h5>
-                  </Link>
+                        <div
+                          className={classNames(
+                            "text-md flex font-medium text-text-light"
+                          )}
+                        >
+                          <div
+                            className=""
+                            style={{ width: "2.5rem" }}
+                          >
+                            <Icon />
+                          </div>
+                          <div className="space-x-10">
+                            <span
+                              className={classNames(
+                                "text-md font-medium text-text-light"
+                              )}
+                            >
+                              {menu.label}
+                            </span>
+                            {expandedId ? (
+                              <span>↓</span>
+                            ) : (
+                              <span className="text-green-500">⋙</span>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                      {menu.id === expandedId && menu.subLinks && (
+                        // Render subLinks when the submenu is expanded
+                        <div className=" text-green-500 ml-5 h-12 mt-[1ch]">
+                          <ul className="space-y-2">
+                            {menu.subLinks.map(
+                              ({ icon: SubIcon, ...subLink }) => (
+                                <li
+                                  key={subLink.id}
+                                  className="hover:bg-blue-300"
+                                >
+                                  <Link href={subLink.subLink} className="flex">
+                                    <span
+                                      className="stroke-blue-600"
+                                      style={{ width: "2.5rem" }}
+                                    >
+                                      <SubIcon />
+                                    </span>
+                                    <p>{subLink.label}</p>
+                                  </Link>
+                                </li>
+                              )
+                            )}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    // If no subLinks, render a clickable link to navigate to another page
+                    <Link href={menu.link}>
+                      <div>
+                        <div
+                          className={classNames(
+                            "text-md flex font-medium text-text-light"
+                          )}
+                        >
+                          <div
+                            className=""
+                            style={{ width: "2.5rem" }}
+                          >
+                            <Icon />
+                          </div>
+                          <span
+                            className={classNames(
+                              "text-md font-medium text-text-light"
+                            )}
+                          >
+                            {menu.label}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  )}
                 </div>
               );
             })}

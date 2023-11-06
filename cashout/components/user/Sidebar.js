@@ -53,6 +53,25 @@ const menuItems = [
     link: "/user/buyEduPin",
   },
   {
+    id: 711,
+    label: "Referral",
+    icon: UserPlusIcon,
+    subLinks: [
+      {
+        id: 721,
+        label: "Referral Info",
+        icon: UserPlusIcon,
+        subLink: "/user/referral",
+      },
+      {
+        id: 722,
+        label: "Withdraw Bonus",
+        icon: Airtime2Cash,
+        subLink: "/user/withdrawalBonus",
+      },
+    ],
+  },
+  {
     id: 8,
     label: "Airtime to Cash",
     icon: Airtime2Cash,
@@ -88,19 +107,11 @@ const Sidebar = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
   const user = useSelector((state) => state.user);
+  const [expandedId, setExpandedId] = useState(null);
 
-  // useEffect(() => {
-
-  //   if (!user || user === null) {
-  //     removeUserSession();
-  //     expireSessionAndRedirect(ctx, "/login");
-  //     // router.push('/login');
-  //   }
-  // }, [user]);
-
-  // 'custom-deep-green': '#2E6268',
-  // 'custom-dark-gray': '#343a40',
-  // 'custom-gray': '#6c757d',
+  const handleToggle = (id) => {
+    setExpandedId(id === expandedId ? null : id);
+  };
 
   const wrapperClasses = classNames(
     "z-30 h-[100ch] text-slate-200 px-4 pt-3 flex flex-col", // absolute
@@ -206,28 +217,97 @@ const Sidebar = () => {
                 const classes = getNavItemClasses(menu);
                 return (
                   <div key={menu.id} className={classes}>
-                    <Link href={menu.link}>
-                      <h5
-                        className={classNames(
-                          "text-md flex font-medium text-text-light"
+                    {menu.subLinks ? ( // does menu item has subLinks
+                      <div>
+                        <Link
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleToggle(menu.id); // Toggle the submenu
+                          }}
+                        >
+                          <div
+                            className={classNames(
+                              "text-md flex font-medium text-text-light"
+                            )}
+                          >
+                            <div
+                              className="fill-blue-900 stroke-blue-600"
+                              style={{ width: "2.5rem" }}
+                            >
+                              <Icon />
+                            </div>
+                            <div className="space-x-10">
+                              <span
+                                className={classNames(
+                                  "text-md font-medium text-text-light"
+                                )}
+                              >
+                                {menu.label}
+                              </span>
+                              {expandedId ? (
+                                <span>↓</span>
+                              ) : (
+                                <span className="text-green-500">⋙</span>
+                              )}
+                            </div>
+                          </div>
+                        </Link>
+                        {menu.id === expandedId && menu.subLinks && (
+                          // Render subLinks when the submenu is expanded
+                          <div className=" text-green-500 ml-5 p-5 mb-[-2ch]">
+                            <ul className="space-y-2">
+                              {menu.subLinks.map(
+                                ({ icon: SubIcon, ...subLink }) => (
+                                  <li
+                                    key={subLink.id}
+                                    className="hover:bg-blue-300"
+                                  >
+                                    <Link
+                                      href={subLink.subLink}
+                                      className="flex"
+                                    >
+                                      <span
+                                        className="fill-blue-900 stroke-blue-600"
+                                        style={{ width: "2.5rem" }}
+                                      >
+                                        <SubIcon />
+                                      </span>
+                                      <p>{subLink.label}</p>
+                                    </Link>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </div>
                         )}
-                      >
-                        <div
-                          className="fill-blue-900 stroke-blue-600"
-                          style={{ width: "2.5rem" }}
-                        >
-                          <Icon />
+                      </div>
+                    ) : (
+                      // If no subLinks, render a clickable link to navigate to another page
+                      <Link href={menu.link}>
+                        <div>
+                          <div
+                            className={classNames(
+                              "text-md flex font-medium text-text-light"
+                            )}
+                          >
+                            <div
+                              className="fill-blue-900 stroke-blue-600"
+                              style={{ width: "2.5rem" }}
+                            >
+                              <Icon />
+                            </div>
+                            <span
+                              className={classNames(
+                                "text-md font-medium text-text-light"
+                              )}
+                            >
+                              {menu.label}
+                            </span>
+                          </div>
                         </div>
-                        <span
-                          className={classNames(
-                            "text-md font-medium text-text-light"
-                          )}
-                        >
-                          {menu.label}
-                        </span>
-                        {/* {toggle && <Icon />} */}
-                      </h5>
-                    </Link>
+                      </Link>
+                    )}
                   </div>
                 );
               })}
@@ -266,7 +346,7 @@ const Sidebar = () => {
                   "flex gap-5 mx-auto text-md font-medium text-text-light fill-blue-900 stroke-blue-600"
                 )}
               >
-                Version 1.6.0
+                Version 2.0.0
               </h5>
             )}
           </button>
