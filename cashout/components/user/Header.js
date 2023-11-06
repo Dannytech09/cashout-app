@@ -5,12 +5,17 @@ import SmileIcon from "../heroIcons/SmileIcon";
 import Link from "next/link";
 import MotionText from "./MotionText";
 import Modal from "react-modal";
+import { upgradeMeHandler } from "@/pages/api/user/referral";
+import Loader from "../utils/Loader";
 Modal.setAppElement("#__next");
 // import { useRouter } from "next/router";
 
 export default function Header({ user }) {
   const referrerLinkRef = useRef(null);
   const [showCopy, setShowCopy] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const openModal = () => {
@@ -39,7 +44,22 @@ export default function Header({ user }) {
   };
 
   const onConfirmUpgrade = async () => {
-    return null;
+    setLoading(true);
+    try {
+      const resp = await upgradeMeHandler();
+      // console.log(resp);
+      if (resp.error) {
+        setErrorMessage(resp.error);
+        setMessage(null);
+      } else if (resp.code === "000") {
+        setMessage(resp.message);
+        setErrorMessage(null);
+      }
+    } catch (error) {
+      throw new Error(`An error ocurred ${error}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const customStyles = {
@@ -59,6 +79,7 @@ export default function Header({ user }) {
 
   return (
     <div className="justify-content-between">
+      {loading && <Loader />}
       <div className={styles.headerCon}>
         <div className="flex flex-row justify-end"></div>
         <div className="flex justify-center text-center lg:mt-[2ch] mt-[2ch]">
@@ -78,14 +99,14 @@ export default function Header({ user }) {
               Refer people to Wondersdata and earn 1,000 naira immediately the
               person upgrade his/her account to Partner&apos;s Account Type
             </p>
-            <div className="flex justify-center space-x-1 text-[1ch]">
-              <span className="text-slate-300">My Referral Link:</span>
+            <div className="flex justify-center space-x-1 mr-5 ml-2 text-[1ch]">
+              <span className="text-slate-300">Referral Link:</span>
               <p ref={referrerLinkRef} className="text-slate-100">
                 {user.referralLink}
               </p>
               <span className="text-[.9ch]">{showCopy}</span>
               <button
-                className="hover:text-green-500"
+                className="hover:text-green-500 "
                 onClick={copyToClipboard}
               >
                 copy
@@ -115,9 +136,9 @@ export default function Header({ user }) {
             {user.accountType === "corporate" && (
               <div>
                 <button
-                  disabled={true}
                   onClick={openModal}
-                  className="text-[.8ch] font-bold tracking-wider border-1 p-1 bg-white" // hover:bg-yellow-400 hover:text-red-400
+                  className="text-[.8ch] font-bold tracking-wider border-1 p-1 bg-white hover:bg-yellow-400 hover:text-red-400
+                  "
                 >
                   Upgrade
                 </button>
@@ -128,17 +149,32 @@ export default function Header({ user }) {
                   style={customStyles}
                 >
                   <div className="p-1">
+                    {errorMessage && (
+                      <div className="text-red-500 text-1 border border-slate-400 bg-slate-400 text-center pb-3 mb-3">
+                        {errorMessage}{" "}
+                      </div>
+                    )}
+                    {message && (
+                      <div className="text-green-500 text-1 border border-black bg-black text-1 text-center pb-3 mb-3">
+                        {message} ✔
+                      </div>
+                    )}
+
                     <p className="text-center text-blue-700">
                       You will be charged {"\u20A6"} 2,000 for this upgrade to
                       Partner&apos;s Account Type
                     </p>
                     <div className="text-center mt-10 flex justify-around">
-                      <button
-                        className="text-green-600 font-bold"
-                        onClick={onConfirmUpgrade}
-                      >
-                        Okay
-                      </button>
+                      {user.bal.$numberDecimal < 2000 ? (
+                        "Fund wallet"
+                      ) : (
+                        <button
+                          className="text-green-600 font-bold"
+                          onClick={onConfirmUpgrade}
+                        >
+                          Okay
+                        </button>
+                      )}
                       <button
                         className="text-red-600 font-bold"
                         onClick={closeModal}

@@ -17,6 +17,7 @@ import { removeUserSession } from "@/Utils/Common";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import Footer from "@/components/user/Footer";
+import UserCon from "@/components/user/UserCon";
 // import Sidebar from "@/components/user/Sidebar";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/auth`;
@@ -71,6 +72,9 @@ function Dashboard({ ctx, user, error }) {
             <SubMain user={user} />
           </div>
           <div>
+            <UserCon user={user} />
+          </div>
+          <div>
             <Footer />
           </div>
         </div>
@@ -100,7 +104,7 @@ export async function getServerSideProps(ctx) {
       },
     });
     const user = response.data.data;
-    // console.log(user)
+    // console.log(user);
     return {
       props: {
         user,
