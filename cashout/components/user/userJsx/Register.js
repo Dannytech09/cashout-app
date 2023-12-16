@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import Logo from "@/components/heroIcons/Logo";
 import Loader from "@/components/utils/Loader";
-import { useRouter } from "next/router";
 
 export default function Register({
   errorMessage,
@@ -173,7 +172,7 @@ export default function Register({
           style={{ display: 'none' }}
           className="duration-300 border-b-2 border-solid border-black focus:border-cyan-300 outline-none font-sans font-bold py-2 px-3 w-full max-w-[45ch] text-slate-900"
           placeholder="Referrer - leave blank if no referrer"
-          aria-invalid={errors.username ? "true" : "false"}
+          aria-invalid={errors.referrer ? "true" : "false"}
         />
         {/* {errors.referrer && (
           <p

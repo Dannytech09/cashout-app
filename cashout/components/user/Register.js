@@ -34,6 +34,8 @@ export default function SignUpComp(ctx) {
     const { referrer } = router.query;
     if (referrer) {
       setValue("referrer", referrer);
+    } else {
+      setValue("referrer", 'admin')
     }
   }, [router.query.referrer, router.query, setValue]);
 
