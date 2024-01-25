@@ -18,14 +18,25 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import Footer from "@/components/user/Footer";
 import UserCon from "@/components/user/UserCon";
+import UserInfoForm from "@/components/user/UserInfo";
 // import Sidebar from "@/components/user/Sidebar";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/auth`;
+
 function Dashboard({ ctx, user, error }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
   const [redirecting, setRedirecting] = useState(false);
+  const [isUserInfoFormOpen, setIsUserInfoFormOpen] = useState(false);
+
+  const openBvnModal = () => {
+    setIsUserInfoFormOpen(true);
+  };
+
+  const closeBvnModal = () => {
+    setIsUserInfoFormOpen(false);
+  };
 
   useEffect(() => {
     // console.log("dispatch ran")
@@ -37,6 +48,8 @@ function Dashboard({ ctx, user, error }) {
       removeUserSession();
       expireSessionAndRedirect(ctx, router);
       setRedirecting(true);
+    } else if (error === "Bvn/nin has not been verified") {
+      setIsVerified(true);
     }
   }, [error, ctx, router, dispatch]);
 
@@ -60,7 +73,7 @@ function Dashboard({ ctx, user, error }) {
             <Sidebar user={user}/>
           </div> */}
           <div>
-            <Header user={user} />
+            <Header user={user} openBvnModal={openBvnModal} />
           </div>
           <div>
             <Main />
@@ -79,6 +92,8 @@ function Dashboard({ ctx, user, error }) {
           </div>
         </div>
       </div>
+
+      <UserInfoForm isOpen={isUserInfoFormOpen} closeBvnModal={closeBvnModal} />
     </Layout>
   );
 }
@@ -112,7 +127,7 @@ export async function getServerSideProps(ctx) {
       },
     };
   } catch (error) {
-    // console.error(error);
+    // console.error("f", error.response.data);
     return {
       props: {
         user: null,

@@ -9,6 +9,7 @@ import {
 import { removeUserSession } from "@/Utils/Common";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { useRouter } from "next/router";
+// import UserInfoForm from "./UserInfo";
 
 const AutoFundingComp = (ctx) => {
   const router = useRouter();
@@ -77,6 +78,8 @@ const AutoFundingComp = (ctx) => {
         removeUserSession();
         expireSessionAndRedirect(ctx, router);
         setRedirecting(true);
+      } else if (response.error === "Bvn/nin has not been verified") {
+        setErrorMessage(response.error);
       } else if (response.error) {
         setErrorMessage(response.error);
       } else if (response.data.length === 0) {
@@ -92,7 +95,7 @@ const AutoFundingComp = (ctx) => {
       }
     } catch (error) {
       //   console.log(error);
-      throw new Error(`An error occurred ${error}`);
+      throw new Error(`An error occurred`);
     }
   };
 
