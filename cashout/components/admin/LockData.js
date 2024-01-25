@@ -41,7 +41,7 @@ const LockDataComp = (ctx) => {
         setSuccessMessage(response.message);
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       if (error) {
         throw new Error(`An error occurred ${error}`);
       } else {

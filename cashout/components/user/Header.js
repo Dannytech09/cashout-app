@@ -10,7 +10,7 @@ import Loader from "../utils/Loader";
 Modal.setAppElement("#__next");
 // import { useRouter } from "next/router";
 
-export default function Header({ user }) {
+export default function Header({ user, openBvnModal }) {
   const referrerLinkRef = useRef(null);
   const [showCopy, setShowCopy] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -18,6 +18,7 @@ export default function Header({ user }) {
   const [loading, setLoading] = useState(false);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -133,63 +134,90 @@ export default function Header({ user }) {
                 </span>
               </p>
             </div>
-            {user.accountType === "corporate" && (
+            {/* Upgrade-bvn container */}
+            <div className="flex justify-center gap-4">
               <div>
-                <button
-                  onClick={openModal}
-                  className="text-[.8ch] font-bold tracking-wider border-1 p-1 bg-white hover:bg-yellow-400 hover:text-red-400
+                {user.accountType === "corporate" && (
+                  <div>
+                    <button
+                      onClick={openModal}
+                      className="text-[.8ch] mt-[2ch] font-bold tracking-wider border-1 p-1 bg-white hover:bg-yellow-400 hover:text-red-400
                   "
-                >
-                  Upgrade
-                </button>
-                <Modal
-                  isOpen={modalIsOpen}
-                  onRequestClose={closeModal}
-                  contentLabel="Example Modal"
-                  style={customStyles}
-                >
-                  <div className="p-1">
-                    {errorMessage && (
-                      <div className="text-red-500 text-1 border border-slate-400 bg-slate-400 text-center pb-3 mb-3">
-                        {errorMessage}{" "}
-                      </div>
-                    )}
-                    {message && (
-                      <div className="text-green-500 text-1 border border-black bg-black text-1 text-center pb-3 mb-3">
-                        {message} ✔
-                      </div>
-                    )}
+                    >
+                      Upgrade
+                    </button>
+                    <Modal
+                      isOpen={modalIsOpen}
+                      onRequestClose={closeModal}
+                      contentLabel="Example Modal"
+                      style={customStyles}
+                    >
+                      <div className="p-1">
+                        {errorMessage && (
+                          <div className="text-red-500 text-1 border border-slate-400 bg-slate-400 text-center pb-3 mb-3">
+                            {errorMessage}{" "}
+                          </div>
+                        )}
+                        {message && (
+                          <div className="text-green-500 text-1 border border-black bg-black text-1 text-center pb-3 mb-3">
+                            {message} ✔
+                          </div>
+                        )}
 
-                    <p className="text-center text-blue-700">
-                      You will be charged {"\u20A6"} 2,000 for this upgrade to
-                      Partner&apos;s Account Type
-                    </p>
-                    <div className="text-center mt-10 flex justify-around">
-                      {user.bal.$numberDecimal < 2000 ? (
-                        "Fund wallet"
-                      ) : (
-                        <button
-                          className="text-green-600 font-bold"
-                          onClick={onConfirmUpgrade}
-                        >
-                          Okay
-                        </button>
-                      )}
-                      <button
-                        className="text-red-600 font-bold"
-                        onClick={closeModal}
-                      >
-                        Not Interested
-                      </button>
-                    </div>
+                        <p className="text-center text-blue-700">
+                          You will be charged {"\u20A6"} 2,000 for this upgrade
+                          to Partner&apos;s Account Type
+                        </p>
+                        <div className="text-center mt-10 flex justify-around">
+                          {user.bal.$numberDecimal < 2000 ? (
+                            "Fund wallet"
+                          ) : (
+                            <button
+                              className="text-green-600 font-bold"
+                              onClick={onConfirmUpgrade}
+                            >
+                              Okay
+                            </button>
+                          )}
+                          <button
+                            className="text-red-600 font-bold"
+                            onClick={closeModal}
+                          >
+                            Not Interested
+                          </button>
+                        </div>
+                      </div>
+                    </Modal>
                   </div>
-                </Modal>
+                )}
               </div>
-            )}
+              <div>
+                {/*  */}
+                {user.hideBvn === null ? (
+                  <button
+                    className="relative text-xs bg-green-400 hover:bg- text-white p-1 font-mono mt-3"
+                    style={{ overflow: "visible" }}
+                    onClick={openBvnModal}
+                  >
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-12px",
+                        right: "-8px",
+                      }}
+                      className="text-xs border bg-red-700 border-red-700 font-sans italic"
+                    >
+                      New
+                    </span>
+                    Verify your BVN/NIN
+                  </button>
+                ) : null}
+              </div>
+            </div>
           </div>
         )}
       </div>
-      <MotionText text="Educational Pin now available. Data balance checkers- MTN-SME - *312*4*3*3# or *461*4#, MTN-CG - *460*260# or *460*4*4#, Glo - *127*0#, Airtel - *140#, 9mobile SME - *917*9#, 9mobile gifting - *228#. Promo on affiliate or standalone website creation is on going. Grab the offer now ! " />{" "}
+      <MotionText text="You need any type of website or mobile app send a dm. Data balance checkers- MTN-SME - *312*4*3*3# or *461*4#, MTN-CG - *460*260# or *460*4*4#, Glo - *127*0#, Airtel - *140#, 9mobile SME - *917*9#, 9mobile gifting - *228#." />{" "}
     </div>
   );
 }

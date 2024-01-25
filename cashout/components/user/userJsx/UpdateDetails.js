@@ -115,11 +115,12 @@ export default function UpdateDetails({
           </p>
         )}
         <button
+          disabled
           type="submit"
           className="relative hover:after:translate-x-full after:absolute after:top-0 after:right-full after:bg-blue-600 after:z-10 after:w-full after:h-full overflow-hidden after:duration-300 hover:text-slate-900
      duration-300 w-full max-w-[39ch] border border-sky-500 border-solid uppercase py-2 px-2 text-cyan-900"
         >
-          <h2 className="relative z-30"> Update User</h2>
+          <h2 className="relative z-30"> Update My Details</h2>
         </button>
       </form>
 
