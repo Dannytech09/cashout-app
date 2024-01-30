@@ -10,7 +10,7 @@ import Loader from "../utils/Loader";
 Modal.setAppElement("#__next");
 // import { useRouter } from "next/router";
 
-export default function Header({ user, openBvnModal }) {
+export default function Header({ user, openBvnModal, openNinModal }) {
   const referrerLinkRef = useRef(null);
   const [showCopy, setShowCopy] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -191,7 +191,7 @@ export default function Header({ user, openBvnModal }) {
                   </div>
                 )}
               </div>
-              <div>
+              <div className="flex gap-2">
                 {/*  */}
                 {user.hideBvn === null ? (
                   <button
@@ -209,7 +209,26 @@ export default function Header({ user, openBvnModal }) {
                     >
                       New
                     </span>
-                    Verify your BVN/NIN
+                    Verify your BVN
+                  </button>
+                ) : null}
+                 {user.hideNin === null ? (
+                  <button
+                    className="relative text-xs bg-green-400 hover:bg- text-white p-1 font-mono mt-3"
+                    style={{ overflow: "visible" }}
+                    onClick={openNinModal}
+                  >
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-12px",
+                        right: "-8px",
+                      }}
+                      className="text-xs border bg-red-700 border-red-700 font-sans italic"
+                    >
+                      New
+                    </span>
+                    Verify your NIN
                   </button>
                 ) : null}
               </div>
