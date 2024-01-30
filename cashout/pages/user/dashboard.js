@@ -19,6 +19,7 @@ import { setUser } from "@/redux/slices/userSlice";
 import Footer from "@/components/user/Footer";
 import UserCon from "@/components/user/UserCon";
 import UserInfoForm from "@/components/user/UserInfo";
+import UserInfoFormNin from "@/components/user/UserInfoNin";
 // import Sidebar from "@/components/user/Sidebar";
 
 const BASE_URL = `${API_BASE_URL}/api/v1/auth`;
@@ -29,6 +30,7 @@ function Dashboard({ ctx, user, error }) {
 
   const [redirecting, setRedirecting] = useState(false);
   const [isUserInfoFormOpen, setIsUserInfoFormOpen] = useState(false);
+  const [isUserInfoNinOpen, setIsUserInfoNinOpen] = useState(false);
 
   const openBvnModal = () => {
     setIsUserInfoFormOpen(true);
@@ -36,6 +38,14 @@ function Dashboard({ ctx, user, error }) {
 
   const closeBvnModal = () => {
     setIsUserInfoFormOpen(false);
+  };
+
+  const openNinModal = () => {
+    setIsUserInfoNinOpen(true);
+  };
+
+  const closeNinModal = () => {
+    setIsUserInfoNinOpen(false);
   };
 
   useEffect(() => {
@@ -73,7 +83,7 @@ function Dashboard({ ctx, user, error }) {
             <Sidebar user={user}/>
           </div> */}
           <div>
-            <Header user={user} openBvnModal={openBvnModal} />
+            <Header user={user} openBvnModal={openBvnModal} openNinModal={openNinModal} />
           </div>
           <div>
             <Main />
@@ -94,6 +104,7 @@ function Dashboard({ ctx, user, error }) {
       </div>
 
       <UserInfoForm isOpen={isUserInfoFormOpen} closeBvnModal={closeBvnModal} />
+      <UserInfoFormNin isOpen={isUserInfoNinOpen} closeNinModal={closeNinModal} />
     </Layout>
   );
 }
