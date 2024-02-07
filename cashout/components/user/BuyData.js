@@ -125,6 +125,7 @@ function BuyDataComp(ctx) {
       openModal();
     }
   };
+  
   const openModal = () => {
     setModalIsOpen(true);
   };
