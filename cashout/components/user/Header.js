@@ -193,7 +193,7 @@ export default function Header({ user, openBvnModal, openNinModal }) {
               </div>
               <div className="flex gap-2">
                 {/*  */}
-                {user.hideBvn === null ? (
+                {user?.hideBvn === null ? (
                   <button
                     className="relative text-xs bg-green-400 hover:bg- text-white p-1 font-mono mt-3"
                     style={{ overflow: "visible" }}
@@ -212,7 +212,7 @@ export default function Header({ user, openBvnModal, openNinModal }) {
                     Verify your BVN
                   </button>
                 ) : null}
-                 {user.hideNin === null ? (
+                {user?.hideNin === null ? (
                   <button
                     className="relative text-xs bg-green-400 hover:bg- text-white p-1 font-mono mt-3"
                     style={{ overflow: "visible" }}
