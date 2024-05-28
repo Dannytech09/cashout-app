@@ -107,7 +107,7 @@ function BuyAirtimeComp(ctx) {
           alert(response.message);
           router.reload();
           // setLoading(false);
-          // console.log(response)
+          // console.log(respons)
         }
       } catch (error) {
         throw new Error(`An error ocurred ${error}`);
