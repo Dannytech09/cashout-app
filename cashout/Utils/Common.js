@@ -1,19 +1,46 @@
+// export const getUser = () => {
+//   if (typeof window !== "undefined") {
+//     const user = JSON.parse(sessionStorage.getItem("user"));
+//     const userId = user ? user.id : null;
+//     return userId;
+//   }
+// };
+
+// export const getUser = () => {
+//   if (typeof window !== "undefined") {
+//     try {
+//       const user = JSON.parse(sessionStorage.getItem("user"));
+//       // console.log(user)
+//       return user;
+//     } catch (error) {
+//       // throw new Error(`An error occurred, please send this error to our tech support ${error}`)
+//       return null;
+//     }
+//   }
+// };
+
 export const getUser = () => {
-  if(typeof window !== "undefined") {
-    return JSON.parse(sessionStorage.getItem("user"));
+  if (typeof window !== "undefined") {
+    try {
+      const userId = JSON.parse(sessionStorage.getItem("user"));
+      if (userId !== null) {
+        return userId;
+      }
+    } catch (error) {
+      throw new Error(`An error occured ${error}`);
+    }
   }
+  return null;
 };
 
 export const getToken = () => {
   return sessionStorage.getItem("token") || null;
 };
 
-export const setUserSession = (token, user) => {
-  sessionStorage.setItem("token", token);
+export const setUserSession = (user) => {
   sessionStorage.setItem("user", user);
 };
 
 export const removeUserSession = () => {
-  sessionStorage.removeItem("token");
   sessionStorage.removeItem("user");
 };

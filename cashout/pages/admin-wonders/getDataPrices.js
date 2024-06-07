@@ -1,17 +1,44 @@
-import DataServices from "@/services/data.services";
 import React, { useState, useEffect } from "react";
-import withAuth from "../../hocs/withAuth";
+import axios from "axios";
 import CurrentPrices from "@/components/admin/GetDataPrices";
 import SidebarAdmin from "@/components/admin/Sidebar-Admin";
+import { getUserIdAndToken } from "@/Utils/authCookies";
+import API_BASE_URL from "@/apiConfig";
+import { getUser } from "@/Utils/Common";
+// import { useRouter } from "next/router";
 
-function GetCurrentDataPrices() {
+const BASE_URL = `${API_BASE_URL}/vend`
+
+export async function getServerSideProps(ctx) {
+  const { token } = getUserIdAndToken(ctx);
+
+  if (!token) {
+    const { res } = ctx;
+    res.writeHead(302, { Location: "/admin-wonders/login" });
+    res.end();
+  }
+  return { props: {} };
+}
+
+// A
+function GetDataPrices() {
+  // const router = useRouter();
   const [dataPrices, setDataPrices] = useState([]);
   const [error, setError] = useState(null);
+  const user = getUser();
+ const id = user ? user.id : null;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await DataServices.getDataInfo();
+        const response = await axios.get(
+          `${BASE_URL}/${id}/getData`
+          // {
+          //   headers: {
+          //     Authorization: `Bearer ${token}`,
+          //   },
+          // }
+        );
         const newData = response.data.networkData;
         if (JSON.stringify(newData) !== JSON.stringify(dataPrices)) {
           setDataPrices(newData);
@@ -23,12 +50,12 @@ function GetCurrentDataPrices() {
     };
 
     fetchData();
-  }, [dataPrices]);
+  });
 
   if (error) {
     return (
       <div>
-      <p>An error occurred: {error.message}, http client or server error</p>
+        <p>An error occurred: {error.message}, http client or server error</p>
       </div>
     );
   }
@@ -36,11 +63,11 @@ function GetCurrentDataPrices() {
   return (
     <>
       <div className="fixed top-0 z-40">
-          <SidebarAdmin/>
-        </div>
+        <SidebarAdmin />
+      </div>
       <CurrentPrices dataPrices={dataPrices} />
     </>
   );
 }
 
-export default withAuth(GetCurrentDataPrices);
+export default GetDataPrices;
