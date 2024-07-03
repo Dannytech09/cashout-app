@@ -71,6 +71,7 @@ export default function DataPricesS({
           >
             <option value="">Select network</option>
             <option value="MTN-SME">MTN-SME</option>
+            <option value="MTN-DS">MTN-DS</option>
             <option value="MTN-CG">MTN-CG</option>
             <option value="GLO-CG">GLO-CG</option>
             <option value="AIRTEL-CG">AIRTEL-CG</option>
