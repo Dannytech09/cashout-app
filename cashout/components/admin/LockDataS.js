@@ -88,6 +88,7 @@ export default function DataLocker(ctx) {
             onChange={(e) => setVariation_string(e.target.value)}
           >
             <option value="MTN-SME">MTN-SME</option>
+            <option value="MTN-DS">MTN-DS</option>
             <option value="MTN-CG">MTN-CG</option>
             <option value="GLO-CG">GLO-CG</option>
             <option value="AIRTEL-CG">AIRTEL-CG</option>
