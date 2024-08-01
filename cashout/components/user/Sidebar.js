@@ -26,7 +26,7 @@ import TvCabIcon from "../heroIcons/TvCabIcon";
 const menuItems = [
   { id: 1, label: "Dashboard", icon: HomeIcon, link: "/user/dashboard" },
   { id: 2, label: "Buy Data", icon: DataIcon, link: "/user/buyDataS" },
-  { id: 3, label: "Buy Data 2", icon: DataIcon, link: "/user/buyData" },
+  // { id: 3, label: "Buy Data 2", icon: DataIcon, link: "/user/buyData" },
   { id: 4, label: "Buy Airtime", icon: AirtimeIcon, link: "/user/buyAirtime" },
   {
     id: 5,
@@ -346,7 +346,7 @@ const Sidebar = () => {
                   "flex gap-5 mx-auto text-md font-medium text-text-light fill-blue-900 stroke-blue-600"
                 )}
               >
-                Version 2.0.0
+                Version 2.0.1
               </h5>
             )}
           </button>

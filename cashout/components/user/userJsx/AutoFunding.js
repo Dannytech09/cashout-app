@@ -123,7 +123,7 @@ export default function AutoFunding({
             </div>
           ) : data ? (
             <div>
-              <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
+              {/* <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
                 Transfer made to this acct will credit your wallet automatically
               </div>
               <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
@@ -140,7 +140,8 @@ export default function AutoFunding({
                     Acct Name: {data[0]?.account_name}
                   </span>
                 </div>
-              </div>
+              </div> */}
+                  <h2>Sterling bank not available at the moment</h2>
             </div>
           ) : (
             <p className="text-xs lg:text-sm  text-center text-white my-auto justify-center">

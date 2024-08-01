@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { aExpireSessionAndRedirect } from "@/Utils/authCookies";
 import { NotificationHandler } from "@/pages/api/admin/notice";
 import Notice from "./adminjsx/Notice";
+import LockDataComp from "./LockData";
 
 // SS
 export default function NotificationComp(ctx) {
@@ -71,6 +72,7 @@ export default function NotificationComp(ctx) {
 
   return (
     <div>
+    <div>
       <Notice
         name={name}
         errorMessage={errorMessage}
@@ -81,6 +83,11 @@ export default function NotificationComp(ctx) {
         handleSubmit={handleSubmit}
         handleNameChange={handleNameChange}
       />
+    </div>
+    <div>
+      <LockDataComp/>
+    </div>
+
     </div>
   );
 }

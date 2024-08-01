@@ -4,6 +4,7 @@ import { buyDataSHandler, buyDataSGetHandler } from "@/pages/api/user/buydatas";
 import BuyDataS from "./userJsx/BuyDataS";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
+// import { beneficiary } from "@/pages/api/user/beneficiary";
 
 let name;
 
@@ -29,11 +30,27 @@ function BuyDataSComp(ctx) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
 
+  // pass props from parent => child => child of child
+  const handlePhoneClick = (e) => {
+    setPhoneNumber(e);
+    console.log(phoneNumber)
+    
+  };
+
+  const clearPhoneClick = () => {
+    setPhoneNumber("");
+  };
+  // pass props from parent => child => child of child
+
   useEffect(() => {
     async function fetchData(ctx) {
       try {
         setLoading(true);
         const response = await buyDataSGetHandler();
+        if(response.code === "018" || response.error === "Data1 disabled, please check data2") {
+          return router.replace("/user/buyData")
+        }
+        // console.log("can i get here ?")
         setNetworkData(response.networkDataS);
         setLoading(false);
         if (
@@ -77,7 +94,7 @@ function BuyDataSComp(ctx) {
       setAmount("");
       setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
     }
-    name = selectedNetwork.variation_string;
+    name = selectedNetwork?.variation_string;
     // console.log("Selected Network:", variation);
     // console.log("Data Vols:", dataVols);
   };
@@ -109,6 +126,12 @@ function BuyDataSComp(ctx) {
     changeDataVol(e);
     handleInputField(e);
   };
+
+  // // phone from beneficiary
+  // useEffect((e) => {
+  //   handlePhoneClick(e)
+  //   handleInputField(e)
+  // }, [handlePhoneClick])
 
   // handle two onchange props
   const handlePhoneNumberAndInputValidation = (e) => {
@@ -223,8 +246,10 @@ function BuyDataSComp(ctx) {
   }
 
   return (
-    <div className="bg-slate-500 h-full md:h-full xl:h-full">
+    <div className="bg-slate-700 h-100 md:h-100 xl:h-100">
       <BuyDataS
+        clearPhoneClick={clearPhoneClick}
+        handlePhoneClick={handlePhoneClick}
         amountPlaceHolder={amountPlaceHolder}
         loading={loading}
         errorMessage={errorMessage}
