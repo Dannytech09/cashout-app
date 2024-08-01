@@ -1,11 +1,22 @@
-import React from 'react';
+import React from "react";
 import Image from "next/image";
 import Loader from "@/components/utils/Loader";
 
-export default function Notification({ bank, setBank, narration, setNarration, amount, setAmount, errorMessage, successMessage, loading, handleFormSubmit }) {
+export default function Notification({
+  bank,
+  setBank,
+  narration,
+  setNarration,
+  amount,
+  setAmount,
+  errorMessage,
+  successMessage,
+  loading,
+  handleFormSubmit,
+}) {
   return (
     <div>
-        {loading && <Loader />}
+      {loading && <Loader />}
       <div className="container">
         <h1 className="text-white text-xs text-center p-5">
           Payment Notification
@@ -43,6 +54,8 @@ export default function Notification({ bank, setBank, narration, setNarration, a
           <br />
           <label className="text-red-400 mt-[2ch]">Amount:</label>
           <input
+            placeholder="minimum: corporate= 3k; partner= 5k"
+            min="3000"
             className="mt-[-5ch]"
             type="number"
             value={amount}
@@ -112,5 +125,5 @@ export default function Notification({ bank, setBank, narration, setNarration, a
         <Image src="/banks-logo.jpg" alt="logo" width="300" height="300" />
       </div>
     </div>
-  )
+  );
 }

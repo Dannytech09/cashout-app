@@ -38,7 +38,11 @@ function MyPurchases({
           </div>
         )}
         <div className="mt-[5ch] text-sm flex justify-center">
+          {" "}
           <form onSubmit={handleSubmit}>
+            <p className="text-red-600 text-xs p-1">
+              Note: You can only access 1 month history
+            </p>
             <label htmlFor="phoneNumber">Mobile no</label> {""}
             <input
               type="text"

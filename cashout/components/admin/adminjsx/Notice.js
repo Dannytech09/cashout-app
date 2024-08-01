@@ -15,7 +15,7 @@ export default function Notice({
     <div>
       <form
         onSubmit={handleSubmit}
-        className="text-center border border-black-300 bg-black h-screen"
+        className="text-center border border-black-300 bg-black "
       >
         {loading && <Loader />}
         <div>
@@ -52,12 +52,12 @@ export default function Notice({
         </div>
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="mb-15 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Submit
         </button>
         {dropDownMesssage && (
-          <div className="p-3 m-3 mt-10 text-xs border border-green-700 bg-green-700">
+          <div className="p-3 m-3 mt-5 text-xs border border-green-700 bg-green-700">
             <p className="text-white text-center">{dropDownMesssage}</p>
           </div>
         )}

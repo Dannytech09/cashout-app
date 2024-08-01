@@ -37,6 +37,10 @@ function BuyDataComp(ctx) {
       try {
         setLoading(true);
         const response = await buyDataGetHandler();
+        if(response.code === "018" || response.error === "Data2 disabled, please check data1") {
+          alert("Data Disabled, please check back later");
+          return router.replace("/user/dashboard");
+        }
         // console.log(response);
         setNetworkData(response.networkData);
         setLoading(false);
@@ -222,7 +226,8 @@ function BuyDataComp(ctx) {
   }
 
   return (
-    <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
+    // <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
+    <div className="bg-slate-700 h-100 md:h-100 xl:h-100">
       <BuyData
         amountPlaceHolder={amountPlaceHolder}
         loading={loading}
