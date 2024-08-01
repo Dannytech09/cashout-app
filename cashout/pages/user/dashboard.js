@@ -61,7 +61,7 @@ function Dashboard({ ctx, user, error }) {
     } else if (error === "Bvn/nin has not been verified") {
       setIsVerified(true);
     }
-  }, [error, ctx, router, dispatch]);
+  }, [error, ctx, router, dispatch, user]);
 
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
