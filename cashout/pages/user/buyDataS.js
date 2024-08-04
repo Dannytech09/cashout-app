@@ -5,7 +5,7 @@ import Layout from "@/components/user/Layout";
 import { buyDataSGetHandler } from "../api/user/buydatas";
 
 export async function getServerSideProps(ctx) {
-  const { token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
 
   if (!token) {
     const { res } = ctx;
@@ -14,11 +14,20 @@ export async function getServerSideProps(ctx) {
     return { props: {} };
   }
 
+
   try {
     const response = await buyDataSGetHandler(ctx);
     const networkData = response?.data?.networkDataS;
     const beneficiary = response?.data?.beneficiary?.details;
     const errorGSMessage = response?.error;
+
+    if(!userId) {
+      return {
+        props: {
+          errorGSMessage: "Your ID seems to be null"
+        }
+      }
+    }
 
     // console.log("err response", errorGSMessage);
     // console.log("b response", beneficiary);

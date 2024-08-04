@@ -10,13 +10,12 @@ export async function buyDataSGetHandler(ctx) {
   // const user = getUser();
   // const id = user ? user.id : null;
   try {
-    const response = await axios.get(`${BASE_URL}/${userId}/getDatas`,
-    {
+    const response = await axios.get(`${BASE_URL}/${userId}/getDatas`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
-    }
-    );
+    });
     // console.log("api", response)
     return response;
   } catch (error) {
@@ -36,6 +35,7 @@ export async function buyDataSHandler(ctx, network, dataVol, phoneNumber) {
       {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       }
     );

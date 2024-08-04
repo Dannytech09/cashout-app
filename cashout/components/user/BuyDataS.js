@@ -179,7 +179,7 @@ function BuyDataSComp({ ctx, errorGSMessage, networkData, beneficiary }) {
         setRedirecting(false);
       } catch (error) {
         // console.log(error);
-        throw new Error(`An error occurred ${error}`); // server error - nextjs
+        setErrorMessage("client or server error");
       } finally {
         setLoading(false);
         setRedirecting(false);
