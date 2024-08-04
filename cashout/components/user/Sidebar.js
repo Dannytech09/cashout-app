@@ -35,6 +35,12 @@ const menuItems = [
     link: "/user/fundWallet",
   },
   {
+    id: 89,
+    label: "Trnx History",
+    icon: Airtime2Cash,
+    link: "/user/history",
+  },
+  {
     id: 6,
     label: "Cable Sub",
     icon: TvCabIcon,
@@ -79,9 +85,9 @@ const menuItems = [
   },
   {
     id: 9,
-    label: "Transaction History",
+    label: "Query Trnx",
     icon: Airtime2Cash,
-    link: "/user/history",
+    link: "/user/queryTranx",
   },
   {
     id: 10,

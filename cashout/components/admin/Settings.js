@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import Layout from "../../components/admin/Layout-Admin";
 import { useRouter } from "next/router";
 import { adminAuthGuard } from "@/Utils/authGuard";
@@ -9,71 +8,68 @@ import {
   getUserIdAndToken,
 } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
-import Loader from "../utils/Loader";
 import API_BASE_URL from "@/apiConfig";
 import axios from "axios";
 import ToggleButton from "../utils/ToggleBtn";
-import { GetSwitchHandler } from "@/pages/api/admin/settings";
 
 const BASE_URL = `${API_BASE_URL}`;
 
-function SettingsComp(ctx) {
+function SettingsComp({ ctx, error, data }) {
   const router = useRouter();
   adminAuthGuard(ctx, router);
   const { token } = getUserIdAndToken(ctx);
 
-  const [data, setData] = useState({
-    networkData: "OFF",
-    networkDataS: "OFF",
-    networkDataC: "OFF",
-    airtime: "OFF",
-    dataCoupon: "OFF",
-    eduPin: "OFF",
-    elect: "OFF",
-    tvSub: "OFF",
-  });
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [info, setInfo] = useState(data);
+  const [message, setMessage] = useState(null);
   const [redirecting, setRedirecting] = useState(null);
 
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;
   }
 
-  // useEffect(() => {
-  //   // console.log("ParentComponent rendered");
-
-  //   const fetchData = async () => {
-  //     try {
-  //       const resp = await GetSwitchHandler();
-  //       // console.log(resp.data);
-  //       setData(resp.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }  finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   const handleToggleChange = async (key, value) => {
-    // setChecked(nextChecked);
-    const updatedData = { ...data, [key]: value };
-    // console.log("updatedData", updatedData);
-    setData(updatedData);
+    const updatedData = { ...info, [key]: value };
 
     try {
-        const response = await axios.patch('http://api.example.com/update', updatedData);
-        console.log('API response:', response.data);
-      } catch (error) {
-        console.error('Error updating data:', error);
+      const response = await axios.patch(
+        `${BASE_URL}/admin/generalLock`,
+        {
+          switchDetail: key,
+          visibility: value === "ON" ? true : false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.data.success === true) {
+        setInfo(updatedData);
+        setMessage(response.data.message);
+        setTimeout(() => {
+          setMessage(null);
+        }, 1500);
       }
+    } catch (error) {
+      if (
+        error.response.data.error === "Invalid token." ||
+        error.response.data.error === "Token has been revoked or expired." ||
+        error.response.data.error === "Forbidden!"
+      ) {
+        removeUserSession();
+        aExpireSessionAndRedirect(ctx, router);
+        setRedirecting(true);
+      } else if (error) {
+        // console.error('Error updating data:', error.response.data.error);
+        setMessage(error.response.data.error);
+      }
+    }
   };
 
   return (
     <div className="">
-      {isLoading && <Loader />}
+      {/* {isLoading && <Loader />} */}
       <Head>
         <title>Admin&apos;s Settings</title>
       </Head>
@@ -88,6 +84,8 @@ function SettingsComp(ctx) {
           <div className="border-2 text-center text-sm font-semibold bg-slate-200 max-h-60 overflow-y-auto">
             <div className="fixed left-1/2 transform -translate-x-1/2 border-2-pink-700 p-1 bg-blue-400 ">
               <h2>General Lock</h2>
+              {message && <p className="mt-[.7ch] text-green-600">{message}</p>}
+              {error && <p className="mt-[.7ch] text-red-600">{error}</p>}
             </div>{" "}
             <div className="flex justify-between m-3 border bg-slate-600 p-2 mt-7 border-b-gray-600">
               <span>NAME</span>
@@ -96,105 +94,89 @@ function SettingsComp(ctx) {
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2 ">
               <span>Data A</span>
               <button className="">
-                {/* {data.networkData !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.networkData === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("networkData", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={info?.networkData === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("networkData", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2 ">
               <span>Data S</span>
               <button className="">
-                {/* {data.networkDataS !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.networkDataS === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("networkDataS", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={info?.networkDataS === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("networkDataS", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2 ">
               <span>Data C</span>
               <button className="">
-                {/* {data.networkDataC !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.networkDataC === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("networkDataC", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={info?.networkDataC === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("networkDataC", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2 ">
               <span>Airtime</span>
               <button className="">
-                {/* {data.airtime !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.airtime === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("airtime", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={info?.airtime === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("airtime", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2 ">
               <span>Elect</span>
               <button className="">
-                {/* {data.elect !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.elect === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("elect", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={info?.elect === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("elect", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2 ">
               <span>TvSub</span>
               <button className="">
-                {/* {data.tvSub !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.tvSub === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("tvSub", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={data?.tvSub === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("tvSub", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2 ">
               <span>DataCoupon</span>
               <button className="">
-                {/* {data.dataCoupon !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.dataCoupon === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("dataCoupon", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={info?.dataCoupon === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("dataCoupon", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2 ">
               <span>EduPin</span>
               <button className="">
-                {/* {data.eduPin !== undefined && ( */}
-                  <ToggleButton
-                    checked={data.eduPin === "ON"}
-                    onToggleChange={(checked) =>
-                      handleToggleChange("eduPin", checked ? "ON" : "OFF")
-                    }
-                  />
-                {/* )} */}
+                <ToggleButton
+                  checked={info?.eduPin === "ON"}
+                  onToggleChange={(checked) =>
+                    handleToggleChange("eduPin", checked ? "ON" : "OFF")
+                  }
+                />
               </button>
             </div>
           </div>
@@ -211,51 +193,35 @@ function SettingsComp(ctx) {
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2 ">
               <span>Data A</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2 ">
               <span>Data S</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2 ">
               <span>Data C</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2 ">
               <span>Airtime</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2 ">
               <span>Elect</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2">
               <span>TvSub</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-200 p-1/2">
               <span>DataCoupon</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
             <div className="flex justify-between m-3 border text-sm bg-slate-600 p-1/2">
               <span>EduPin</span>
-              <button className="">
-                <ToggleButton />
-              </button>
+              <button className="">{/* <ToggleButton /> */}</button>
             </div>
           </div>
           {/* Data Prices end here */}

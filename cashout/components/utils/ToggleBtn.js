@@ -7,8 +7,8 @@ const ToggleButton = ({ checked, onToggleChange }) => {
       checked={checked} // Control the switch state based on the checked prop
       offColor="#888"
       onColor="#0f0"
-        uncheckedIcon={false}
-        checkedIcon={false}
+      uncheckedIcon={false}
+      checkedIcon={false}
     />
   );
 };

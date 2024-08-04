@@ -8,11 +8,15 @@ const BASE_URL = `${API_BASE_URL}/vend`;
 //  const id = user ? user.id : null;
 
 export async function buyDataGetHandler(ctx) {
-  const { userId } = getUserIdAndToken(ctx);
+  const { userId, token } = getUserIdAndToken(ctx);
     try {
-        const response = await axios.get(`${BASE_URL}/${userId}/getData`);
+        const response = await axios.get(`${BASE_URL}/${userId}/getData`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         // console.log(response)
-       return response.data
+       return response
       } catch (error) {
         // console.log(error)
         return error.response.data;

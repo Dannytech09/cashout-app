@@ -4,17 +4,17 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 
 const BASE_URL = `${API_BASE_URL}/beneficiaries`;
 
-export async function getBeneficiary(ctx) {
-  const { userId } = getUserIdAndToken(ctx);
-  try {
-    const response = await axios.get(`${BASE_URL}/${userId}`);
-    // console.log("api", response.data);
-    return response.data;
-  } catch (error) {
-    // console.log(error.response.data);
-    return error.response.data;
-  }
-}
+// export async function getBeneficiary(ctx) {
+//   const { userId } = getUserIdAndToken(ctx);
+//   try {
+//     const response = await axios.get(`${BASE_URL}/${userId}`);
+//     // console.log("api", response.data);
+//     return response.data;
+//   } catch (error) {
+//     // console.log(error.response.data);
+//     return error.response.data;
+//   }
+// }
 
 export async function addBeneficiary(ctx, bName, phone, vol) {
   const { userId } = getUserIdAndToken(ctx);

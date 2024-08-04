@@ -8,15 +8,15 @@ import { removeUserSession } from "@/Utils/Common";
 
 let name;
 
-function BuyDataSComp(ctx) {
+function BuyDataSComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   const router = useRouter();
   // const user = getUser();
   // const id = user ? user.id : null;
   // const { token } = getUserIdAndToken(ctx);
 
-  const [networkData, setNetworkData] = useState([]);
+  // const [networkData, setNetworkData] = useState(data);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
@@ -33,8 +33,7 @@ function BuyDataSComp(ctx) {
   // pass props from parent => child => child of child
   const handlePhoneClick = (e) => {
     setPhoneNumber(e);
-    console.log(phoneNumber)
-    
+    // console.log(phoneNumber);
   };
 
   const clearPhoneClick = () => {
@@ -42,44 +41,10 @@ function BuyDataSComp(ctx) {
   };
   // pass props from parent => child => child of child
 
-  useEffect(() => {
-    async function fetchData(ctx) {
-      try {
-        setLoading(true);
-        const response = await buyDataSGetHandler();
-        if(response.code === "018" || response.error === "Data1 disabled, please check data2") {
-          return router.replace("/user/buyData")
-        }
-        // console.log("can i get here ?")
-        setNetworkData(response.networkDataS);
-        setLoading(false);
-        if (
-          response.error === "Invalid token." ||
-          response.error === "Token has been revoked or expired." ||
-          response.error === "Oops! Bad Request !"
-        ) {
-          removeUserSession();
-          expireSessionAndRedirect(ctx, router);
-          setRedirecting(true);
-        } else if (response.error) {
-          alert(response.error);
-          removeUserSession();
-          expireSessionAndRedirect(ctx, router);
-          setRedirecting(true);
-        }
-      } catch (error) {
-        throw new Error(`An error occurred ${error}`);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
-
   const changeNetwork = (e) => {
     const selectedVariationString = e.target.value;
 
-    const selectedNetwork = networkData.find(
+    const selectedNetwork = networkData?.find(
       (ctr) => ctr.variation_string === selectedVariationString
     );
     if (selectedNetwork) {
@@ -248,11 +213,13 @@ function BuyDataSComp(ctx) {
   return (
     <div className="bg-slate-700 h-100 md:h-100 xl:h-100">
       <BuyDataS
+        beneficiary={beneficiary}
         clearPhoneClick={clearPhoneClick}
         handlePhoneClick={handlePhoneClick}
         amountPlaceHolder={amountPlaceHolder}
         loading={loading}
         errorMessage={errorMessage}
+        errorGSMessage={errorGSMessage}
         amount={amount}
         amounts={amounts}
         handleNetworkAndInputValidation={handleNetworkAndInputValidation}
