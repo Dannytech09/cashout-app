@@ -73,13 +73,23 @@ export async function getServerSideProps(ctx) {
     }
   } catch (error) {
     // console.log("err l", error)
-    return {
-      props: {
-        networkData: null,
-        beneficiary: null,
-        error: error,
-      },
-    };
+    if (error.code === "ERR_TIMEOUT") {
+      return {
+        props: {
+          networkData: null,
+          beneficiary: null,
+          error: "Network Error",
+        },
+      };
+    } else {
+      return {
+        props: {
+          networkData: null,
+          beneficiary: null,
+          error: error,
+        },
+      };
+    }
   }
 }
 

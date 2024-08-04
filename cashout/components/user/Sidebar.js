@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import classNames from "classnames";
 import CollapseBtn from "../heroIcons/CollapseBtn";
 import HomeIcon from "../heroIcons/HomeIcon";
@@ -114,6 +114,27 @@ const Sidebar = () => {
   const [toggle, setToggle] = useState(false);
   const user = useSelector((state) => state.user);
   const [expandedId, setExpandedId] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Start loading when the route change starts
+    const handleStart = () => setLoading(true);
+
+    // Stop loading when the route change completes
+    const handleComplete = () => setLoading(false);
+
+    // Attach event listeners for route change start and complete
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    // Cleanup the event listeners when the component unmounts
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
 
   const handleToggle = (id) => {
     setExpandedId(id === expandedId ? null : id);
@@ -184,6 +205,18 @@ const Sidebar = () => {
 
   return (
     <div className="">
+      {loading && (
+        <div className="fixed inset-0 z-50 flex justify-center bg-opacity-50 bg-gray-900">
+          {/* Overlay to prevent clicks */}
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+
+          {/* Loading indicator at the top center */}
+          <div className="relative top-2 text-white">
+            Please wait...
+          </div>
+        </div>
+      )}
+
       <div className="flex fixed w-full z-40 justify-between border-red-800  h-10 custom-dark-gray">
         <div className="ml-2 mt-2" onClick={handleSideBarToggle}>
           <CollapseBtn />
