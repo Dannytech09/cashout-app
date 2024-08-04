@@ -39,10 +39,19 @@ function DirectCouponComp(ctx) {
       try {
         const response = await getCoupon();
         // console.log(response.dataCoupon);
-        setNetworkData(response.dataCoupon);
+        if (response.error === "Service Unavailable !") {
+          // console.error(error);
+          alert("Service Unavailable, please check back later !");
+          router.push("/user/dashboard");
+        } else {
+          setNetworkData(response.dataCoupon);
+        }
       } catch (error) {
-        // console.error(error);
-        alert("Service Unavailable, please check back later !");
+        if (error.response.error) {
+          // console.error(error);
+          alert("Unknown error");
+          router.push("/user/dashboard");
+        }
       }
       setLoading(false);
     }
