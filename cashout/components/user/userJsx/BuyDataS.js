@@ -8,10 +8,12 @@ import Beneficiary from "./Beneficiary";
 
 function BuyDataS({
   handlePhoneClick,
+  beneficiary,
   clearPhoneClick,
   amountPlaceHolder,
   loading,
   errorMessage,
+  errorGSMessage,
   amount,
   amounts,
   handleNetworkAndInputValidation,
@@ -71,13 +73,18 @@ function BuyDataS({
                 <div className={styles.errorMessage}>{errorMessage}</div>
               )}
             </div>
+            <div>
+              {errorGSMessage && (
+                <div className={styles.errorMessage}>{errorGSMessage}</div>
+              )}
+            </div>
             <div className={`${styles.amountBtn} `}>
               <select
                 className={`${styles.formControl} input-field`}
                 onChange={handleNetworkAndInputValidation}
               >
                 <option value={network}>--Choose Network--</option>
-                {networkData.map((ctr) => (
+                {networkData?.map((ctr) => (
                   <option value={ctr.variation_string} key={ctr._id}>
                     {ctr.variation_string}
                   </option>
@@ -150,7 +157,7 @@ function BuyDataS({
                {/* add beneficiary */}
                <div className="mx-auto text-lg">
                 <h1 className="font-bold font-serif border-2-green bg-green-300 mx-auto text-center  ">Beneficiary List</h1>
-                <Beneficiary onPhoneClickClear={clearPhoneClick} onPhoneClick={handlePhoneClick} phoneNumber={phoneNumber} />
+                <Beneficiary beneficiary={beneficiary} onPhoneClickClear={clearPhoneClick} onPhoneClick={handlePhoneClick} phoneNumber={phoneNumber} />
               </div>
               <div
                 className={`${styles.btn} mx-auto border border-blue-900 bg-blue-900 text-center hover:cursor-pointer`}

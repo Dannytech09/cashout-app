@@ -10,6 +10,7 @@ function MyPurchases({
   checkTransaction,
   loading,
   errorMessage,
+  errorGSMessage,
   phoneNumber,
   setPhoneNumber,
   handleSubmit,
@@ -20,6 +21,8 @@ function MyPurchases({
   useEffect(() => {
     setIsSubmitDisabled(phoneNumber.length !== 11);
   }, [phoneNumber]);
+
+  const record = "No record found!";
 
   return (
     <div className="relative border-red-300">
@@ -35,6 +38,13 @@ function MyPurchases({
             className={`${styles.errorMessage} item-center justify-center flex gap-2`}
           >
             {errorMessage}
+          </div>
+        )}
+        {errorGSMessage && (
+          <div
+            className={`${styles.errorMessage} item-center justify-center flex gap-2`}
+          >
+            {errorGSMessage}
           </div>
         )}
         <div className="mt-[5ch] text-sm flex justify-center">
@@ -170,7 +180,7 @@ function MyPurchases({
                   </div>
                 </div>
               ))
-            : myPurchases.map((item) => (
+            : myPurchases?.map((item) => (
                 <div
                   key={item._id}
                   className="bg-white p-3 ml-5 mr-5  rounded-lg shadow-md mb-1 mt-3"
@@ -272,7 +282,7 @@ function MyPurchases({
         </div>
 
         <div className="mt-10 h-screen w-screen overflow-y-auto text-center">
-          {!checkTransaction ? (
+          {!checkTransaction === record ? (
             <p className="my-auto text-red-300">{checkTransaction}</p>
           ) : null}
         </div>

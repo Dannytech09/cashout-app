@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  getBeneficiary,
   updateBeneficiary,
   deleteBeneficiary,
   addBeneficiary,
 } from "@/pages/api/user/beneficiary";
 
-const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick}) => {
+const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick, beneficiary}) => {
   const [message, setMessage] = useState(null);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(beneficiary);
   const [editIndex, setEditIndex] = useState(null);
   const [formData, setFormData] = useState({
     _id: "",
@@ -97,15 +96,6 @@ const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick}) => {
     }
   };
 
-  // Get beneficiaries
-  useEffect(() => {
-    async function fetchData() {
-      const resp = await getBeneficiary(ctx);
-      setData(resp.data?.details || []);
-    }
-    fetchData();
-  }, []);
-
   return (
     <div className="bg-white w-screen p-3 text-sm sm:text-lg">
       {message && (
@@ -125,13 +115,13 @@ const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick}) => {
           </tr>
         </thead>
         <tbody>
-          {data.length === 0 ? (
+          {data?.length === 0 ? (
             <tr>
               <td colSpan="5">No beneficiaries added yet.</td>
             </tr>
           ) : (
-            data.map((item, index) => (
-              <tr key={item._id}>
+            data?.map((item, index) => (
+              <tr key={item?._id}>
                 <td>{index + 1}</td>
                 <td>
                   {editIndex === index ? (
@@ -144,7 +134,7 @@ const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick}) => {
                       onChange={handleInputChange}
                     />
                   ) : (
-                    item.bName
+                    item?.bName
                   )}
                 </td>
                 <td onClick={() => onPhoneClick(item.phone)}>
@@ -158,7 +148,7 @@ const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick}) => {
                       onChange={handleInputChange}
                     />
                   ) : (
-                    item.phone
+                    item?.phone
                   )}
                 </td>
                 <td>
@@ -172,7 +162,7 @@ const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick}) => {
                       onChange={handleInputChange}
                     />
                   ) : (
-                    item.vol
+                    item?.vol
                   )}
                 </td>
                 <td>
@@ -201,7 +191,7 @@ const Beneficiary = ({ctx, onPhoneClickClear, onPhoneClick}) => {
                       </button>
                       <button
                         className="border-2 border-red-600 bg-red-600 hover:bg-red-500 hover:border-red-500 m-1 p-1"
-                        onClick={() => handleDeleteClick(item._id)}
+                        onClick={() => handleDeleteClick(item?._id)}
                       >
                         Delete
                       </button>

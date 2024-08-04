@@ -101,7 +101,7 @@ const AutoFundingComp = (ctx) => {
 
   useEffect(() => {
     fetchOnLogin();
-  }, []);
+  }, []); // ignore build error else it will keep making calls
 
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;

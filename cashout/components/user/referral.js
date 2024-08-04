@@ -45,7 +45,7 @@ function ReferralInfoComp(ctx) {
     };
 
     fetchData();
-  }, []);
+  }, [ctx, router]);
 
   if (redirecting) {
     return <div className="text-sm bg-blue-600">Redirecting to login...</div>;

@@ -6,19 +6,19 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 const BASE_URL = `${API_BASE_URL}/vend`;
 
 export async function buyDataSGetHandler(ctx) {
-  const { userId } = getUserIdAndToken(ctx);
+  const { userId, token } = getUserIdAndToken(ctx);
   // const user = getUser();
   // const id = user ? user.id : null;
   try {
-    const response = await axios.get(`${BASE_URL}/${userId}/getDatas`
-    // {
-    //   headers: {
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // }
+    const response = await axios.get(`${BASE_URL}/${userId}/getDatas`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
     );
-    // console.log(response)
-    return response.data;
+    // console.log("api", response)
+    return response;
   } catch (error) {
     // console.log(error)
     return error.response.data;

@@ -6,15 +6,15 @@ import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
 // import { useSelector } from "react-redux";
 
-function BuyDataComp(ctx) {
+function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   const router = useRouter();
   // const userId = getUser();
   // const { token } = getUserIdAndToken(ctx);
   //   const { userId } = getUserIdAndToken(ctx);
 
-  const [networkData, setNetworkData] = useState([]);
+  // const [networkData, setNetworkData] = useState([]);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [redirecting, setRedirecting] = useState(false);
@@ -28,32 +28,42 @@ function BuyDataComp(ctx) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
 
-  useEffect(() => {
-    // if (!userId || !token) {
-    //   removeUserSession();
-    //   expireSessionAndRedirect(ctx, router);
-    // }
-    async function fetchData() {
-      try {
-        setLoading(true);
-        const response = await buyDataGetHandler();
-        if(response.code === "018" || response.error === "Data2 disabled, please check data1") {
-          alert("Data Disabled, please check back later");
-          return router.replace("/user/dashboard");
-        }
-        // console.log(response);
-        setNetworkData(response.networkData);
-        setLoading(false);
-      } catch (error) {
-        // console.log("err", error)
-        alert(error.response.error);
-      } finally {
-        setLoading(false);
-      }
-    }
+  // pass props from parent => child => child of child
+  const handlePhoneClick = (e) => {
+    setPhoneNumber(e);
+    // console.log(phoneNumber);
+  };
 
-    fetchData();
-  }, []);
+  const clearPhoneClick = () => {
+    setPhoneNumber("");
+  };
+
+  // useEffect(() => {
+  //   // if (!userId || !token) {
+  //   //   removeUserSession();
+  //   //   expireSessionAndRedirect(ctx, router);
+  //   // }
+  //   async function fetchData() {
+  //     try {
+  //       setLoading(true);
+  //       const response = await buyDataGetHandler();
+  //       if(response.code === "018" || response.error === "Data2 disabled, please check data1") {
+  //         alert("Data Disabled, please check back later");
+  //         return router.replace("/user/dashboard");
+  //       }
+  //       // console.log(response);
+  //       setNetworkData(response.networkData);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       // console.log("err", error)
+  //       alert(error.response.error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+
+  //   fetchData();
+  // }, []);
 
   //   if this  is enabled it can cause: Rendered more hooks than during the previous ...
   // if (loading) {
@@ -61,7 +71,7 @@ function BuyDataComp(ctx) {
   // }
 
   const changeNetwork = (e) => {
-    const selectedNetwork = networkData.find(
+    const selectedNetwork = networkData?.find(
       (ctr) => ctr.network === e.target.value
     );
     if (selectedNetwork) {
@@ -129,7 +139,7 @@ function BuyDataComp(ctx) {
       openModal();
     }
   };
-  
+
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -229,9 +239,13 @@ function BuyDataComp(ctx) {
     // <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
     <div className="bg-slate-700 h-100 md:h-100 xl:h-100">
       <BuyData
+        beneficiary={beneficiary}
+        clearPhoneClick={clearPhoneClick}
+        handlePhoneClick={handlePhoneClick}
         amountPlaceHolder={amountPlaceHolder}
         loading={loading}
         errorMessage={errorMessage}
+        errorGSMessage={errorGSMessage}
         amount={amount}
         amounts={amounts}
         handleNetworkAndInputValidation={handleNetworkAndInputValidation}
