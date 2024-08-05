@@ -5,7 +5,9 @@ import { buyDataGetHandler } from "../api/user/buydata";
 import BuyDataComp from "@/components/user/BuyData";
 
 export async function getServerSideProps(ctx) {
-  const { token } = getUserIdAndToken(ctx);
+  let errorGSMessage;
+  try {
+  const { userId, token } = getUserIdAndToken(ctx);
 
   if (!token) {
     const { res } = ctx;
@@ -14,25 +16,38 @@ export async function getServerSideProps(ctx) {
     return { props: {} };
   }
 
-  try {
+  if (!userId || userId === null) {
+    return {
+      props: {
+        errorGSMessage: "Unable to retrieve your ID🤔",
+      },
+    };
+  }
+
     const response = await buyDataGetHandler(ctx);
     const networkData = response?.data?.networkData;
     const beneficiary = response?.data?.beneficiary?.details;
-    const errorGSMessage = response?.error;
+    errorGSMessage = response?.error;
 
     // console.log("err response", errorGSMessage);
     // console.log("b response", beneficiary);
     // console.log("network response", networkData);
-    if (
-      response.statusMessage === "OK" ||
-      response.statusCode === 200 ||
-      response.success === true
+    if (errorGSMessage === "Unauthorized to access this route.") {
+      return {
+        props: {
+          networkData: null,
+          beneficiary: null,
+          errorGSMessage: "Something seems unusual. Please logout and login",
+        },
+      };
+    } else if (
+      response?.data?.success === true
     ) {
       return {
         props: {
           networkData: networkData,
-          beneficiary: beneficiary,
-          error: null,
+          beneficiary: beneficiary === undefined ? null : beneficiary,
+          errorGSMessage: null,
         },
       };
     } else if (
@@ -58,27 +73,28 @@ export async function getServerSideProps(ctx) {
         props: {
           networkData: null,
           beneficiary: null,
-          error: errorGSMessage,
+          errorGSMessage: errorGSMessage,
         },
       };
     } else {
       // Handle unexpected cases
       return {
         props: {
-          networkData: networkData || null,
-          beneficiary: beneficiary || null,
-          error: "Unexpected error occurred.",
+          networkData: null,
+          beneficiary: null,
+          errorGSMessage: "Unexpected error occurred.",
         },
       };
     }
   } catch (error) {
     // console.log("err l", error)
+    errorGSMessage = error?.response?.data?.error;
     if (error.code === "ERR_TIMEOUT") {
       return {
         props: {
           networkData: null,
           beneficiary: null,
-          error: "Network Error",
+          errorGSMessage: "Network Error",
         },
       };
     } else {
@@ -86,7 +102,7 @@ export async function getServerSideProps(ctx) {
         props: {
           networkData: null,
           beneficiary: null,
-          error: error,
+          errorGSMessage: errorGSMessage,
         },
       };
     }

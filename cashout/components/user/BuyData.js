@@ -71,7 +71,7 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   // }
 
   const changeNetwork = (e) => {
-    const selectedNetwork = networkData?.find(
+    const selectedNetwork = networkData.find(
       (ctr) => ctr.network === e.target.value
     );
     if (selectedNetwork) {
@@ -191,12 +191,12 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
           setErrorMessage(null);
           alert(response.message);
           //   router.reload();
-          const buyAgain = window.confirm("Do you wish to buy again ?");
-          if (buyAgain) {
-            router.push("/user/buyData");
-          } else {
-            router.push("/user/dashboard");
-          }
+          // const buyAgain = window.confirm("Do you wish to buy again ?");
+          // if (buyAgain) {
+          //   router.push("/user/buyData");
+          // } else {
+          //   router.push("/user/dashboard");
+          // }
         }
         setLoading(false);
         setRedirecting(false);
