@@ -96,7 +96,7 @@ function BuyDataS({
                 onChange={handleDataVolAndInputValidation}
               >
                 <option value={dataVol}>--Data Volume--</option>
-                {dataVols.map((ctr) => (
+                {dataVols?.map((ctr) => (
                   <option value={ctr.plan_code} key={ctr.plan_code}>
                     {ctr.name}
                   </option>

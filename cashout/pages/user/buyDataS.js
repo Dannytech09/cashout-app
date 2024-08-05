@@ -40,14 +40,14 @@ export async function getServerSideProps(ctx) {
       const networkData = response?.data?.networkDataS;
       const beneficiary = response?.data?.beneficiary?.details;
 
-      // console.log("err response", errorGSMessage);
+      // console.log("err response", response);
       // console.log("b response", beneficiary);
       // console.log("network response", networkData);
       if (response?.data?.success === true) {
         return {
           props: {
             networkData: networkData,
-            beneficiary: beneficiary,
+            beneficiary: beneficiary === undefined ? null : beneficiary,
             errorGSMessage: null,
           },
         };
