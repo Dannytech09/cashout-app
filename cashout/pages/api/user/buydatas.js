@@ -6,7 +6,7 @@ import { getUserIdAndToken } from "@/Utils/authCookies";
 const BASE_URL = `${API_BASE_URL}/vend`;
 
 export async function buyDataSGetHandler(ctx) {
-  const { userId, token } = getUserIdAndToken(ctx);
+  const { token, userId } = getUserIdAndToken(ctx);
   // const user = getUser();
   // const id = user ? user.id : null;
   try {

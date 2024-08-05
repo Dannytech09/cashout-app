@@ -1,50 +1,71 @@
+import axios from "axios";
 import React from "react";
 import BuyDataSComp from "@/components/user/BuyDataS";
-import { getUserIdAndToken } from "@/Utils/authCookies";
 import Layout from "@/components/user/Layout";
-import { buyDataSGetHandler } from "../api/user/buydatas";
+import API_BASE_URL from "@/apiConfig";
+// import { getUserIdAndToken } from "@/Utils/authCookies";
+
+const BASE_URL = `${API_BASE_URL}/vend`;
 
 export async function getServerSideProps(ctx) {
-  const { token, userId } = getUserIdAndToken(ctx);
-
-  if (!token) {
-    const { res } = ctx;
-    res.writeHead(302, { Location: "/login" });
-    res.end();
-    return { props: {} };
-  }
-
-
+  let errorGSMessage;
   try {
-    const response = await buyDataSGetHandler(ctx);
-    const networkData = response?.data?.networkDataS;
-    const beneficiary = response?.data?.beneficiary?.details;
-    const errorGSMessage = response?.error;
+    const token = ctx.req.cookies.token;
+    const userIdCookie = ctx.req.cookies.u;
+    const userIdOb = JSON.parse(userIdCookie);
+    const userId = userIdOb.id;
+    // console.log(userId)
 
-    if(!userId) {
-      return {
-        props: {
-          errorGSMessage: "Your ID seems to be null"
-        }
-      }
+    if (!token) {
+      const { res } = ctx;
+      res.writeHead(302, { Location: "/login" });
+      res.end();
+      return { props: {} };
     }
 
-    // console.log("err response", errorGSMessage);
-    // console.log("b response", beneficiary);
-    // console.log("network response", networkData);
-    if (
-      response.statusMessage === "OK" ||
-      response.statusCode === 200 ||
-      response.success === true
-    ) {
+    if (!userId || userId === null) {
       return {
         props: {
-          networkData: networkData,
-          beneficiary: beneficiary,
-          error: null,
+          errorGSMessage: "Unable to retrieve your ID🤔",
         },
       };
-    } else if (
+    }
+
+    const response = await axios.get(`${BASE_URL}/${userId}/getDatas`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      const networkData = response?.data?.networkDataS;
+      const beneficiary = response?.data?.beneficiary?.details;
+
+      // console.log("err response", errorGSMessage);
+      // console.log("b response", beneficiary);
+      // console.log("network response", networkData);
+      if (response?.data?.success === true) {
+        return {
+          props: {
+            networkData: networkData,
+            beneficiary: beneficiary,
+            errorGSMessage: null,
+          },
+        };
+      } else {
+      // Handle unexpected cases
+      return {
+        props: {
+          networkData: null,
+          beneficiary: null,
+          errorGSMessage: "Unexpected error occurred.",
+        },
+      };
+    }
+  } catch (error) {
+    // console.log("err l", error)
+    errorGSMessage = error?.response?.data?.error;
+
+    if (
       errorGSMessage === "Invalid token." ||
       errorGSMessage === "Token has been revoked or expired." ||
       errorGSMessage === "Oops! Bad Request !"
@@ -55,6 +76,14 @@ export async function getServerSideProps(ctx) {
           permanent: false,
         },
       };
+    } else if (errorGSMessage === "Unauthorized to access this route.") {
+      return {
+        props: {
+          networkData: null,
+          beneficiary: null,
+          errorGSMessage: "Something seems unusual. Please logout and login",
+        },
+      };
     } else if (errorGSMessage === "Data1 disabled, please check data2") {
       return {
         redirect: {
@@ -62,32 +91,20 @@ export async function getServerSideProps(ctx) {
           permanent: false,
         },
       };
-    } else if (response.error) {
+    } else if (errorGSMessage) {
       return {
         props: {
           networkData: null,
           beneficiary: null,
-          error: errorGSMessage,
+          errorGSMessage: errorGSMessage,
         },
       };
-    } else {
-      // Handle unexpected cases
-      return {
-        props: {
-          networkData: networkData || null,
-          beneficiary: beneficiary || null,
-          error: "Unexpected error occurred.",
-        },
-      };
-    }
-  } catch (error) {
-    // console.log("err l", error)
-    if (error.code === "ERR_TIMEOUT") {
+    } else if (error.code === "ERR_TIMEOUT") {
       return {
         props: {
           networkData: null,
           beneficiary: null,
-          error: "Network Error",
+          errorGSMessage: "Network Error",
         },
       };
     } else {
@@ -95,7 +112,7 @@ export async function getServerSideProps(ctx) {
         props: {
           networkData: null,
           beneficiary: null,
-          error: error,
+          errorGSMessage: errorGSMessage,
         },
       };
     }

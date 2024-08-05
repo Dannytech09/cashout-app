@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { buyDataSHandler, buyDataSGetHandler } from "@/pages/api/user/buydatas";
+import { buyDataSHandler } from "@/pages/api/user/buydatas";
 import BuyDataS from "./userJsx/BuyDataS";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
@@ -44,7 +44,7 @@ function BuyDataSComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   const changeNetwork = (e) => {
     const selectedVariationString = e.target.value;
 
-    const selectedNetwork = networkData?.find(
+    const selectedNetwork = networkData.find(
       (ctr) => ctr.variation_string === selectedVariationString
     );
     if (selectedNetwork) {
@@ -168,12 +168,12 @@ function BuyDataSComp({ ctx, errorGSMessage, networkData, beneficiary }) {
           setErrorMessage(null);
           alert(response.message);
           //   router.reload();
-          const buyAgain = window.confirm("Do you wish to buy again ?");
-          if (buyAgain) {
-            router.push("/user/buyDataS");
-          } else {
-            router.push("/user/dashboard");
-          }
+          // const buyAgain = window.confirm("Do you wish to buy again ?");
+          // if (buyAgain) {
+          //   router.push("/user/buyDataS");
+          // } else {
+          //   router.push("/user/dashboard");
+          // }
         }
         setLoading(false);
         setRedirecting(false);
