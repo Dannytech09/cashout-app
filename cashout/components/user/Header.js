@@ -169,7 +169,7 @@ export default function Header({ user, openBvnModal, openNinModal }) {
                           to Partner&apos;s Account Type
                         </p>
                         <div className="text-center mt-10 flex justify-around">
-                          {user.bal.$numberDecimal < 2000 ? (
+                          {user?.bal < 2000 ? (
                             "Fund wallet"
                           ) : (
                             <button

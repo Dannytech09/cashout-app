@@ -131,7 +131,7 @@ const UserInfoFormNin = ({ isOpen, closeNinModal }) => {
       <hr style={{ borderColor: "red" }} />
       <br />
       <p className="text-xs font-bold font-sans text-red-600">
-        Note: No charges for NIN verification
+        Note: NIN verification now 70 naira
       </p>
 
       <form onSubmit={submitUserInfo}>
