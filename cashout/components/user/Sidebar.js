@@ -242,7 +242,7 @@ const Sidebar = () => {
                     {user && <div>{user.firstName}</div>}
                     {user && (
                       <div>
-                        {"\u20A6"} {user.bal.$numberDecimal}
+                        {"\u20A6"} {user.bal}
                       </div>
                     )}
                   </div>

@@ -22,7 +22,7 @@ export default function UserCon({ user }) {
       <div className="flex gap-3 hover:bg-slate-500 hover:text-blue-300 items-center justify-center max-sm:w-30 text-center h-[6ch] bg-cyan-500 border-2 border-slate-200 rounded-2xl w-[40%]">
         <span className="animate-pulse fill-blue-500 border-2 ml-2 border-slate-300 bg-slate-100 p-1 rounded-full stroke-blue-600"> <FundWalletIcon /> </span>
         {user && (
-          <span className="text-black mr-5">{"\u20A6"}{user.bal.$numberDecimal}</span>
+          <span className="text-black mr-5">{"\u20A6"}{user.bal}</span>
         )}
         </div>
         <div className="flex gap-3 hover:bg-slate-500 hover:text-blue-300 items-center justify-center max-sm:w-30 text-center h-[6ch] bg-cyan-500 border-2 border-slate-200 rounded-2xl w-[40%]">

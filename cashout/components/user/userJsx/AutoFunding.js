@@ -78,17 +78,17 @@ export default function AutoFunding({
               <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
                 <div className="">
                   <span className="text-xs ">
-                    {data[0]?.banks[0]?.bank_name}
+                    {data?.[0]?.banks[0]?.bank_name}
                   </span>
                 </div>
                 <div className="">
                   <span className="text-xs">
-                    Acct Number: {data[0]?.banks[0].account_number[0]}
+                    Acct Number: {data?.[0]?.banks[0]?.account_number[0]}
                   </span>
                 </div>
                 <div className="">
                   <span className="text-xs">
-                    Acct Name: {data[0]?.account_name}
+                    Acct Name: {data?.[0]?.account_name}
                   </span>
                 </div>
               </div>
@@ -123,25 +123,31 @@ export default function AutoFunding({
             </div>
           ) : data ? (
             <div>
-              {/* <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
+              <div className="flex text-[.9ch] text-center w-full justify-center overflow-hidden p-2 text-red-500">
                 Transfer made to this acct will credit your wallet automatically
               </div>
-              <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
-                <div className="">
-                  <span className="text-xs">{data[0]?.banks[1].bank_name}</span>
+              {/* We hide sterling acct for old users */}
+              {data[0]?.banks[1]?.bank_name == "Sterling bank" ? (
+                <h2>Sterling bank not available for old users</h2>
+              ) : (
+                <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
+                  <div className="">
+                    <span className="text-xs">
+                      {data[0]?.banks[1]?.bank_name}
+                    </span>
+                  </div>
+                  <div className="">
+                    <span className="text-xs">
+                      Acct Number: {data[0]?.banks[1]?.account_number[0]}
+                    </span>
+                  </div>
+                  <div className="">
+                    <span className="text-xs">
+                      Acct Name: {data[0]?.account_name}
+                    </span>
+                  </div>
                 </div>
-                <div className="">
-                  <span className="text-xs">
-                    Acct Number: {data[0]?.banks[1].account_number[0]}
-                  </span>
-                </div>
-                <div className="">
-                  <span className="text-xs">
-                    Acct Name: {data[0]?.account_name}
-                  </span>
-                </div>
-              </div> */}
-                  <h2>Sterling bank not available at the moment</h2>
+              )}
             </div>
           ) : (
             <p className="text-xs lg:text-sm  text-center text-white my-auto justify-center">
@@ -178,16 +184,18 @@ export default function AutoFunding({
               </div>
               <div className="flex gap-6 md:flex-col p-2 ml-[-2ch]">
                 <div className="">
-                  <span className="text-xs">{data[0]?.banks[2].bank_name}</span>
-                </div>
-                <div className="">
                   <span className="text-xs">
-                    Acct Number: {data[0]?.banks[2].account_number[0]}
+                    {data?.[0]?.banks[2]?.bank_name}
                   </span>
                 </div>
                 <div className="">
                   <span className="text-xs">
-                    Acct Name: {data[0]?.account_name}
+                    Acct Number: {data?.[0]?.banks[2]?.account_number[0]}
+                  </span>
+                </div>
+                <div className="">
+                  <span className="text-xs">
+                    Acct Name: {data?.[0]?.account_name}
                   </span>
                 </div>
               </div>
