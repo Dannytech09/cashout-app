@@ -40,6 +40,7 @@ function DataComponent(ctx) {
             Set Edu Prices
           </Link>
         </div>
+        <hr className="border border-black"/>
       <div className="border rounded-md bg-blue-400 p-4">
           <Link
             href={"/admin-wonders/dataPricesS"}
@@ -54,6 +55,15 @@ function DataComponent(ctx) {
             className="text-gray-600 hover:text-gray-800 font-medium"
           >
             Lock Data - SS
+          </Link>
+        </div>
+        <hr className="border border-black"/>
+      <div className="border rounded-md bg-green-600 p-4">
+          <Link
+            href={"/admin-wonders/tvSubPrices"}
+            className="text-gray-600 hover:text-gray-800 font-medium"
+          >
+            Update tvSub
           </Link>
         </div>
         <hr className="border border-black"/>
