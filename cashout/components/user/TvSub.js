@@ -47,7 +47,7 @@ function TvSubComp(ctx) {
         } else if (response.error) {
           setErrorMessage(response.error);
         } else {
-          setData(response.content);
+          setData(response?.data?.tvSub);
         }
       } catch (error) {
         // console.log(error);
