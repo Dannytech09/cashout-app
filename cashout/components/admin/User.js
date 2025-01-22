@@ -55,6 +55,21 @@ export default function User({ user }) {
               Bank: &nbsp;
               <span>{user.bank.toString()}</span>
             </li>
+            <li>
+              {" "}
+              Bonus Earned: &nbsp;
+              <span>{user.bank.toString()}</span>
+            </li>
+            <li>
+              {" "}
+              BVN: &nbsp;
+              <span>{user.pInfo?.bvn.toString()}</span>
+            </li>
+            <li>
+              {" "}
+              NIN: &nbsp;
+              <span>{user.pInfo?.nin.toString()}</span>
+            </li>
           </ul>
         </div>
       )}
