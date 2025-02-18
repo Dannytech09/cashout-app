@@ -68,7 +68,7 @@ function DeveloperComp(ctx) {
     };
 
     fetchData();
-  }, []);
+  }, [ctx, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

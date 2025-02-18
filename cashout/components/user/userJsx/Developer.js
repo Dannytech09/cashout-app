@@ -36,7 +36,7 @@ function Developer({
         </div>
       </div>
       <h1 className="text-center bg-yellow-500 p-2 w-60 mx-auto">
-        Welcome to Dev's API
+        Welcome to Dev&apos;s API
       </h1>
       {error && (
         <p className="text-[1.2ch] text-xs text-center m-3 p-3 mt-[-2ch] text-red-600">
@@ -439,7 +439,7 @@ function Developer({
               <p className="font-semibold text-sm">Note:</p>
               <ul className="p-2 m-2 text-xs text-left space-y-1">
                 <li>
-                  Airtime, Cable Sub and Electricity Bill's payment{" "}
+                  Airtime, Cable Sub and Electricity Bill&apos;s payment{" "}
                   <span className="font-bold">DISCOUNT</span> is currently
                   <pre className="bg-gray-800 p-1 rounded text-green-400 inline-block ml-2">
                     {`1 percentage off the purchased amount`}
