@@ -137,7 +137,7 @@ export default function TvSubPrices(ctx) {
   // Render component
   return (
     <div className="bg-gray-900 text-slate-500 h-screen text-center overflow-x-hidden p-3">
-      <h2 className="bg-slate-100 text-blue-600">TV Subscription Prices</h2>
+      <h2 className="bg-slate-100 text-blue-600">Data Subscription Details</h2>
       { message ? (
       <div className="mt-2 p-3">
       <p className="text-green-400 bg-white p-1 text-sm">

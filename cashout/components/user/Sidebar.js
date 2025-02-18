@@ -107,6 +107,12 @@ const menuItems = [
     icon: LockPassIcon,
     link: "/user/updatePassword",
   },
+  {
+    id: 13,
+    label: "Developer's API",
+    icon: LockPassIcon,
+    link: "/user/developer",
+  },
 ];
 
 const Sidebar = () => {

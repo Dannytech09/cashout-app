@@ -8,9 +8,9 @@ const BASE_URL = `${API_BASE_URL}/electBill`;
 //  const id = user ? user.id : null;
 
 export async function verifyElectBillHandler(ctx, selectedService, selectedType, meterNumber) {
-    const { token } = getUserIdAndToken(ctx);
+    const { token, userId } = getUserIdAndToken(ctx);
     try {
-        const response = await axios.post(`${BASE_URL}/verify`, 
+        const response = await axios.post(`${BASE_URL}/verify/${userId}`, 
         { serviceID: selectedService, type: selectedType, billersCode: meterNumber },
         {
             headers: {
