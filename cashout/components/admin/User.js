@@ -27,7 +27,7 @@ export default function User({ user }) {
             {user.phoneNumber && (
               <li>
                 Phone Number: &nbsp;
-              <span>{user.phoneNumber}</span>
+                <span>{user.phoneNumber}</span>
               </li>
             )}
             <li>
@@ -43,7 +43,11 @@ export default function User({ user }) {
             <li>
               {" "}
               Blocked: &nbsp;
-              <span>{user.blocked.toString()}</span>
+              <span>
+                {user.blocked === true
+                  ? "Account Restricted"
+                  : "Account Active"}
+              </span>
             </li>
             <li>
               {" "}
@@ -53,22 +57,28 @@ export default function User({ user }) {
             <li>
               {" "}
               Bank: &nbsp;
-              <span>{user.bank.toString()}</span>
+              <span>
+                {user.bank === true ? "Acct Generated" : "Acct not generated"}
+              </span>
             </li>
             <li>
               {" "}
               Bonus Earned: &nbsp;
-              <span>{user.bank.toString()}</span>
+              <span>{user.bonusEarned}</span>
             </li>
             <li>
               {" "}
               BVN: &nbsp;
-              <span>{user.pInfo?.bvn.toString()}</span>
+              <span>
+                {user.pInfo.bvn ? user.pInfo?.bvn?.toString() : "none"}
+              </span>
             </li>
             <li>
               {" "}
               NIN: &nbsp;
-              <span>{user.pInfo?.nin.toString()}</span>
+              <span>
+                {user.pInfo.nin ? user.pInfo?.nin?.toString() : "none"}
+              </span>
             </li>
           </ul>
         </div>

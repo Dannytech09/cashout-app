@@ -44,7 +44,7 @@ function GetSingleUserComp(ctx) {
           "Content-Type": "application/json; charset=utf8",
         },
       });
-      //   console.log(response)
+      // console.log(response)
       if (response.data.code === "000") {
         alert("Check Successful");
         setUser(response.data.data);
