@@ -32,7 +32,7 @@ function BlockUserComp(ctx) {
     try {
       setLoading(true);
       const response = await BlockUserHandler(ctx, id, blocked);
-      //   console.log(response);
+        // console.log(response);
       if (response.data === null) {
         alert("Invalid User ID");
       } else if (

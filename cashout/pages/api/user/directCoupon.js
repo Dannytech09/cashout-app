@@ -17,15 +17,15 @@ export async function getCoupon(ctx) {
   }
 }
 
-export async function directCoupon(ctx, network_id, plan_code, mobile) {
+export async function directCoupon(ctx, network, dataVol, phoneNumber) {
   const { token, userId } = getUserIdAndToken(ctx);
   try {
     const response = await axios.post(
       `${BASE_URL}/${userId}/directCoupon`,
       {
-        network_id,
-        plan_code,
-        mobile,
+        network_id: network,
+        variation_code: dataVol,
+        mobile: phoneNumber,
       },
       {
         headers: {

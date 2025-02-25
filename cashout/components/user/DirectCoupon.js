@@ -73,7 +73,7 @@ function DirectCouponComp(ctx) {
   const changeDataVol = (e) => {
     const selectedPlanCode = e.target.value;
     const selectedDataVol = networkData.find((ctr) =>
-      ctr.dataVol.some((item) => item.plan_code === selectedPlanCode)
+      ctr.dataVol.some((item) => item.variation_code === selectedPlanCode)
     );
     // console.log("selected =>>", selectedDataVol);
 
@@ -83,7 +83,7 @@ function DirectCouponComp(ctx) {
       setAmountPlaceHolder(false);
 
       const selectedName = selectedDataVol.dataVol.find(
-        (item) => item.plan_code === selectedPlanCode
+        (item) => item.variation_code === selectedPlanCode
       )?.name;
 
       // console.log(selectedName);
@@ -140,7 +140,7 @@ function DirectCouponComp(ctx) {
     if (modalIsOpen) {
       timer = setTimeout(() => {
         closeModal();
-      }, 3000);
+      }, 5000);
     }
 
     return () => clearTimeout(timer);

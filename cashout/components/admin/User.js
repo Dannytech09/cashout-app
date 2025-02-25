@@ -64,20 +64,20 @@ export default function User({ user }) {
             <li>
               {" "}
               Bonus Earned: &nbsp;
-              <span>{user.bonusEarned}</span>
+              <span>{user?.bonusEarned ? user.bonusEarned : 0}</span>
             </li>
             <li>
               {" "}
               BVN: &nbsp;
               <span>
-                {user.pInfo.bvn ? user.pInfo?.bvn?.toString() : "none"}
+                {user?.pInfo?.bvn ? user.pInfo.bvn.toString() : "none"}
               </span>
             </li>
             <li>
               {" "}
               NIN: &nbsp;
               <span>
-                {user.pInfo.nin ? user.pInfo?.nin?.toString() : "none"}
+                {user?.pInfo?.nin ? user.pInfo.nin.toString() : "none"}
               </span>
             </li>
           </ul>

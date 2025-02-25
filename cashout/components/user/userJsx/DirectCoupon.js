@@ -60,7 +60,7 @@ export default function DirectCoupon({
               <option>--Data Volume--</option>
               {networkData.map((ctr) =>
                 ctr.dataVol.map((data) => (
-                  <option value={data.plan_code} key={data.plan_code}>
+                  <option value={data.variation_code} key={data.variation_code}>
                     {data.name}
                   </option>
                 ))
@@ -119,7 +119,7 @@ export default function DirectCoupon({
         modalIsOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         onConfirm={confirmData}
-        network={name}
+        package_name={name}
       />
       <SubMain />
     </div>
