@@ -136,7 +136,7 @@ function Developer({
                                     {/* <th className="p-2">S/N</th> */}
                                     <th className="p-2 text-xs">Network</th>
                                     <th className="p-2 text-xs text-center">
-                                      Plan Code
+                                      Variation Code
                                     </th>
                                     <th className="p-2 text-xs text-center">
                                       Package
@@ -155,10 +155,10 @@ function Developer({
                                     <tr key={variation._id} className="border">
                                       {/* <td className="text-center">{index + 1}</td> */}
                                       <td className="p-2 text-xs text-center">
-                                        {ctr.network}
+                                        {ctr.variation_string}
                                       </td>
                                       <td className="p-2 text-xs text-center">
-                                        {variation.plan_code}
+                                        {variation.variation_code}
                                       </td>
                                       <td className="p-2 text-xs text-center">
                                         {variation.name}
@@ -198,7 +198,7 @@ function Developer({
                                   <tr className="bg-gray-700 text-white">
                                     <th className="p-2 text-xs">Network_Id</th>
                                     <th className="p-2 text-xs text-center">
-                                      Plan Code
+                                      Variation Code
                                     </th>
                                     <th className="p-2 text-xs text-center">
                                       Package
@@ -220,7 +220,7 @@ function Developer({
                                         {ctr.network}
                                       </td>
                                       <td className="p-2 text-xs text-center">
-                                        {variation.plan_code}
+                                        {variation.variation_code}
                                       </td>
                                       <td className="p-2 text-xs text-center">
                                         {variation.name}
@@ -449,14 +449,14 @@ function Developer({
                   Parameters needed for <span className="font-bold">Data</span>{" "}
                   are:
                   <pre className="bg-gray-800 p-1 rounded text-green-400 inline-block ml-2">
-                    {`{ network, plan_code, mobile }`}
+                    {`{ network, variation_code, mobile }`}
                   </pre>
                 </li>
                 <li>
                   Parameters needed for{" "}
                   <span className="font-bold">Coupon</span> are:
                   <pre className="bg-gray-800 p-1 rounded text-blue-400 inline-block ml-2">
-                    {`{ network_id, plan_code, mobile }`}
+                    {`{ network_id, variation_code, mobile }`}
                   </pre>
                 </li>
                 <li>

@@ -25,8 +25,7 @@ import TvCabIcon from "../heroIcons/TvCabIcon";
 // Using array for nav items
 const menuItems = [
   { id: 1, label: "Dashboard", icon: HomeIcon, link: "/user/dashboard" },
-  { id: 2, label: "Buy Data", icon: DataIcon, link: "/user/buyDataS" },
-  // { id: 3, label: "Buy Data 2", icon: DataIcon, link: "/user/buyData" },
+  { id: 2, label: "Buy Data", icon: DataIcon, link: "/user/buyData" },
   { id: 4, label: "Buy Airtime", icon: AirtimeIcon, link: "/user/buyAirtime" },
   {
     id: 5,

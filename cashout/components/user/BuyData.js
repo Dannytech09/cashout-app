@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { buyDataHandler } from "@/pages/api/user/buydata";
 import BuyData from "./userJsx/BuyData";
-import { buyDataGetHandler, buyDataHandler } from "@/pages/api/user/buydata";
 import { expireSessionAndRedirect } from "@/Utils/authCookies";
 import { removeUserSession } from "@/Utils/Common";
-// import { useSelector } from "react-redux";
+// import { beneficiary } from "@/pages/api/user/beneficiary";
+
+let name;
+let package_name;
 
 function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   const router = useRouter();
-  // const userId = getUser();
+  // const user = getUser();
+  // const id = user ? user.id : null;
   // const { token } = getUserIdAndToken(ctx);
-  //   const { userId } = getUserIdAndToken(ctx);
 
-  // const [networkData, setNetworkData] = useState([]);
+  // const [networkData, setNetworkData] = useState(data);
   const [amountPlaceHolder, setAmountPlaceHolder] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -37,59 +40,27 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   const clearPhoneClick = () => {
     setPhoneNumber("");
   };
-
-  // useEffect(() => {
-  //   // if (!userId || !token) {
-  //   //   removeUserSession();
-  //   //   expireSessionAndRedirect(ctx, router);
-  //   // }
-  //   async function fetchData() {
-  //     try {
-  //       setLoading(true);
-  //       const response = await buyDataGetHandler();
-  //       if(response.code === "018" || response.error === "Data2 disabled, please check data1") {
-  //         alert("Data Disabled, please check back later");
-  //         return router.replace("/user/dashboard");
-  //       }
-  //       // console.log(response);
-  //       setNetworkData(response.networkData);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       // console.log("err", error)
-  //       alert(error.response.error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-
-  //   fetchData();
-  // }, []);
-
-  //   if this  is enabled it can cause: Rendered more hooks than during the previous ...
-  // if (loading) {
-  //   return <div className="bg-slate-100">Loading...</div>;
-  // }
+  // pass props from parent => child => child of child
 
   const changeNetwork = (e) => {
+    const selectedVariationString = e.target.value;
+
     const selectedNetwork = networkData.find(
-      (ctr) => ctr.network === e.target.value
+      (ctr) => ctr.variation_string === selectedVariationString
     );
     if (selectedNetwork) {
       setDataVols(selectedNetwork.dataVol);
 
-      const selectedData = selectedNetwork.dataVol.find(
-        (vol) => vol.name === e.target.value
-      );
-
-      if (selectedData) {
-        selectedDataVolName = selectedData.name;
-        // console.log(selectedDataVolName);
-      }
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(selectedNetwork.variation_string); // Set the network based on the found network
+    } else {
+      setDataVols([]); // Clear the dataVols state when the network is not found (optional)
+      setPhoneNumber("");
+      setAmount("");
+      setNetwork(""); // Set the network to an empty string when the variation_string is not found (optional)
     }
-    setPhoneNumber("");
-    setAmount("");
-    setNetwork(e.target.value);
-    // console.log(e.target.value);
+    name = selectedNetwork?.variation_string;
   };
 
   // handle two onchange props
@@ -101,8 +72,9 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   const changeDataVol = (e) => {
     setDataVol(e.target.value);
     const selectedDataVol = dataVols.find(
-      (ctr) => ctr.plan_code === e.target.value
+      (ctr) => ctr.variation_code === e.target.value
     );
+    package_name = selectedDataVol.name;
     // check if selectedDataVol is undefined. if not checked it will throw an
     // error if user selects a value and later select the default value
     if (selectedDataVol) {
@@ -111,7 +83,6 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
     }
     setPhoneNumber("");
     setAmount("");
-    // console.log(e.target.value);
   };
 
   // handle two onchange props
@@ -119,6 +90,12 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
     changeDataVol(e);
     handleInputField(e);
   };
+
+  // // phone from beneficiary
+  // useEffect((e) => {
+  //   handlePhoneClick(e)
+  //   handleInputField(e)
+  // }, [handlePhoneClick])
 
   // handle two onchange props
   const handlePhoneNumberAndInputValidation = (e) => {
@@ -158,9 +135,8 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
     if (modalIsOpen) {
       timer = setTimeout(() => {
         closeModal();
-      }, 3000);
+      }, 5000);
     }
-
     return () => clearTimeout(timer);
   }, [modalIsOpen]);
 
@@ -193,7 +169,7 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
           //   router.reload();
           // const buyAgain = window.confirm("Do you wish to buy again ?");
           // if (buyAgain) {
-          //   router.push("/user/buyData");
+          //   router.push("/user/buyDataS");
           // } else {
           //   router.push("/user/dashboard");
           // }
@@ -202,12 +178,10 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
         setRedirecting(false);
       } catch (error) {
         // console.log(error);
-        if (error) {
-          throw new Error(`An error occurred ${error}`); // handle error from the above try block (server Error - nextjs)
-        }
+        setErrorMessage(`client or server error ${error}`);
       } finally {
-        setRedirecting(false);
         setLoading(false);
+        setRedirecting(false);
         closeModal();
       }
     }
@@ -236,7 +210,6 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   }
 
   return (
-    // <div className="bg-slate-500 h-screen md:h-screen xl:h-screen">
     <div className="bg-slate-700 h-100 md:h-100 xl:h-100">
       <BuyData
         beneficiary={beneficiary}
@@ -265,6 +238,8 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
         openModal={openModal}
         closeModal={closeModal}
         onRequestClose={onRequestClose}
+        name={name}
+        package_name={package_name}
         error={error}
       />
     </div>
