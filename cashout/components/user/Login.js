@@ -40,6 +40,7 @@ const LoginComp = (ctx) => {
       password: "",
     },
   });
+ 
 
   const submitHandler = async ({ ctx, email, password }) => {
     setIsDisabled(true);
@@ -48,18 +49,21 @@ const LoginComp = (ctx) => {
     try {
       const response = await LoginHandler(email, password);
       // console.log(response)
-      if (response.error) {
+  if (response.error) {
         const r = response.error;
         setMessage(r);
       } else if (response.data.success === true || response.status === 200) {
-        const token = response?.data?.token;
-        const user = response?.data?.user;
+        const data = response?.data;
+        const token = data?.token;
+        const user = data?.user;
+        let d = data?.noticeMe
+
         setUserSession(JSON.stringify(response.data.user));
         setCookieAndRedirect(ctx, "token", token);
         const userJSON = JSON.stringify(user);
         setCookieAndRedirect(ctx, "u", userJSON);
         router.push("/user/dashboard");
-        let d = response?.data?.noticeMe
+
         if(d !== null) {
         setTimeout(() => {
           alert(d)
@@ -70,7 +74,10 @@ const LoginComp = (ctx) => {
       }
     } catch (error) {
       // console.log(error);
-      throw new Error(`An error occured ${error}`);
+      // if (error.message) {
+      //   throw new Error(`An error occured ${error}`);
+      // } 
+      setMessage("Server not responding. Please try again.");
     } finally {
       setIsDisabled(false);
       setLoading(false);
