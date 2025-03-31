@@ -61,6 +61,12 @@ const menuItems = [
     link: "/admin-wonders/getSingleUser",
   },
   {
+    id: 71,
+    label: "QR",
+    icon: ProfileIcon,
+    link: "/admin-wonders/qr",
+  },
+  {
     id: 8,
     label: "Query Tranx",
     icon: ProfileIcon,

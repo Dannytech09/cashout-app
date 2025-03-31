@@ -68,7 +68,7 @@ export async function getServerSideProps(ctx) {
     if (
       errorGSMessage === "Invalid token." ||
       errorGSMessage === "Token has been revoked or expired." ||
-      errorGSMessage === "Oops! Bad Request !" || null
+      errorGSMessage === "Oops! Bad Request !" || null || "Unauthorized to access this route." || "Not authorized to access this route.."
     ) {
       return {
         redirect: {
