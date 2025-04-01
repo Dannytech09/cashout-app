@@ -9,10 +9,10 @@ export async function LoginHandler(email, password) {
       axios.post(`${BASE_URL}/login`, { email, password }),
       new Promise((_, reject) => setTimeout(() => reject(new Error("Server timeout")), 15000)) // 15s manual timeout
     ])
-    // console.log(response);
+    // console.log("responsel", response);
     return response;
   } catch (error) {
-    // console.log(error.response.data);
+    // console.log("err", error.response.data);
     return error.response.data;
   }
 }
