@@ -40,7 +40,6 @@ const LoginComp = (ctx) => {
       password: "",
     },
   });
- 
 
   const submitHandler = async ({ ctx, email, password }) => {
     setIsDisabled(true);
@@ -49,14 +48,14 @@ const LoginComp = (ctx) => {
     try {
       const response = await LoginHandler(email, password);
       // console.log(response)
-  if (response.error) {
+      if (response.error) {
         const r = response.error;
         setMessage(r);
       } else if (response.data.success === true || response.status === 200) {
         const data = response?.data;
         const token = data?.token;
         const user = data?.user;
-        let d = data?.noticeMe
+        let d = data?.noticeMe;
 
         setUserSession(JSON.stringify(response.data.user));
         setCookieAndRedirect(ctx, "token", token);
@@ -64,19 +63,30 @@ const LoginComp = (ctx) => {
         setCookieAndRedirect(ctx, "u", userJSON);
         router.push("/user/dashboard");
 
-        if(d !== null) {
-        setTimeout(() => {
-          alert(d)
-        }, 3000)
+        if (d !== null) {
+          setTimeout(() => {
+            alert(d);
+          }, 3000);
         } else {
-          return null
-          }
+          return null;
+        }
       }
     } catch (error) {
-      // console.log(error);
+      // console.log("erroro", error);
+      if (
+        error instanceof TypeError ||
+        error instanceof SyntaxError ||
+        error?.code === -32603 ||
+        error?.message === "Internal JSON-RPC error." || error?.response?.message === "Internal JSON-RPC error." ||
+        error?.response?.data?.msg ===
+          "Network error. Check and try again later." ||
+        error?.response?.status === "ERR_NETWORK"
+) {
+        setMessage("Network Error. Please reconnect and try again.");
+      }
       // if (error.message) {
       //   throw new Error(`An error occured ${error}`);
-      // } 
+      // }
       setMessage("Server not responding. Please try again.");
     } finally {
       setIsDisabled(false);
