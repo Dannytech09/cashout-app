@@ -31,6 +31,18 @@ function BuyDataComp({ ctx, errorGSMessage, networkData, beneficiary }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allSelected, setAllSelected] = useState(false);
 
+    useEffect(() => {
+      // console.log("server not conn ran")
+      if (
+        errorGSMessage === "Invalid token." ||
+        errorGSMessage === "Token has been revoked or expired." || errorGSMessage === "unable to connect to server"
+      ) {
+        removeUserSession();
+        expireSessionAndRedirect(ctx, router);
+        setRedirecting(true);
+      }
+    }, [errorGSMessage, ctx, router]);
+
   // pass props from parent => child => child of child
   const handlePhoneClick = (e) => {
     setPhoneNumber(e);

@@ -64,11 +64,17 @@ export async function getServerSideProps(ctx) {
   } catch (error) {
     // console.log("err l", error)
     let errorGSMessage = error?.response?.data?.error ?? null
-
-    if (
+    if(error.code === "ECONNREFUSED" || error instanceof SyntaxError) {
+      return {
+        props: {
+          user: null,
+          errorGSMessage: "unable to connect to server"
+        }
+      }
+    } else if (
       errorGSMessage === "Invalid token." ||
       errorGSMessage === "Token has been revoked or expired." ||
-      errorGSMessage === "Oops! Bad Request !" || null || "Unauthorized to access this route." || "Not authorized to access this route.."
+      errorGSMessage === "Oops! Bad Request !"
     ) {
       return {
         redirect: {

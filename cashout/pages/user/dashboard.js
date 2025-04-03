@@ -53,7 +53,7 @@ function Dashboard({ ctx, user, error }) {
     dispatch(setUser(user));
     if (
       error === "Invalid token." ||
-      error === "Token has been revoked or expired."
+      error === "Token has been revoked or expired." || error === "unable to connect to server"
     ) {
       removeUserSession();
       expireSessionAndRedirect(ctx, router);
@@ -139,10 +139,18 @@ export async function getServerSideProps(ctx) {
     };
   } catch (error) {
     // console.error("f", error.response.data);
+    if(error.code === "ECONNREFUSED" || error instanceof SyntaxError) {
+      return {
+        props: {
+          user: null,
+          error: "unable to connect to server"
+        }
+      }
+    }
     return {
       props: {
         user: null,
-        error: error.response.data.error,
+        error: error?.response?.data?.error,
       },
     };
   }
