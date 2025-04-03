@@ -67,6 +67,12 @@ const menuItems = [
     link: "/admin-wonders/qr",
   },
   {
+    id: 72,
+    label: "Logs",
+    icon: ProfileIcon,
+    link: "/admin-wonders/logs",
+  },
+  {
     id: 8,
     label: "Query Tranx",
     icon: ProfileIcon,

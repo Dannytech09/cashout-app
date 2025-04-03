@@ -28,8 +28,9 @@ export async function QrGetHandler(ctx) {
 export async function QrGenerateHandler(ctx) {
   const { token } = getUserIdAndToken(ctx);
   try {
-    const response = await axios.get(
+    const response = await axios.post(
       `${ADMIN_BASE_URL}/gqr`,
+      { okay: null },
       {
         headers: {
           Authorization: `Bearer ${token}`,
